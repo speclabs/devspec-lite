@@ -122,6 +122,9 @@ def expected_paths(profile: str) -> list[Path]:
     paths = [Path("devspec/command-registry.md"), Path("devspec/README.md"), Path("devspec/glossary.md"), Path("devspec/foundation/repository-state.md")]
     paths.extend(Path(f"devspec/protocols/{name}.xml") for name in PROTOCOLS)
     paths.extend(Path(f"devspec/contracts/devspec.{c.name}.md") for c in COMMANDS)
+    paths.extend(Path(f"devspec/foundation/_template/{name}") for name in FOUNDATION_TEMPLATES)
+    paths.extend(Path(f"devspec/work-items/_template/{name}") for name in WORK_ITEM_TEMPLATES)
+    paths.extend((Path("devspec/quickfixes/README.md"), Path("devspec/quickfixes/_template.md")))
     paths.extend(Path(f"devspec/architecture/_template/{name}") for name in ARCHITECTURE_TEMPLATES)
     adapters = ADAPTERS if profile == "all" else (profile,)
     for adapter in adapters:
@@ -150,6 +153,17 @@ def doctor(root: Path, profile: str) -> list[str]:
                 ElementTree.fromstring(path.read_text(encoding="utf-8"))
             except ElementTree.ParseError as exc:
                 issues.append(f"invalid XML: {path}: {exc}")
+            else:
+                required = {
+                    "ask": ("trigger", "checkpoint", "interaction", "resolution"),
+                    "run": ("preflight", "checkpoint", "resume", "blocked", "closure"),
+                    "work": ("scope", "evidence", "change", "artifacts"),
+                    "repo-access": ("when", "validate", "respect"),
+                }[name]
+                present = {child.tag for child in ElementTree.fromstring(path.read_text(encoding="utf-8"))}
+                missing = sorted(set(required) - present)
+                if missing:
+                    issues.append(f"missing protocol tags: {path}: {', '.join(missing)}")
     for command in COMMANDS:
         path = root / f"devspec/contracts/devspec.{command.name}.md"
         if path.is_file():
@@ -158,6 +172,11 @@ def doctor(root: Path, profile: str) -> list[str]:
                 workflow = ElementTree.fromstring(xml_block(text))
                 if workflow.tag != "workflow" or workflow.attrib.get("command") != f"devspec.{command.name}":
                     issues.append(f"invalid contract identity: {path}")
+                required = {"purpose", "protocols", "input", "rules", "actions", "artifact", "handoff"}
+                present = {child.tag for child in workflow}
+                missing = sorted(required - present)
+                if missing:
+                    issues.append(f"missing contract tags: {path}: {', '.join(missing)}")
             except (ValueError, ElementTree.ParseError) as exc:
                 issues.append(f"invalid contract XML: {path}: {exc}")
     adapters = ADAPTERS if profile == "all" else (profile,)

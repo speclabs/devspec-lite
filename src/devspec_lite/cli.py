@@ -5,11 +5,13 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from . import __version__
 from .framework import PROFILES, doctor, install_framework
 
 
 def parser() -> argparse.ArgumentParser:
     root = argparse.ArgumentParser(prog="devspec-lite")
+    root.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = root.add_subparsers(dest="command", required=True)
     for name in ("init", "doctor"):
         cmd = sub.add_parser(name)

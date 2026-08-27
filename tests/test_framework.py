@@ -7,10 +7,15 @@ from xml.etree import ElementTree
 
 from devspec_lite.cli import main
 from devspec_lite.definitions import COMMANDS
-from devspec_lite.framework import doctor
+from devspec_lite.framework import PROFILES, doctor, install_framework
 
 
 class FrameworkTests(unittest.TestCase):
+    def test_version_flag(self) -> None:
+        with self.assertRaises(SystemExit) as result:
+            main(["--version"])
+        self.assertEqual(0, result.exception.code)
+
     def test_init_all_and_doctor(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
@@ -21,6 +26,23 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue((target / ".github/agents/devspec.quickfix.agent.md").is_file())
             self.assertTrue((target / ".claude/skills/devspec-grooming/SKILL.md").is_file())
             self.assertIn("devspec.extract", (target / "devspec/foundation/repository-state.md").read_text(encoding="utf-8"))
+
+    def test_init_and_doctor_every_profile(self) -> None:
+        for profile in PROFILES:
+            with self.subTest(profile=profile), tempfile.TemporaryDirectory() as raw:
+                target = Path(raw)
+                install_framework(target, profile, "existing")
+                self.assertEqual([], doctor(target, profile))
+
+    def test_doctor_checks_required_xml_tags_and_templates(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            install_framework(target, "codex", "existing")
+            (target / "devspec/protocols/run.xml").write_text('<protocol id="run" />\n', encoding="utf-8")
+            (target / "devspec/work-items/_template/tasks.md").unlink()
+            issues = doctor(target, "codex")
+            self.assertTrue(any("missing protocol tags" in issue for issue in issues))
+            self.assertIn("missing: devspec/work-items/_template/tasks.md", [issue.replace("\\", "/") for issue in issues])
 
     def test_ask_protocol_requires_interactive_choices(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

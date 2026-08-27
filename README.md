@@ -10,3 +10,11 @@ uvx devspec-lite doctor --target . --profile all
 `init` installs canonical Markdown + XML contracts, concise templates, and only the wrappers for the selected agent profile. Use the `/devspec.*` commands exposed by your agent host.
 
 The framework is intentionally clean-room: it keeps its own small contracts and does not copy any upstream framework files.
+
+## Setup guides
+
+- [WinGet](docs/setup-winget.md)
+- [Python and uvx](docs/setup-python.md)
+- [Homebrew](docs/setup-homebrew.md)
+- [Installer lifecycle: init, upgrade, sync, profiles](docs/setup-lifecycle.md)
+- [Manual copy](docs/manual-copy.md)

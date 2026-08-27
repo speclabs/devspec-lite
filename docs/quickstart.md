@@ -18,3 +18,11 @@ Foundation route: `projectcontext → techstack → codebase-structure → codin
 Work route: `story → grooming` when needed `→ finalize → tasks → implement → review`.
 
 Use `quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
+
+## Platform setup
+
+- [WinGet](setup-winget.md)
+- [Python and uvx](setup-python.md)
+- [Homebrew](setup-homebrew.md)
+- [Installer lifecycle](setup-lifecycle.md)
+- [Manual copy](manual-copy.md)
