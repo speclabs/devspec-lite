@@ -22,6 +22,13 @@ Use the work-item route for public contracts, data migrations, authentication/se
 
 ![Install and maintenance flow](assets/maintenance-flow.svg)
 
+## Diagram sample
+
+For an evidence-backed architecture or workflow visual, begin with the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md) and its [SVG sample](../devspec/architecture/_template/diagram-sample.svg).
+
+Assign a stable `DIA-###` ID, keep status in the queue, and add only completed diagram links to the overview index.
+
+
 `init` is idempotent for unchanged managed files. It will not overwrite a changed contract or wrapper. Use `doctor` before and after an upgrade, manual copy, or profile addition. There is no separate `sync` command: validate, rerun `init` with the same profile, then validate again.
 
 ## Examples
