@@ -76,6 +76,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue((target / "devspec/README.md").is_file())
             self.assertTrue((target / "devspec/glossary.md").is_file())
             self.assertTrue((target / "devspec/architecture/_template/artifact-queue.md").is_file())
+            self.assertTrue((target / "devspec/architecture/artifact-queue.md").is_file())
             self.assertTrue((target / "devspec/foundation/_template/exploration-state.md").is_file())
             meta = (target / "devspec/work-items/_template/meta.md").read_text(encoding="utf-8")
             self.assertIn("stage:", meta)

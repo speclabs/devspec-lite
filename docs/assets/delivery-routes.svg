@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 370" role="img" aria-labelledby="title desc">
+  <title id="title">Work delivery routes</title>
+  <desc id="desc">A localized low-risk request uses Quickfix. All other work uses Story, optional Grooming, Finalize, Tasks, Implement, and Review. Clarify resumes the blocked stage.</desc>
+  <style>.t{font:600 16px system-ui,sans-serif;fill:#102a43}.s{font:14px system-ui,sans-serif;fill:#243b53}.n{fill:#e8f1fb;stroke:#3478c8;stroke-width:2}.q{fill:#fff4d6;stroke:#bd7b00;stroke-width:2}.r{fill:#eef8f1;stroke:#27864b;stroke-width:2}.a{fill:none;stroke:#3478c8;stroke-width:2.5;marker-end:url(#m)}.d{fill:none;stroke:#8a5a00;stroke-width:2;stroke-dasharray:6 5;marker-end:url(#m2)}.h{font:700 22px system-ui,sans-serif;fill:#102a43}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3478c8"/></marker><marker id="m2" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8a5a00"/></marker></defs>
+  <text x="28" y="36" class="h">Choose the delivery route</text><text x="28" y="61" class="s">Quickfix is only for one local, low-risk change. Risk, broad scope, or durable design needs the work-item route.</text>
+  <rect x="28" y="130" width="130" height="54" rx="10" class="r"/><text x="93" y="163" text-anchor="middle" class="t">Request</text>
+  <rect x="220" y="110" width="175" height="92" rx="10" class="r"/><text x="307" y="146" text-anchor="middle" class="t">Localized and</text><text x="307" y="168" text-anchor="middle" class="t">low risk?</text>
+  <rect x="465" y="52" width="145" height="54" rx="10" class="q"/><text x="537" y="85" text-anchor="middle" class="t">quickfix</text>
+  <rect x="665" y="52" width="150" height="54" rx="10" class="q"/><text x="740" y="85" text-anchor="middle" class="t">validate + record</text>
+  <rect x="465" y="250" width="115" height="54" rx="10" class="n"/><text x="522" y="283" text-anchor="middle" class="t">story</text>
+  <rect x="630" y="250" width="130" height="54" rx="10" class="n"/><text x="695" y="283" text-anchor="middle" class="t">grooming*</text>
+  <rect x="810" y="250" width="115" height="54" rx="10" class="n"/><text x="867" y="283" text-anchor="middle" class="t">finalize</text>
+  <rect x="975" y="250" width="155" height="54" rx="10" class="n"/><text x="1052" y="273" text-anchor="middle" class="t">tasks → implement</text><text x="1052" y="291" text-anchor="middle" class="t">→ review</text>
+  <text x="438" y="86" class="s">yes</text><text x="438" y="225" class="s">no</text><text x="695" y="328" class="s">* when ambiguity, risk, or incomplete criteria is material</text>
+  <path d="M158 157H220M395 135H465M610 79H665M395 177H430V277H465M580 277H630M760 277H810M925 277H975" class="a"/>
+  <path d="M867 250V222H695V250" class="d"/><text x="785" y="218" class="s">clarify blocker, then resume</text>
+</svg>

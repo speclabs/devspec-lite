@@ -13,6 +13,14 @@ The framework is intentionally clean-room: it keeps its own small contracts and 
 
 ## Setup guides
 
+## Workflow routes
+
+![Foundation route for new and existing repositories](docs/assets/foundation-routes.svg)
+
+![Delivery route for quickfix and work items](docs/assets/delivery-routes.svg)
+
+Choose a route with the [developer workflow guide](docs/workflows.md), including concrete quickfix, grooming, clarification, and change-request examples.
+
 - [WinGet](docs/setup-winget.md)
 - [Python and uvx](docs/setup-python.md)
 - [Homebrew](docs/setup-homebrew.md)

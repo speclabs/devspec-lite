@@ -68,6 +68,14 @@ pipx upgrade devspec-lite
 winget upgrade --id SpecLabs.DevspecLite --exact
 
 # Homebrew
+
+## Lifecycle at a glance
+
+![Install and maintenance flow](assets/maintenance-flow.svg)
+
+After setup, choose a foundation or delivery route from the [developer workflow guide](workflows.md).
+
+For a manual installation, follow the same validation steps in the [manual-copy guide](manual-copy.md).
 brew upgrade devspec-lite
 ```
 

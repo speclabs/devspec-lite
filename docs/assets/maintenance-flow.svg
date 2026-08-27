@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1160 250" role="img" aria-labelledby="title desc">
+  <title id="title">Install and maintenance flow</title>
+  <desc id="desc">Install with a preferred method, check the version, initialize the chosen profile, validate with Doctor, and use the same sequence after an upgrade or profile addition.</desc>
+  <style>.t{font:600 16px system-ui,sans-serif;fill:#102a43}.s{font:14px system-ui,sans-serif;fill:#243b53}.n{fill:#e8f1fb;stroke:#3478c8;stroke-width:2}.r{fill:#eef8f1;stroke:#27864b;stroke-width:2}.a{fill:none;stroke:#3478c8;stroke-width:2.5;marker-end:url(#m)}.h{font:700 22px system-ui,sans-serif;fill:#102a43}</style>
+  <defs><marker id="m" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#3478c8"/></marker></defs>
+  <text x="28" y="36" class="h">Install, validate, and maintain</text><text x="28" y="61" class="s">The framework is Git-tracked. Doctor is read-only; init adds missing files and refuses changed managed files.</text>
+  <rect x="28" y="120" width="165" height="54" rx="10" class="r"/><text x="110" y="153" text-anchor="middle" class="t">Install: uvx / pipx</text>
+  <rect x="243" y="120" width="130" height="54" rx="10" class="n"/><text x="308" y="153" text-anchor="middle" class="t">--version</text>
+  <rect x="423" y="120" width="210" height="54" rx="10" class="n"/><text x="528" y="153" text-anchor="middle" class="t">init profile + repo state</text>
+  <rect x="683" y="120" width="120" height="54" rx="10" class="n"/><text x="743" y="153" text-anchor="middle" class="t">doctor</text>
+  <rect x="853" y="120" width="255" height="54" rx="10" class="r"/><text x="980" y="146" text-anchor="middle" class="t">Commit canonical artifacts</text><text x="980" y="165" text-anchor="middle" class="t">and start the route</text>
+  <path d="M193 147H243M373 147H423M633 147H683M803 147H853" class="a"/>
+  <path d="M743 120V88H528V120" class="a"/><text x="535" y="84" class="s">upgrade or add profile → Doctor, init, Doctor</text>
+</svg>

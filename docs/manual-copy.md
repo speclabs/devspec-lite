@@ -22,6 +22,13 @@ For a new project, replace `existing` with `new`. The generated `devspec/` direc
 | Gemini | `devspec/`, `.gemini/commands/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.gemini -Destination D:\Code\orders -Recurse` |
 | Antigravity | `devspec/`, `.agents/skills/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.agents -Destination D:\Code\orders -Recurse` |
 
+
+## Manual-copy lifecycle
+
+![Install and maintenance flow](assets/maintenance-flow.svg)
+
+Generate one profile, copy only its listed files, then run Doctor when Python is available. After validation, use the [developer workflow guide](workflows.md) to choose the foundation or delivery route.
+
 Replace `D:\Code\orders` with the target repository. If the target already contains a same-named wrapper file, compare it first; do not overwrite user-managed instructions accidentally.
 
 ## Validate after copying

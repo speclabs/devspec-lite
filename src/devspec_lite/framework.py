@@ -103,6 +103,7 @@ def install_framework(root: Path, profile: str, repo_state: str) -> None:
         write_file(root / f"devspec/foundation/_template/{name}", content)
     for name, content in ARCHITECTURE_TEMPLATES.items():
         write_file(root / f"devspec/architecture/_template/{name}", content)
+        write_file(root / f"devspec/architecture/{name}", content)
     route = "devspec.extract → devspec.projectcontext" if repo_state == "existing" else "devspec.projectcontext"
     write_file(root / "devspec/foundation/repository-state.md", f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n")
     for name, content in WORK_ITEM_TEMPLATES.items():
@@ -125,6 +126,7 @@ def expected_paths(profile: str) -> list[Path]:
     paths.extend(Path(f"devspec/foundation/_template/{name}") for name in FOUNDATION_TEMPLATES)
     paths.extend(Path(f"devspec/work-items/_template/{name}") for name in WORK_ITEM_TEMPLATES)
     paths.extend((Path("devspec/quickfixes/README.md"), Path("devspec/quickfixes/_template.md")))
+    paths.extend(Path(f"devspec/architecture/{name}") for name in ARCHITECTURE_TEMPLATES)
     paths.extend(Path(f"devspec/architecture/_template/{name}") for name in ARCHITECTURE_TEMPLATES)
     adapters = ADAPTERS if profile == "all" else (profile,)
     for adapter in adapters:
