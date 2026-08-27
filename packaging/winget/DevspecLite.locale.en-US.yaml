@@ -1,0 +1,10 @@
+PackageIdentifier: SpecLabs.DevspecLite
+PackageVersion: 0.1.0
+PackageLocale: en-US
+Publisher: SpecLabs
+PackageName: Devspec Lite
+ShortDescription: Compact, resumable spec-driven workflow templates for AI coding agents.
+License: Apache-2.0
+LicenseUrl: https://github.com/speclabs/devspec-lite/blob/main/LICENSE
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

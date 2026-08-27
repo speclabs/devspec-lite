@@ -1,0 +1,9 @@
+PackageIdentifier: SpecLabs.DevspecLite
+PackageVersion: 0.1.0
+Installers:
+  - Architecture: neutral
+    InstallerType: zip
+    InstallerUrl: https://github.com/speclabs/devspec-lite/releases/download/v0.1.0/devspec-lite-0.1.0.zip
+    InstallerSha256: REPLACE_AT_RELEASE
+ManifestType: installer
+ManifestVersion: 1.6.0
