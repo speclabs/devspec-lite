@@ -24,7 +24,7 @@ Use the work-item route for public contracts, data migrations, authentication/se
 
 ## Diagram sample
 
-For an evidence-backed architecture or workflow visual, begin with the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md), its standalone [SVG sample](../devspec/architecture/_template/diagram-sample.svg), or its optional [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html).
+For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md), then use the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md), its standalone [SVG sample](../devspec/architecture/_template/diagram-sample.svg), or its optional [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html).
 
 Assign a stable `DIA-###` ID, keep status in the queue, and add only completed diagram links to the overview index.
 

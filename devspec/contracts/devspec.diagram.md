@@ -13,6 +13,7 @@ Invocation: `/devspec.diagram runtime architecture format=svg`
   </protocols>
   <input>Diagram subject, work item, or format request.</input>
   <rules>
+    <rule>Select the diagram type from devspec/architecture/_template/diagram-types.md; load only the needed pattern.</rule>
     <rule>Create only evidence-backed, non-duplicate diagrams and persist queue or overview state for recovery.</rule>
     <rule>Record subject, type, evidence, format, status, and next in the queue; index completed output in the overview.</rule>
     <rule>Default to SVG with title and description and validate its XML; write Mermaid or HTML only when explicitly requested.</rule>
