@@ -14,6 +14,10 @@ devspec-lite --version
 
 ```powershell
 devspec-lite init --target . --profile all --repo-state existing
+
+## Next steps
+
+For upgrade, safe synchronization, profile changes, and agent workflow examples, see the [installer lifecycle guide](setup-lifecycle.md).
 devspec-lite doctor --target . --profile all
 ```
 

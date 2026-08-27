@@ -2,6 +2,27 @@
 
 This guide covers the normal life of a Devspec Lite installation: install the CLI, initialize a repository, validate it, upgrade safely, synchronize generated files, and add another agent profile.
 
+
+## Lifecycle at a glance
+
+![Install and maintenance flow](assets/maintenance-flow.svg)
+
+The terminal CLI is `devspec-lite`. After initialization, the installed agent wrappers expose the `devspec.*` workflow commands. They are intentionally different interfaces.
+
+## Command map
+
+| Goal | Use | Notes |
+|---|---|---|
+| Install | `uvx`, `pipx`, WinGet, or Homebrew | Choose one package-manager route below. |
+| Check version | `devspec-lite --version` | Confirms the installed CLI. |
+| Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new|existing>` | Writes the canonical framework and selected wrappers. |
+| Validate | `devspec-lite doctor --target <path> --profile <profile>` | Read-only check of contracts, protocols, templates, and wrappers. |
+| Upgrade | Your package manager’s upgrade command | Upgrade the CLI, then run the sync sequence. |
+| Sync generated files | `doctor → init → doctor` | There is deliberately no `devspec-lite sync` command. |
+| Run delivery work | Agent command such as `devspec.story` or `devspec.quickfix` | Use after initialization; see the [workflow guide](workflows.md). |
+
+`devspec-lite upgrade` and `devspec-lite sync` are not CLI commands. This guide uses the actual package-manager upgrade commands and the safe sync sequence instead.
+
 ## 1. Install Devspec Lite
 
 Choose one supported path:
@@ -69,13 +90,6 @@ winget upgrade --id SpecLabs.DevspecLite --exact
 
 # Homebrew
 
-## Lifecycle at a glance
-
-![Install and maintenance flow](assets/maintenance-flow.svg)
-
-After setup, choose a foundation or delivery route from the [developer workflow guide](workflows.md).
-
-For a manual installation, follow the same validation steps in the [manual-copy guide](manual-copy.md).
 brew upgrade devspec-lite
 ```
 

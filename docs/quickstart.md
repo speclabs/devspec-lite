@@ -17,6 +17,7 @@ Foundation route: `projectcontext → techstack → codebase-structure → codin
 
 Work route: `story → grooming` when needed `→ finalize → tasks → implement → review`.
 
+Use `quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
 
 ## Choose a workflow route
 
@@ -25,7 +26,6 @@ Work route: `story → grooming` when needed `→ finalize → tasks → impleme
 ![Delivery route](assets/delivery-routes.svg)
 
 For scenarios and examples, see the [developer workflow guide](workflows.md).
-Use `quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
 
 ## Platform setup
 
