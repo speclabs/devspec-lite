@@ -102,7 +102,8 @@ COMMAND_DETAILS: dict[str, tuple[str, tuple[str, ...]]] = {
     )),
     "diagram": ("Diagram subject, work item, or format request.", (
         "Create only evidence-backed, non-duplicate diagrams and persist queue or overview state for recovery.",
-        "Default to SVG; generate Mermaid or HTML only when explicitly requested.",
+        "Record subject, type, evidence, format, status, and next in the queue; index completed output in the overview.",
+        "Default to SVG with title and description and validate its XML; write Mermaid or HTML only when explicitly requested.",
         "Keep labels short and place explanations in supporting Markdown rather than the graphic.",
     )),
     "quickfix": ("One localized bug fix or small enhancement.", (

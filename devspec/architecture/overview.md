@@ -1,6 +1,9 @@
 # Architecture Overview
 
 ## Confirmed boundaries
+- Scope: developer workflow and setup guidance, not product runtime architecture.
+- Sources: command contracts, protocols, CLI behavior, and setup documentation.
+- Constraint: diagrams show confirmed routes only; they do not infer application dependencies.
 
 ## Diagram index
 

@@ -83,6 +83,18 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("run:", meta)
             self.assertIn("last:", meta)
 
+    def test_diagram_contract_preserves_traceability_and_svg_quality(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "new"])
+            diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
+            self.assertIn("non-duplicate diagrams", diagram)
+            self.assertIn("index completed output in the overview", diagram)
+            self.assertIn("title and description", diagram)
+            self.assertIn("validate its XML", diagram)
+            self.assertIn("Mermaid or HTML", diagram)
+            self.assertTrue((target / "devspec/architecture/artifact-queue.md").is_file())
+            self.assertTrue((target / "devspec/architecture/overview.md").is_file())
     def test_init_refuses_changed_managed_file(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
