@@ -6,7 +6,7 @@ from pathlib import Path
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape
 
-from .definitions import ARCHITECTURE_TEMPLATES, COMMANDS, COMMAND_DETAILS, FOUNDATION_TEMPLATES, PROTOCOLS, WORK_ITEM_TEMPLATES
+from .definitions import ARCHITECTURE_SAMPLE_TEMPLATES, ARCHITECTURE_TEMPLATES, COMMANDS, COMMAND_DETAILS, FOUNDATION_TEMPLATES, PROTOCOLS, WORK_ITEM_TEMPLATES
 
 PROFILES = ("all", "copilot", "codex", "claude", "cursor", "gemini", "antigravity")
 ADAPTERS = PROFILES[1:]
@@ -104,6 +104,8 @@ def install_framework(root: Path, profile: str, repo_state: str) -> None:
     for name, content in ARCHITECTURE_TEMPLATES.items():
         write_file(root / f"devspec/architecture/_template/{name}", content)
         write_file(root / f"devspec/architecture/{name}", content)
+    for name, content in ARCHITECTURE_SAMPLE_TEMPLATES.items():
+        write_file(root / f"devspec/architecture/_template/{name}", content)
     route = "devspec.extract → devspec.projectcontext" if repo_state == "existing" else "devspec.projectcontext"
     write_file(root / "devspec/foundation/repository-state.md", f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n")
     for name, content in WORK_ITEM_TEMPLATES.items():
@@ -127,6 +129,7 @@ def expected_paths(profile: str) -> list[Path]:
     paths.extend(Path(f"devspec/work-items/_template/{name}") for name in WORK_ITEM_TEMPLATES)
     paths.extend((Path("devspec/quickfixes/README.md"), Path("devspec/quickfixes/_template.md")))
     paths.extend(Path(f"devspec/architecture/{name}") for name in ARCHITECTURE_TEMPLATES)
+    paths.extend(Path(f"devspec/architecture/_template/{name}") for name in ARCHITECTURE_SAMPLE_TEMPLATES)
     paths.extend(Path(f"devspec/architecture/_template/{name}") for name in ARCHITECTURE_TEMPLATES)
     adapters = ADAPTERS if profile == "all" else (profile,)
     for adapter in adapters:

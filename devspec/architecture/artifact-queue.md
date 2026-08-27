@@ -1,7 +1,7 @@
 # Architecture Artifact Queue
 
-| ID | Subject | Type | Evidence | Format | Status | Next |
-|---|---|---|---|---|---|---|
-| DOC-001 | Foundation route | Developer workflow | `COMMANDS`, `repository-state.md` | SVG | complete | none |
-| DOC-002 | Delivery route | Developer workflow | command contracts and protocols | SVG | complete | none |
-| DOC-003 | Install lifecycle | Setup and recovery | CLI, Doctor, setup guides | SVG | complete | none |
+| ID | Scope | Type | Subject | Output | Evidence | Status | Next |
+|---|---|---|---|---|---|---|---|
+| DOC-001 | workflow | flowchart | foundation-route | `docs/assets/foundation-routes.svg` | command registry, repository state | complete | none |
+| DOC-002 | workflow | flowchart | delivery-route | `docs/assets/delivery-routes.svg` | command contracts, protocols | complete | none |
+| DOC-003 | workflow | flowchart | install-lifecycle | `docs/assets/maintenance-flow.svg` | CLI, Doctor, setup guides | complete | none |

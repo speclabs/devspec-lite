@@ -7,8 +7,8 @@
 
 ## Diagram index
 
-| Diagram | Scope | Evidence | Status |
-|---|---|---|---|
-| `docs/assets/foundation-routes.svg` | New vs. existing repository foundation | command registry and repository state | complete |
-| `docs/assets/delivery-routes.svg` | Quickfix vs. work-item delivery | command contracts and protocols | complete |
-| `docs/assets/maintenance-flow.svg` | Install, validation, upgrade, profile change | CLI and setup guides | complete |
+| ID | Diagram | Scope | Evidence | Link |
+|---|---|---|---|---|
+| DOC-001 | Foundation route | workflow | command registry, repository state | `docs/assets/foundation-routes.svg` |
+| DOC-002 | Delivery route | workflow | command contracts, protocols | `docs/assets/delivery-routes.svg` |
+| DOC-003 | Install lifecycle | workflow | CLI, Doctor, setup guides | `docs/assets/maintenance-flow.svg` |

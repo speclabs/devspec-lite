@@ -1,4 +1,4 @@
 # Architecture Artifact Queue
 
-| ID | Subject | Type | Evidence | Format | Status | Next |
-|---|---|---|---|---|---|---|
+| ID | Scope | Type | Subject | Output | Evidence | Status | Next |
+|---|---|---|---|---|---|---|---|

@@ -133,8 +133,13 @@ FOUNDATION_TEMPLATES = {
 }
 
 ARCHITECTURE_TEMPLATES = {
-    "overview.md": "# Architecture Overview\n\n## Confirmed boundaries\n\n## Diagram index\n\n| Diagram | Scope | Evidence | Status |\n|---|---|---|---|\n",
-    "artifact-queue.md": "# Architecture Artifact Queue\n\n| ID | Subject | Type | Evidence | Format | Status | Next |\n|---|---|---|---|---|---|---|\n",
+    "overview.md": "# Architecture Overview\n\n## Confirmed boundaries\n\n## Diagram index\n\n| ID | Diagram | Scope | Evidence | Link |\n|---|---|---|---|---|\n",
+    "artifact-queue.md": "# Architecture Artifact Queue\n\n| ID | Scope | Type | Subject | Output | Evidence | Status | Next |\n|---|---|---|---|---|---|---|---|\n",
+}
+
+ARCHITECTURE_SAMPLE_TEMPLATES = {
+    "diagram-sample.md": "# Diagram Sample\n\nUse this short worked example as a pattern; replace every value with repository evidence. Queue status belongs only in `artifact-queue.md`.\n\n| Field | Example |\n|---|---|\n| ID | `DIA-001` |\n| Scope | `workflow` |\n| Type | `flowchart` |\n| Subject | `customer-request-routing` |\n| Output | `devspec/architecture/images/dia-001-customer-request-routing.svg` |\n| Evidence | `devspec/contracts/devspec.quickfix.md`, `devspec/contracts/devspec.story.md` |\n| Confidence | `observed` |\n\n## Queue row\n\n| ID | Scope | Type | Subject | Output | Evidence | Status | Next |\n|---|---|---|---|---|---|---|---|\n| DIA-001 | workflow | flowchart | customer-request-routing | `images/dia-001-customer-request-routing.svg` | contracts above | complete | index in overview |\n\n## Notes\n\nKeep the SVG standalone and concise. Link it from `overview.md`; record assumptions in the work item or supporting Markdown.\n",
+    "diagram-sample.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 760 180\" role=\"img\" aria-labelledby=\"title desc\">\n  <title id=\"title\">Sample request routing diagram</title>\n  <desc id=\"desc\">A request is classified as a localized quickfix or a work item.</desc>\n  <style>.t{font:600 15px system-ui,sans-serif;fill:#102a43}.n{fill:#e8f1fb;stroke:#3478c8;stroke-width:2}.a{fill:none;stroke:#3478c8;stroke-width:2;marker-end:url(#m)}</style>\n  <defs><marker id=\"m\" markerWidth=\"10\" markerHeight=\"10\" refX=\"8\" refY=\"3\" orient=\"auto\"><path d=\"M0,0 L0,6 L9,3 z\" fill=\"#3478c8\"/></marker></defs>\n  <rect x=\"24\" y=\"64\" width=\"140\" height=\"48\" rx=\"8\" class=\"n\"/><text x=\"94\" y=\"94\" text-anchor=\"middle\" class=\"t\">Request</text>\n  <rect x=\"280\" y=\"24\" width=\"160\" height=\"48\" rx=\"8\" class=\"n\"/><text x=\"360\" y=\"54\" text-anchor=\"middle\" class=\"t\">quickfix</text>\n  <rect x=\"280\" y=\"112\" width=\"160\" height=\"48\" rx=\"8\" class=\"n\"/><text x=\"360\" y=\"142\" text-anchor=\"middle\" class=\"t\">story</text>\n  <path d=\"M164 78H240V48H280M164 98H240V136H280\" class=\"a\"/><text x=\"196\" y=\"44\" class=\"t\">local</text><text x=\"196\" y=\"132\" class=\"t\">broader</text>\n</svg>\n",
 }
 
 WORK_ITEM_TEMPLATES = {
