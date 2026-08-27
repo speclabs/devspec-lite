@@ -1,0 +1,2 @@
+description = "Produce a concise readiness brief and validation plan."
+prompt = "Read and execute devspec/contracts/devspec.finalize.md"

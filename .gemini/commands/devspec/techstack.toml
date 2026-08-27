@@ -1,0 +1,2 @@
+description = "Capture evidence-backed runtime, frameworks, data, tooling, and delivery constraints."
+prompt = "Read and execute devspec/contracts/devspec.techstack.md"

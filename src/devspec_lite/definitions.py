@@ -35,6 +35,83 @@ COMMANDS: tuple[Command, ...] = (
     Command("quickfix", "Implement and validate one localized, low-risk enhancement or bug fix.", "/devspec.quickfix Fix Orders empty-state text", ("ask", "run", "work"), "Select one primary scope, route risky work, then implement and validate directly.", "quickfixes/QF-###-slug.md", "complete-or-story"),
 )
 
+# Command-local rules deliberately stay with their command. They are not loaded by
+# unrelated workflows and replace a broad shared-pattern document.
+COMMAND_DETAILS: dict[str, tuple[str, tuple[str, ...]]] = {
+    "extract": ("Optional source or current repository.", (
+        "Use owned source, tests, manifests, configuration, and docs; exclude dependencies, caches, and generated output.",
+        "Keep one extraction queue item active and write discovered facts to their destination artifact, not queue state.",
+        "Reuse recorded working discovery methods and do not repeat a failed method unless its condition changed.",
+    )),
+    "projectcontext": ("Product context or a confirmed source.", (
+        "Capture purpose, users, outcomes, boundaries, and delivery context only.",
+        "Mark each material statement confirmed, observed, inferred, or blocked.",
+    )),
+    "techstack": ("Stack evidence, target stack, or delivery constraint.", (
+        "Inspect manifests, lockfiles, runtime configuration, and CI before asking questions.",
+        "Record runtime, languages, frameworks, data stores, tooling, supported versions, and material constraints.",
+    )),
+    "codebase-structure": ("Repository layout, work area, integration, or multi-repository context.", (
+        "Map owned source roots, boundaries, integration points, and validation locations.",
+        "Load repo-access only when work crosses repositories; never infer edit access.",
+    )),
+    "coding-standards": ("Observed conventions or approved standards.", (
+        "Keep only conventions that change implementation or review behavior.",
+        "Record a short local example and an anti-pattern when evidence supports both.",
+    )),
+    "rules": ("Hard engineering, compliance, security, delivery, or accessibility constraints.", (
+        "Keep non-negotiable rules separate from ordinary coding conventions.",
+        "State enforcement or validation for each rule when known.",
+    )),
+    "story": ("One provider reference or one manual feature, bug, security issue, or task.", (
+        "Handle exactly one work item; ask a selection question when input contains independent items.",
+        "Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.",
+        "Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.",
+    )),
+    "grooming": ("One draft work-item identifier or clear current draft.", (
+        "Read only the draft, relevant foundation artifacts, selected code area, and direct dependencies.",
+        "Improve behavior, acceptance criteria, scope, technical constraints, edge cases, dependencies, compatibility risks, and blockers in place.",
+        "Do not groom finalized scope; route new scope to changerequest.",
+    )),
+    "clarify": ("One work item with an active recorded blocker or question.", (
+        "Resolve the highest-priority open decision only and append its answer to decisions.md.",
+        "Do not accept scope changes after finalization; route them to changerequest.",
+        "Return to the saved stage and next action after resolution.",
+    )),
+    "changerequest": ("A finalized-or-later work item and one related missing requirement.", (
+        "Append the next CR-### entry and CR-scoped criteria; never rewrite baseline evidence.",
+        "Ask whether an ambiguous request is related or a new linked work item.",
+    )),
+    "finalize": ("A groomed or otherwise complete draft work item.", (
+        "Check only material readiness gaps: scope, criteria, behavior, data, integration, security, compliance, validation, and delivery constraints.",
+        "Mark ready only when remaining gaps cannot materially change implementation or validation; otherwise create one blocker question.",
+        "Write a concise implementation brief and validation plan, not implementation code.",
+    )),
+    "tasks": ("A ready finalization brief.", (
+        "Each task names scope, dependency, source justification, validation, and done condition.",
+        "Order dependencies before dependents and split only work too broad to validate safely.",
+    )),
+    "implement": ("Ready finalization and pending task records.", (
+        "Confirm every task is in finalized scope, unblocked, and ordered before editing code.",
+        "Checkpoint before edits and focused validation; stop for a material ambiguity instead of expanding scope.",
+        "Record changed areas and validation evidence after each meaningful task.",
+    )),
+    "review": ("Finalization, tasks, implementation record, and changed work.", (
+        "Compare changed work to approved scope, task source coverage, and validation evidence.",
+        "Write findings only; do not silently edit implementation code.",
+    )),
+    "diagram": ("Diagram subject, work item, or format request.", (
+        "Create only evidence-backed, non-duplicate diagrams and persist queue or overview state for recovery.",
+        "Default to SVG; generate Mermaid or HTML only when explicitly requested.",
+        "Keep labels short and place explanations in supporting Markdown rather than the graphic.",
+    )),
+    "quickfix": ("One localized bug fix or small enhancement.", (
+        "Select one primary scope: UI, internal API, function/job, library, configuration, tests, or Custom Answer.",
+        "Create a QF record, implement, and run focused validation in the same command.",
+        "Route public API contracts, database schema or migration, authentication or security work, breaking changes, unrelated concerns, and unresolved risk to story and suggested grooming without editing code.",
+    )),
+}
+
 PROTOCOLS = {
     "ask": """<protocol id=\"ask\">\n  <trigger>Ask only when repository evidence and durable artifacts cannot resolve a material fact.</trigger>\n  <checkpoint>Persist question ID, evidence, impact, choices, recommendation, and resume action before waiting.</checkpoint>\n  <interaction count=\"one\" mode=\"interactive\">\n    <choices>Offer two to five meaningful exclusive choices, each with a short example.</choices>\n    <recommendation required=\"true\" />\n    <custom-answer required=\"true\" />\n    <fallback>Render identical text choices only when the host lacks interactive controls.</fallback>\n  </interaction>\n  <resolution>Append the answer to decisions.md, update the affected artifact, then continue with one next action.</resolution>\n</protocol>""",
     "run": """<protocol id=\"run\">\n  <preflight>Validate required input, target artifact, stage, and access before output.</preflight>\n  <checkpoint>Save stage, run state, last action, resume reference, and next action before questions, edits, validation, retries, or handoff.</checkpoint>\n  <resume>Resume paused work when prerequisites hold; ask one interactive resume question for stopped or ambiguous work.</resume>\n  <blocked>Record blocker and continuation condition; retry only when that condition changes or the user directs it.</blocked>\n  <closure>Report artifact, outcome, blocker if any, and exactly one registered next action.</closure>\n</protocol>""",
@@ -49,10 +126,18 @@ FOUNDATION_TEMPLATES = {
     "coding-standards.md": "# Coding Standards\n\n| Convention | Evidence | Example | Avoid |\n|---|---|---|---|\n",
     "rules.md": "# Rules\n\n| Rule | Why | Enforcement |\n|---|---|---|\n",
     "extraction-state.md": "# Extraction State\n\n| Item | Status | Evidence | Next |\n|---|---|---|---|\n",
+    "discovery-exclusions.md": "# Discovery Exclusions\n\n- Exclude dependencies, generated output, caches, coverage, VCS internals, and temporary files.\n- Include owned source, tests, manifests, configuration, infrastructure, scripts, and docs.\n",
+    "exploration-state.md": "# Exploration State\n\n| Goal | Method | Outcome | Reuse or retry condition |\n|---|---|---|---|\n",
+    "provider-integrations.md": "# Provider Integrations\n\n| Provider | Resolution method | Confirmation required |\n|---|---|---|\n",
+}
+
+ARCHITECTURE_TEMPLATES = {
+    "overview.md": "# Architecture Overview\n\n## Confirmed boundaries\n\n## Diagram index\n\n| Diagram | Scope | Evidence | Status |\n|---|---|---|---|\n",
+    "artifact-queue.md": "# Architecture Artifact Queue\n\n| ID | Subject | Type | Evidence | Format | Status | Next |\n|---|---|---|---|---|---|---|\n",
 }
 
 WORK_ITEM_TEMPLATES = {
-    "meta.md": "---\nid: <id>\ntype: feature\nstage: intake\nrun: active\nscope: []\nresume: none\nnext: complete intake\nupdated: <yyyy-mm-dd>\n---\n",
+    "meta.md": "---\nid: <id>\ntype: feature\nstage: intake\nrun: active\nscope: []\nlast: none\nresume: none\nnext: complete intake\nupdated: <yyyy-mm-dd>\n---\n",
     "story.md": "# Story\n\n## Summary\n\n## Acceptance Criteria\n\n| ID | Observable outcome | Scope |\n|---|---|---|\n\n## Risks and Blockers\n\n## Change Requests\n\n| ID | Request | Status |\n|---|---|---|\n",
     "decisions.md": "# Decisions\n\n| ID | Question | Choices | Recommended | Answer | Status |\n|---|---|---|---|---|---|\n",
     "finalize.md": "# Finalization\n\n## Readiness\n\n## Implementation Brief\n\n## Validation Plan\n\n## Blockers\n",

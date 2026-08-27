@@ -1,0 +1,2 @@
+description = "Create ordered, independently verifiable implementation tasks."
+prompt = "Read and execute devspec/contracts/devspec.tasks.md"

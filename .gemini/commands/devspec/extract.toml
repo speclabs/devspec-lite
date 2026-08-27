@@ -1,0 +1,2 @@
+description = "Backfill concise foundation evidence from an existing repository."
+prompt = "Read and execute devspec/contracts/devspec.extract.md"

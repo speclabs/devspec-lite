@@ -1,0 +1,2 @@
+description = "Capture short, evidence-backed conventions and anti-patterns."
+prompt = "Read and execute devspec/contracts/devspec.coding-standards.md"

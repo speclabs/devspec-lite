@@ -1,0 +1,11 @@
+<protocol id="ask">
+  <trigger>Ask only when repository evidence and durable artifacts cannot resolve a material fact.</trigger>
+  <checkpoint>Persist question ID, evidence, impact, choices, recommendation, and resume action before waiting.</checkpoint>
+  <interaction count="one" mode="interactive">
+    <choices>Offer two to five meaningful exclusive choices, each with a short example.</choices>
+    <recommendation required="true" />
+    <custom-answer required="true" />
+    <fallback>Render identical text choices only when the host lacks interactive controls.</fallback>
+  </interaction>
+  <resolution>Append the answer to decisions.md, update the affected artifact, then continue with one next action.</resolution>
+</protocol>

@@ -1,0 +1,2 @@
+description = "Capture product purpose, users, outcomes, and scope boundaries."
+prompt = "Read and execute devspec/contracts/devspec.projectcontext.md"

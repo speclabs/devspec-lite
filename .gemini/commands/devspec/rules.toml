@@ -1,0 +1,2 @@
+description = "Capture non-negotiable engineering, security, compliance, delivery, and accessibility rules."
+prompt = "Read and execute devspec/contracts/devspec.rules.md"

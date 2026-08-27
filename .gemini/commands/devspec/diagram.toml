@@ -1,0 +1,2 @@
+description = "Create one evidence-backed diagram with duplicate checks and durable queue state."
+prompt = "Read and execute devspec/contracts/devspec.diagram.md"

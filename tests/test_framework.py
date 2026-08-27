@@ -41,9 +41,24 @@ class FrameworkTests(unittest.TestCase):
             main(["init", "--target", str(target), "--profile", "copilot", "--repo-state", "existing"])
             quickfix = (target / "devspec/contracts/devspec.quickfix.md").read_text(encoding="utf-8")
             self.assertIn("route risky work", quickfix)
+            self.assertIn("database schema or migration", quickfix)
+            self.assertIn("<rules>", quickfix)
             self.assertIn('<protocol ref="ask" />', quickfix)
             self.assertIn("devspec/contracts/devspec.quickfix.md", (target / ".github/prompts/devspec.quickfix.prompt.md").read_text(encoding="utf-8"))
             self.assertEqual([], doctor(target, "copilot"))
+
+    def test_installs_complete_compact_artifact_structure(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "new"])
+            self.assertTrue((target / "devspec/README.md").is_file())
+            self.assertTrue((target / "devspec/glossary.md").is_file())
+            self.assertTrue((target / "devspec/architecture/_template/artifact-queue.md").is_file())
+            self.assertTrue((target / "devspec/foundation/_template/exploration-state.md").is_file())
+            meta = (target / "devspec/work-items/_template/meta.md").read_text(encoding="utf-8")
+            self.assertIn("stage:", meta)
+            self.assertIn("run:", meta)
+            self.assertIn("last:", meta)
 
     def test_init_refuses_changed_managed_file(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

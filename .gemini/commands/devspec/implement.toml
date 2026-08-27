@@ -1,0 +1,2 @@
+description = "Implement pending ready tasks with focused checkpoints and validation."
+prompt = "Read and execute devspec/contracts/devspec.implement.md"

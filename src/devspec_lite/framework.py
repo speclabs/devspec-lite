@@ -6,7 +6,7 @@ from pathlib import Path
 from xml.etree import ElementTree
 from xml.sax.saxutils import escape
 
-from .definitions import COMMANDS, FOUNDATION_TEMPLATES, PROTOCOLS, WORK_ITEM_TEMPLATES
+from .definitions import ARCHITECTURE_TEMPLATES, COMMANDS, COMMAND_DETAILS, FOUNDATION_TEMPLATES, PROTOCOLS, WORK_ITEM_TEMPLATES
 
 PROFILES = ("all", "copilot", "codex", "claude", "cursor", "gemini", "antigravity")
 ADAPTERS = PROFILES[1:]
@@ -21,7 +21,10 @@ def write_file(path: Path, content: str) -> None:
 
 def command_contract(command) -> str:
     protocols = "\n".join(f'    <protocol ref="{name}" />' for name in command.protocols)
+    command_input, local_rules = COMMAND_DETAILS[command.name]
+    rules = "\n".join(f"    <rule>{escape(rule)}</rule>" for rule in local_rules)
     purpose = escape(command.purpose)
+    command_input = escape(command_input)
     actions = escape(command.actions)
     artifact = escape(f"devspec/{command.artifact}")
     handoff = escape(command.handoff)
@@ -36,6 +39,10 @@ Invocation: `{command.example}`
   <protocols>
 {protocols}
   </protocols>
+  <input>{command_input}</input>
+  <rules>
+{rules}
+  </rules>
   <actions>{actions}</actions>
   <artifact>{artifact}</artifact>
   <handoff>{handoff}</handoff>
@@ -90,8 +97,12 @@ def install_framework(root: Path, profile: str, repo_state: str) -> None:
     for command in COMMANDS:
         write_file(root / f"devspec/contracts/devspec.{command.name}.md", command_contract(command))
     write_file(root / "devspec/command-registry.md", registry())
+    write_file(root / "devspec/README.md", "# Devspec Lite\n\nFoundation: `projectcontext → techstack → codebase-structure → coding-standards → rules`.\n\nWork item: `story → grooming` when needed `→ finalize → tasks → implement → review`.\n\nUse `clarify` only for an active blocker and `quickfix` only for localized, low-risk changes.\n")
+    write_file(root / "devspec/glossary.md", "# Glossary\n\n- Stages: intake, grooming, finalization, tasks, implementation, review, complete.\n- Quickfix stages: triage, implementation, validation, complete, routed.\n- Run states: active, paused, blocked, stopped, complete.\n- Evidence: confirmed, observed, inferred, blocked.\n")
     for name, content in FOUNDATION_TEMPLATES.items():
         write_file(root / f"devspec/foundation/_template/{name}", content)
+    for name, content in ARCHITECTURE_TEMPLATES.items():
+        write_file(root / f"devspec/architecture/_template/{name}", content)
     route = "devspec.extract → devspec.projectcontext" if repo_state == "existing" else "devspec.projectcontext"
     write_file(root / "devspec/foundation/repository-state.md", f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n")
     for name, content in WORK_ITEM_TEMPLATES.items():
@@ -108,9 +119,10 @@ def xml_block(text: str) -> str:
 
 
 def expected_paths(profile: str) -> list[Path]:
-    paths = [Path("devspec/command-registry.md"), Path("devspec/foundation/repository-state.md")]
+    paths = [Path("devspec/command-registry.md"), Path("devspec/README.md"), Path("devspec/glossary.md"), Path("devspec/foundation/repository-state.md")]
     paths.extend(Path(f"devspec/protocols/{name}.xml") for name in PROTOCOLS)
     paths.extend(Path(f"devspec/contracts/devspec.{c.name}.md") for c in COMMANDS)
+    paths.extend(Path(f"devspec/architecture/_template/{name}") for name in ARCHITECTURE_TEMPLATES)
     adapters = ADAPTERS if profile == "all" else (profile,)
     for adapter in adapters:
         if adapter == "codex":

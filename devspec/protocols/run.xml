@@ -1,0 +1,7 @@
+<protocol id="run">
+  <preflight>Validate required input, target artifact, stage, and access before output.</preflight>
+  <checkpoint>Save stage, run state, last action, resume reference, and next action before questions, edits, validation, retries, or handoff.</checkpoint>
+  <resume>Resume paused work when prerequisites hold; ask one interactive resume question for stopped or ambiguous work.</resume>
+  <blocked>Record blocker and continuation condition; retry only when that condition changes or the user directs it.</blocked>
+  <closure>Report artifact, outcome, blocker if any, and exactly one registered next action.</closure>
+</protocol>
