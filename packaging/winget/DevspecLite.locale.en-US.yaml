@@ -1,5 +1,6 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
 PackageIdentifier: SpecLabs.DevspecLite
-PackageVersion: 0.1.0
+PackageVersion: REPLACE_WITH_VERSION
 PackageLocale: en-US
 Publisher: SpecLabs
 PackageName: Devspec Lite

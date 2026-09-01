@@ -1,8 +1,10 @@
 class DevspecLite < Formula
+  include Language::Python::Virtualenv
+
   desc "Compact, resumable spec-driven workflow templates for AI coding agents"
   homepage "https://github.com/speclabs/devspec-lite"
-  url "https://github.com/speclabs/devspec-lite/archive/refs/tags/v0.1.0.tar.gz"
-  sha256 "REPLACE_AT_RELEASE"
+  url "https://github.com/speclabs/devspec-lite/archive/refs/tags/vREPLACE_WITH_VERSION.tar.gz"
+  sha256 "REPLACE_WITH_RELEASE_SHA256"
   license "Apache-2.0"
 
   depends_on "python@3.10"
@@ -12,6 +14,6 @@ class DevspecLite < Formula
   end
 
   test do
-    system "#{bin}/devspec-lite", "--help"
+    assert_match version.to_s, shell_output("#{bin}/devspec-lite --version")
   end
 end

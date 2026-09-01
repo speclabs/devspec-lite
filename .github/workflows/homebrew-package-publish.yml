@@ -1,0 +1,50 @@
+name: Homebrew Package Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release version without the leading v; empty uses the package version"
+        required: false
+        type: string
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  homebrew-package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Generate formula and checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          package_version="$(PYTHONPATH=src python -c 'from devspec_lite import __version__; print(__version__)')"
+          if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
+            python scripts/verify_release_version.py --tag "${GITHUB_REF_NAME}"
+            version="${GITHUB_REF_NAME#v}"
+          elif [[ -n "${{ inputs.version }}" ]]; then
+            python scripts/verify_release_version.py --tag "v${{ inputs.version }}"
+            version="${{ inputs.version }}"
+          else
+            version="$package_version"
+          fi
+          tarball_url="https://github.com/speclabs/devspec-lite/archive/refs/tags/v${version}.tar.gz"
+          sha256="$(curl -fsSL "${tarball_url}" | sha256sum | awk '{print $1}')"
+          mkdir -p dist/homebrew/Formula
+          sed -e "s/REPLACE_WITH_VERSION/${version}/g" -e "s/REPLACE_WITH_RELEASE_SHA256/${sha256}/g" packaging/homebrew/devspec-lite.rb > dist/homebrew/Formula/devspec-lite.rb
+          test "$(grep -c 'REPLACE_WITH_' dist/homebrew/Formula/devspec-lite.rb)" -eq 0
+          echo "${sha256}  devspec-lite-v${version}.tar.gz" > "dist/homebrew/devspec-lite-v${version}.tar.gz.sha256"
+      - name: Upload Homebrew artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: devspec-lite-homebrew-package
+          path: |
+            dist/homebrew/Formula/devspec-lite.rb
+            dist/homebrew/*.sha256

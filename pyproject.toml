@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "devspec-lite"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Compact, resumable spec-driven workflow templates for AI coding agents"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -21,6 +21,9 @@ devspec-lite = "devspec_lite.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}
+
+[tool.setuptools.dynamic]
+version = {attr = "devspec_lite.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]
