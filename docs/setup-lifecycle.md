@@ -1,11 +1,10 @@
-# Installer lifecycle
+# CLI lifecycle
 
-This guide covers the normal life of a Devspec Lite installation: install the CLI, initialize a repository, validate it, upgrade safely, synchronize generated files, and add another agent profile.
-
+Use this guide only after installing the Devspec Lite CLI through `uvx`, `pipx`, WinGet, or Homebrew. It covers CLI initialization, validation, upgrades, canonical-artifact synchronization, and profile changes. Manual copying has its own [manual-copy lifecycle](manual-copy.md) and does not require this CLI flow.
 
 ## Lifecycle at a glance
 
-![Install and maintenance flow](assets/maintenance-flow.svg)
+![CLI installation and maintenance flow](assets/maintenance-flow.svg)
 
 The terminal CLI is `devspec-lite`. After initialization, the installed agent wrappers expose the `devspec.*` workflow commands. They are intentionally different interfaces.
 
@@ -13,19 +12,18 @@ The terminal CLI is `devspec-lite`. After initialization, the installed agent wr
 
 | Goal | Use | Notes |
 |---|---|---|
-| Install | `uvx`, `pipx`, WinGet, or Homebrew | Choose one package-manager route below. |
+| Install the CLI | `uvx`, `pipx`, WinGet, or Homebrew | Choose one package-manager route below. |
 | Check version | `devspec-lite --version` | Confirms the installed CLI. |
-| Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new|existing>` | Writes the canonical framework and selected wrappers. |
+| Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new|existing>` | Copies canonical artifacts and selected wrappers. |
 | Validate | `devspec-lite doctor --target <path> --profile <profile>` | Read-only check of contracts, protocols, templates, and wrappers. |
-| Upgrade | Your package manager’s upgrade command | Upgrade the CLI, then run the sync sequence. |
-| Sync generated files | `doctor → init → doctor` | There is deliberately no `devspec-lite sync` command. |
+| Synchronize canonical artifacts | `doctor → init → doctor` | There is deliberately no `devspec-lite sync` command. |
 | Run delivery work | Agent command such as `devspec.story` or `devspec.quickfix` | Use after initialization; see the [workflow guide](workflows.md). |
 
-`devspec-lite upgrade` and `devspec-lite sync` are not CLI commands. This guide uses the actual package-manager upgrade commands and the safe sync sequence instead.
+`devspec-lite upgrade` and `devspec-lite sync` are not CLI commands. This guide uses the actual package-manager upgrade commands and the safe synchronization sequence instead.
 
 ## 1. Install Devspec Lite
 
-Choose one supported path:
+Choose one supported CLI route:
 
 | Platform or preference | Example |
 |---|---|
@@ -34,17 +32,7 @@ Choose one supported path:
 | Windows package manager | `winget install --id SpecLabs.DevspecLite --exact` |
 | Homebrew tap | `brew tap speclabs/devspec-lite && brew install devspec-lite` |
 
-See the platform guides for prerequisites and fallback options.
-
-## Check the installed version
-
-Before upgrading or troubleshooting, verify the CLI version:
-
-```powershell
-devspec-lite --version
-```
-
-Example output: `devspec-lite 0.1.0`.
+For a no-installer setup, use [manual copy from `main`](manual-copy.md).
 
 ## 2. Initialize a repository
 
@@ -64,9 +52,9 @@ devspec-lite doctor --target D:\Code\orders --profile copilot
 
 `all` installs every supported wrapper. Use one of `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the repository uses only that agent.
 
-## 3. Validate the installation
+## 3. Validate the CLI installation
 
-Run Doctor after installation, after a manual copy, and before reporting a setup problem:
+Run Doctor after CLI initialization, after an upgrade, and before reporting a CLI setup problem:
 
 ```powershell
 devspec-lite doctor --target D:\Code\orders --profile all
@@ -89,13 +77,12 @@ pipx upgrade devspec-lite
 winget upgrade --id SpecLabs.DevspecLite --exact
 
 # Homebrew
-
 brew upgrade devspec-lite
 ```
 
 After upgrading, synchronize and validate the target repository.
 
-## 5. Synchronize generated framework files
+## 5. Synchronize canonical framework files
 
 There is intentionally no separate `sync` command. Run Doctor first, then rerun `init` with the same profile:
 
@@ -105,7 +92,7 @@ devspec-lite init --target D:\Code\orders --profile all --repo-state existing
 devspec-lite doctor --target D:\Code\orders --profile all
 ```
 
-`init` is safe for unchanged managed files and adds missing generated files. It refuses to overwrite a changed managed file. Example: if `devspec/contracts/devspec.story.md` was customized locally, preserve the customization and merge the desired update manually instead of forcing an overwrite.
+`init` is safe for unchanged managed files and adds missing canonical files. It refuses to overwrite a changed managed file. If `devspec/contracts/devspec.story.md` was customized locally, preserve the customization and merge the desired update manually instead of forcing an overwrite.
 
 ## 6. Change or add a profile
 
@@ -127,4 +114,4 @@ Changing to a narrower profile does not delete wrappers from other agents. Revie
 
 ## 7. Start using the workflow
 
-For a new repository, start with `devspec.projectcontext`. For an existing repository, start with `devspec.extract`. Then follow the route in `devspec/README.md`. Use `devspec.quickfix` only for one localized, low-risk change.
+For a new repository, start with `devspec.projectcontext`. For an existing repository, start with `devspec.extract`. Then follow the route in [the workflow guide](workflows.md). Use `devspec.quickfix` only for one localized, low-risk change.

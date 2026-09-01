@@ -1,25 +1,33 @@
-# Quick start
+# CLI quick start
 
-For a new repository:
+Use this guide after choosing a CLI installation route. For a no-installer workflow, use [manual copy from `main`](manual-copy.md) instead.
+
+## 1. Initialize and validate
+
+Choose the repository state that matches the target:
 
 ```powershell
+# New repository: no source code to inspect
 uvx devspec-lite init --target . --profile all --repo-state new
-```
+uvx devspec-lite doctor --target . --profile all
 
-For an existing repository:
-
-```powershell
+# Existing repository: source code is already present
 uvx devspec-lite init --target . --profile all --repo-state existing
 uvx devspec-lite doctor --target . --profile all
 ```
 
-Foundation route: `projectcontext → techstack → codebase-structure → coding-standards → rules`.
+Use a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the target uses one agent host. `all` installs every supported wrapper.
 
-Work route: `story → grooming` when needed `→ finalize → tasks → implement → review`.
+## 2. Start the right workflow
 
-Use `quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
+- New repository: author the foundation intentionally with `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules`.
+- Existing repository: run `devspec.extract` once. It creates the evidence-backed technical, workflow, rules, and SVG-diagram baseline; do not separately run the individual foundation or diagram commands for that baseline.
 
-## Choose a workflow route
+Work route: `devspec.story → devspec.grooming` when needed `→ devspec.finalize → devspec.tasks → devspec.implement → devspec.review`.
+
+Use `devspec.quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
+
+## Workflow routes
 
 ![Foundation route](assets/foundation-routes.svg)
 
@@ -27,10 +35,10 @@ Use `quickfix` only for one localized, low-risk change. It routes API contracts,
 
 For scenarios and examples, see the [developer workflow guide](workflows.md).
 
-## Platform setup
+## Setup routes
 
-- [WinGet](setup-winget.md)
+- [Manual copy from `main`](manual-copy.md)
 - [Python and uvx](setup-python.md)
+- [WinGet](setup-winget.md)
 - [Homebrew](setup-homebrew.md)
-- [Installer lifecycle](setup-lifecycle.md)
-- [Manual copy](manual-copy.md)
+- [CLI lifecycle](setup-lifecycle.md)

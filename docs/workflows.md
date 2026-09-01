@@ -1,6 +1,6 @@
 # Developer workflow routes
 
-Use the smallest route that preserves a durable, reviewable record. Generated `devspec/` files are the source of truth; chat history is only supporting context.
+Use the smallest route that preserves a durable, reviewable record. Git-tracked canonical `devspec/` artifacts are the source of truth; chat history is only supporting context.
 
 ## 1. Establish project foundation
 
@@ -29,7 +29,7 @@ For an evidence-backed architecture or workflow visual, choose a pattern from th
 Assign a stable `DIA-###` ID, keep status in the queue, and add only completed diagram links to the overview index.
 
 
-`init` is idempotent for unchanged managed files. It will not overwrite a changed contract or wrapper. Use `doctor` before and after an upgrade, manual copy, or profile addition. There is no separate `sync` command: validate, rerun `init` with the same profile, then validate again.
+`init` is idempotent for unchanged managed files. It will not overwrite a changed contract or wrapper. For CLI-managed repositories, use `doctor` before and after an upgrade or profile addition. Manual-copy updates follow the [manual-copy guide](manual-copy.md). There is no separate `sync` command: validate, rerun `init` with the same profile, then validate again.
 
 ## Examples
 

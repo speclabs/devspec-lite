@@ -1,29 +1,39 @@
 # Devspec Lite
 
-Devspec Lite is a compact, resumable spec-driven workflow for AI coding agents.
+Devspec Lite is a compact, resumable spec-driven workflow for AI coding agents. Git-tracked `devspec/` artifacts are the canonical project state.
+
+## Choose a setup route
+
+| Your situation | Use this guide |
+|---|---|
+| No installer, Python, package manager, or CLI | [Manual copy from `main`](docs/manual-copy.md) |
+| Python is available; one-off or persistent CLI use | [Python and uvx](docs/setup-python.md) |
+| Windows package-manager installation | [WinGet](docs/setup-winget.md) |
+| macOS/Linux package-manager installation | [Homebrew](docs/setup-homebrew.md) |
+| Already installed the CLI; need init, upgrade, or profile changes | [CLI lifecycle](docs/setup-lifecycle.md) |
+
+Manual copying and CLI installation produce the same canonical `devspec/` content and agent wrappers. Choose one setup route; the CLI is optional.
+
+## CLI quick start
+
+After choosing a CLI route, initialize and validate the repository:
 
 ```powershell
+# Existing repository
 uvx devspec-lite init --target . --profile all --repo-state existing
+uvx devspec-lite doctor --target . --profile all
+
+# New repository
+uvx devspec-lite init --target . --profile all --repo-state new
 uvx devspec-lite doctor --target . --profile all
 ```
 
-`init` installs canonical Markdown + XML contracts, concise templates, and only the wrappers for the selected agent profile. Use the `/devspec.*` commands exposed by your agent host.
+`init` copies canonical Markdown + XML contracts, concise templates, and the wrappers for the selected agent profile. Use the `devspec.*` commands exposed by your agent host.
 
-The framework is intentionally clean-room: it keeps its own small contracts and does not copy any upstream framework files.
-
-## Setup guides
-
-
-- [WinGet](docs/setup-winget.md)
-- [Python and uvx](docs/setup-python.md)
-- [Homebrew](docs/setup-homebrew.md)
-- [Installer lifecycle: init, upgrade, sync, profiles](docs/setup-lifecycle.md)
-- [Manual copy](docs/manual-copy.md)
-
-## Workflow routes
+## Choose a workflow route
 
 ![Foundation route for new and existing repositories](docs/assets/foundation-routes.svg)
 
 ![Delivery route for quickfix and work items](docs/assets/delivery-routes.svg)
 
-Choose a route with the [developer workflow guide](docs/workflows.md), including concrete quickfix, grooming, clarification, and change-request examples.
+Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, grooming, clarification, and change-request examples.
