@@ -54,6 +54,10 @@ class FrameworkTests(unittest.TestCase):
             self.assertEqual("interactive", interaction.attrib["mode"])
             self.assertEqual("true", interaction.find("recommendation").attrib["required"])
             self.assertEqual("true", interaction.find("custom-answer").attrib["required"])
+            self.assertIn("every unresolved question", root.findtext("trigger"))
+            work = ElementTree.fromstring((target / "devspec/protocols/work.xml").read_text(encoding="utf-8"))
+            self.assertIn("including meta.md", work.findtext("initialize"))
+            self.assertTrue((target / "devspec/foundation/template-map.md").is_file())
             self.assertTrue((target / "AGENTS.md").is_file())
             self.assertFalse((target / ".github").exists())
 

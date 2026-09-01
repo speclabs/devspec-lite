@@ -1,5 +1,5 @@
 <protocol id="ask">
-  <trigger>Ask only when repository evidence and durable artifacts cannot resolve a material fact.</trigger>
+  <trigger>Ask one clarification for every unresolved question, including non-material details.</trigger>
   <checkpoint>Persist question ID, evidence, impact, choices, recommendation, and resume action before waiting.</checkpoint>
   <interaction count="one" mode="interactive">
     <choices>Offer two to five meaningful exclusive choices, each with a short example.</choices>

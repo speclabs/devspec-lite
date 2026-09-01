@@ -1,6 +1,6 @@
 # Manual installation
 
-Use manual copy when package installation is blocked in the target repository. Generate the selected profile in a temporary folder on any machine that can run Python 3.10+ and then copy only its generated framework files.
+Use manual copy when package installation is blocked in the target repository. The Git-tracked `devspec/` tree and its `install-manifest.txt` are the single source for both manual and automated setup. Generate the selected profile in a temporary folder on any machine that can run Python 3.10+ and then copy only its generated framework files.
 
 ## Generate a profile
 
@@ -10,6 +10,8 @@ devspec-lite init --target C:\Temp\devspec-lite-profile --profile copilot --repo
 ```
 
 For a new project, replace `existing` with `new`. The generated `devspec/` directory is required for every profile; the adapter wrapper is profile-specific.
+
+Do not pre-copy individual foundation or work-item templates. When an agent needs a missing target artifact, the shared work protocol creates it from the matching _template; creating a work item initializes every file in devspec/work-items/_template, including meta.md.
 
 ## Copy the required files
 
