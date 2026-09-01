@@ -1,44 +1,40 @@
 # Manual installation
 
-Use manual copy when package installation is blocked in the target repository. The Git-tracked `devspec/` tree and its `install-manifest.txt` are the single source for both manual and automated setup. Generate the selected profile in a temporary folder on any machine that can run Python 3.10+ and then copy only its generated framework files.
+Use this route when a developer does not want to install Python, UV, WinGet, Homebrew, or the Devspec Lite CLI. It uses a release-ready manual bundle or a checkout of a manual-ready branch or release tag that contains the same prebuilt files.
 
-## Generate a profile
+## 1. Get the release-ready files
+
+Download the versioned manual bundle from the release, or check out the required release tag:
 
 ```powershell
-mkdir C:\Temp\devspec-lite-profile
-devspec-lite init --target C:\Temp\devspec-lite-profile --profile copilot --repo-state existing
+git clone --depth 1 --branch <manual-ready-branch-or-release-tag> https://github.com/speclabs/devspec-lite.git
 ```
 
-For a new project, replace `existing` with `new`. The generated `devspec/` directory is required for every profile; the adapter wrapper is profile-specific.
+The bundle or checkout supplies the canonical `devspec/` directory and prebuilt agent-profile wrappers. No workflow content is generated during manual setup.
 
-Do not pre-copy individual foundation or work-item templates. When an agent needs a missing target artifact, the shared work protocol creates it from the matching _template; creating a work item initializes every file in devspec/work-items/_template, including meta.md.
+## 2. Copy one profile
 
-## Copy the required files
+Copy `devspec/` and the folder or file for the agent host into the target repository.
 
-| Profile | Copy into the target repository | Example |
+| Profile | Copy from the manual bundle or checkout | Copy into the target repository |
 |---|---|---|
-| Copilot | `devspec/`, `.github/prompts/`, `.github/agents/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.github -Destination D:\Code\orders -Recurse` |
-| Codex | `devspec/`, `AGENTS.md` | `Copy-Item C:\Temp\devspec-lite-profile\devspec -Destination D:\Code\orders -Recurse; Copy-Item C:\Temp\devspec-lite-profile\AGENTS.md D:\Code\orders` |
-| Claude | `devspec/`, `.claude/skills/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.claude -Destination D:\Code\orders -Recurse` |
-| Cursor | `devspec/`, `.cursor/rules/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.cursor -Destination D:\Code\orders -Recurse` |
-| Gemini | `devspec/`, `.gemini/commands/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.gemini -Destination D:\Code\orders -Recurse` |
-| Antigravity | `devspec/`, `.agents/skills/` | `Copy-Item C:\Temp\devspec-lite-profile\devspec, C:\Temp\devspec-lite-profile\.agents -Destination D:\Code\orders -Recurse` |
+| Copilot | `devspec/`, `.github/` | `devspec/`, `.github/` |
+| Codex | `devspec/`, `AGENTS.md` | `devspec/`, `AGENTS.md` |
+| Claude | `devspec/`, `.claude/` | `devspec/`, `.claude/` |
+| Cursor | `devspec/`, `.cursor/` | `devspec/`, `.cursor/` |
+| Gemini | `devspec/`, `.gemini/` | `devspec/`, `.gemini/` |
+| Antigravity | `devspec/`, `.agents/` | `devspec/`, `.agents/` |
 
+Do not pre-copy individual foundation or work-item templates. When an agent needs a missing target artifact, the shared `work` protocol creates it from the matching `_template`; creating a work item initializes every file in `devspec/work-items/_template`, including `meta.md`.
 
 ## Manual-copy lifecycle
 
-![Install and maintenance flow](assets/maintenance-flow.svg)
+![Manual copy flow](assets/manual-copy-flow.svg)
 
-Generate one profile, copy only its listed files, then run Doctor when Python is available. After validation, use the [developer workflow guide](workflows.md) to choose the foundation or delivery route.
+## 3. Verify and commit
 
-Replace `D:\Code\orders` with the target repository. If the target already contains a same-named wrapper file, compare it first; do not overwrite user-managed instructions accidentally.
+Verify that every path listed in `devspec/install-manifest.txt` exists and that the selected agent wrapper is present. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
 
-## Validate after copying
+## 4. Update manually
 
-If Python is available on the target machine:
-
-```powershell
-devspec-lite doctor --target D:\Code\orders --profile copilot
-```
-
-Otherwise, verify that `devspec/contracts/`, `devspec/protocols/`, and the profile-specific wrapper path from the table are all present.
+Get a newer release bundle or check out a newer release tag. Compare the incoming files with the target repository, copy the approved changes, preserve local customizations, and commit the update. The CLI `doctor`, `init`, and package-manager upgrade paths are optional alternatives; they are not prerequisites for manual setup.
