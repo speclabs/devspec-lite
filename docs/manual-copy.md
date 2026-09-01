@@ -1,22 +1,22 @@
 # Manual installation
 
-Use this route when a developer does not want to install Python, UV, WinGet, Homebrew, or the Devspec Lite CLI. It uses a release-ready manual bundle or a checkout of a manual-ready branch or release tag that contains the same prebuilt files.
+Use this route when a developer does not want to install Python, UV, WinGet, Homebrew, or the Devspec Lite CLI. It copies the latest canonical files from the `main` branch.
 
-## 1. Get the release-ready files
+## 1. Check out `main`
 
-Download the versioned manual bundle from the release, or check out the required release tag:
+Clone the repository at its latest `main` branch:
 
 ```powershell
-git clone --depth 1 --branch <manual-ready-branch-or-release-tag> https://github.com/speclabs/devspec-lite.git
+git clone --depth 1 --branch main https://github.com/speclabs/devspec-lite.git
 ```
 
-The bundle or checkout supplies the canonical `devspec/` directory and prebuilt agent-profile wrappers. No workflow content is generated during manual setup.
+The `main` checkout supplies the canonical `devspec/` directory and prebuilt agent-profile wrappers. No workflow content is generated during manual setup.
 
 ## 2. Copy one profile
 
 Copy `devspec/` and the folder or file for the agent host into the target repository.
 
-| Profile | Copy from the manual bundle or checkout | Copy into the target repository |
+| Profile | Copy from the `main` checkout | Copy into the target repository |
 |---|---|---|
 | Copilot | `devspec/`, `.github/` | `devspec/`, `.github/` |
 | Codex | `devspec/`, `AGENTS.md` | `devspec/`, `AGENTS.md` |
@@ -37,4 +37,4 @@ Verify that every path listed in `devspec/install-manifest.txt` exists and that 
 
 ## 4. Update manually
 
-Get a newer release bundle or check out a newer release tag. Compare the incoming files with the target repository, copy the approved changes, preserve local customizations, and commit the update. The CLI `doctor`, `init`, and package-manager upgrade paths are optional alternatives; they are not prerequisites for manual setup.
+Pull the latest `main` branch, or make a fresh `main` checkout. Compare the incoming files with the target repository, copy the approved changes, preserve local customizations, and commit the update. The CLI `doctor`, `init`, and package-manager upgrade paths are optional alternatives; they are not prerequisites for manual setup.
