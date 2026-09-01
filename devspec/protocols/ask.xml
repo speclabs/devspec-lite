@@ -1,6 +1,8 @@
 <protocol id="ask">
   <trigger>Ask one clarification for every unresolved question, including non-material details.</trigger>
-  <checkpoint>Persist question ID, evidence, impact, choices, recommendation, and resume action before waiting.</checkpoint>
+  <sequence>Ask exactly one unanswered question at a time. Record and resolve it before asking the next question.</sequence>
+  <completion>Maintain the outstanding-question queue until every question is answered or skipped. After each answer, re-evaluate every remaining question against current decisions; skip an invalid or inapplicable question with its reason, then ask the next valid unanswered question. Resume the workflow only when no applicable unanswered questions remain.</completion>
+  <checkpoint>Persist question ID, evidence, impact, choices, recommendation, resume action, and answer-or-skip status before waiting.</checkpoint>
   <interaction count="one" mode="interactive">
     <choices>Offer two to five meaningful exclusive choices, each with a short example.</choices>
     <recommendation required="true" />
