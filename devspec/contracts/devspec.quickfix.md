@@ -13,7 +13,8 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
   </protocols>
   <input>One localized bug fix or small enhancement.</input>
   <rules>
-    <rule>Select one primary scope: UI, internal API, function/job, library, configuration, tests, or Custom Answer.</rule>
+    <rule>Select one primary scope: UI, internal API, function/job, library, configuration, tests, or a user-defined bounded scope.</rule>
+    <rule>A user-defined scope is allowed only when it is documented as localized and low risk; otherwise route it to story before editing code.</rule>
     <rule>Create a QF record, implement, and run focused validation in the same command.</rule>
     <rule>Route public API contracts, database schema or migration, authentication or security work, breaking changes, unrelated concerns, and unresolved risk to story and suggested grooming without editing code.</rule>
   </rules>

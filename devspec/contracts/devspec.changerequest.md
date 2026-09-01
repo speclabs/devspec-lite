@@ -14,7 +14,7 @@ Invocation: `/devspec.changerequest GHUB-123 Add JSON export`
   <input>A finalized-or-later work item and one related missing requirement.</input>
   <rules>
     <rule>Append the next CR-### entry and CR-scoped criteria; never rewrite baseline evidence.</rule>
-    <rule>Ask whether an ambiguous request is related or a new linked work item.</rule>
+    <rule>Ask one material classification question when it is unclear whether the request is related or a new linked work item.</rule>
   </rules>
   <actions>Classify scope as related or independent; append the next CR identifier when related.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/story.md</artifact>

@@ -15,8 +15,9 @@ Invocation: `/devspec.review GHUB-123-customer-export`
   <rules>
     <rule>Compare changed work to approved scope, task source coverage, and validation evidence.</rule>
     <rule>Write findings only; do not silently edit implementation code.</rule>
+    <rule>Record exactly one outcome: accepted, rework-required, or blocked; record exactly one next action.</rule>
   </rules>
-  <actions>Record actionable findings; do not silently change implementation code.</actions>
+  <actions>Record the review outcome, one next action, and any actionable findings; do not silently change implementation code.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/review.md</artifact>
   <handoff>implement-or-close</handoff>
 </workflow>

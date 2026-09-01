@@ -11,12 +11,13 @@ Invocation: `/devspec.projectcontext`
     <protocol ref="run" />
     <protocol ref="work" />
   </protocols>
+  <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
   <input>Product context or a confirmed source.</input>
   <rules>
     <rule>Capture purpose, users, outcomes, boundaries, and delivery context only.</rule>
     <rule>Mark each material statement confirmed, observed, inferred, or blocked.</rule>
   </rules>
-  <actions>Update only confirmed or observed product context.</actions>
+  <actions>Update product context with clearly labeled confirmed, observed, inferred, or blocked statements.</actions>
   <artifact>devspec/foundation/project-context.md</artifact>
   <handoff>techstack</handoff>
 </workflow>

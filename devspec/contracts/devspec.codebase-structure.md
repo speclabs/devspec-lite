@@ -12,6 +12,7 @@ Invocation: `/devspec.codebase-structure`
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
+  <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
   <input>Repository layout, work area, integration, or multi-repository context.</input>
   <rules>
     <rule>Map owned source roots, boundaries, integration points, and validation locations.</rule>

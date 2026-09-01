@@ -11,6 +11,7 @@ Invocation: `/devspec.techstack`
     <protocol ref="run" />
     <protocol ref="work" />
   </protocols>
+  <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
   <input>Stack evidence, target stack, or delivery constraint.</input>
   <rules>
     <rule>Inspect manifests, lockfiles, runtime configuration, and CI before asking material questions.</rule>

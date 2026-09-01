@@ -100,6 +100,28 @@ class FrameworkTests(unittest.TestCase):
             diagram_types = (target / "devspec/architecture/_template/diagram-types.md").read_text(encoding="utf-8")
             self.assertIn("Infrastructure topology", diagram_types)
             self.assertIn("Application landscape", diagram_types)
+    def test_command_scopes_and_closure_are_explicit(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            for command in ("projectcontext", "techstack", "codebase-structure", "coding-standards", "rules"):
+                contract = (target / f"devspec/contracts/devspec.{command}.md").read_text(encoding="utf-8")
+                self.assertIn("new-repository foundation authoring", contract)
+                self.assertIn("devspec.extract, not this command", contract)
+            diagram = ElementTree.fromstring(xml_block((target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")))
+            diagram_refs = {protocol.attrib["ref"] for protocol in diagram.find("protocols")}
+            self.assertIn("repo-access", diagram_refs)
+            self.assertIn("targeted diagram", diagram.findtext("scope"))
+            quickfix = (target / "devspec/contracts/devspec.quickfix.md").read_text(encoding="utf-8")
+            self.assertIn("user-defined bounded scope", quickfix)
+            self.assertNotIn("Custom Answer", quickfix)
+            change_request = (target / "devspec/contracts/devspec.changerequest.md").read_text(encoding="utf-8")
+            self.assertIn("material classification question", change_request)
+            review = (target / "devspec/contracts/devspec.review.md").read_text(encoding="utf-8")
+            review_template = (target / "devspec/work-items/_template/review.md").read_text(encoding="utf-8")
+            self.assertIn("accepted, rework-required, or blocked", review)
+            self.assertIn("Outcome: accepted | rework-required | blocked", review_template)
+            self.assertIn("Next action:", review_template)
     def test_installs_complete_compact_artifact_structure(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)

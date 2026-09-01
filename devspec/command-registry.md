@@ -15,6 +15,6 @@
 | `devspec.finalize` | Produce a concise readiness brief and validation plan. | `clarify-or-tasks` |
 | `devspec.tasks` | Create ordered, independently verifiable implementation tasks. | `implement` |
 | `devspec.implement` | Implement pending ready tasks with focused checkpoints and validation. | `review` |
-| `devspec.review` | Review changed work against readiness, tasks, and validation evidence. | `implement-or-close` |
-| `devspec.diagram` | Create one evidence-backed diagram with duplicate checks and durable queue state. | `continue-current-workflow` |
+| `devspec.review` | Review changed work, record an outcome, and set one next action. | `implement-or-close` |
+| `devspec.diagram` | Create one targeted evidence-backed diagram with duplicate checks and durable queue state. | `continue-current-workflow` |
 | `devspec.quickfix` | Implement and validate one localized, low-risk enhancement or bug fix. | `complete-or-story` |

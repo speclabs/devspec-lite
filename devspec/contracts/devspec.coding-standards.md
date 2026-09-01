@@ -11,6 +11,7 @@ Invocation: `/devspec.coding-standards`
     <protocol ref="run" />
     <protocol ref="work" />
   </protocols>
+  <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
   <input>Observed conventions or approved standards.</input>
   <rules>
     <rule>Keep only conventions that change implementation or review behavior.</rule>

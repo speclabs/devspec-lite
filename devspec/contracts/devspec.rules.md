@@ -11,6 +11,7 @@ Invocation: `/devspec.rules`
     <protocol ref="run" />
     <protocol ref="work" />
   </protocols>
+  <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
   <input>Hard engineering, compliance, security, delivery, or accessibility constraints.</input>
   <rules>
     <rule>Keep non-negotiable rules separate from ordinary coding conventions.</rule>
