@@ -13,7 +13,7 @@ Invocation: `/devspec.story Add customer export`
   </protocols>
   <input>One provider reference or one manual feature, bug, security issue, or task.</input>
   <rules>
-    <rule>Handle exactly one work item; ask a selection question when input contains independent items.</rule>
+    <rule>Handle exactly one work item; ask a material selection question when input contains independent items.</rule>
     <rule>Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.</rule>
     <rule>Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
   </rules>

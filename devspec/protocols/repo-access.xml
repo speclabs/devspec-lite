@@ -1,5 +1,5 @@
 <protocol id="repo-access">
   <when>Load only when a task depends on more than one repository.</when>
-  <validate>Confirm repository role, local path, workspace availability, and access requirement before edits or validation.</validate>
-  <respect>Never edit or validate reference-only, validation-only, release-coordination, or unavailable repositories without explicit scope change.</respect>
+  <validate>Before reading, editing, or validating, record each repository's role, local path, workspace availability, and separate read, edit, and validation permissions.</validate>
+  <respect>Never edit a reference-only, validation-only, release-coordination, or unavailable repository. Never validate a reference-only, release-coordination, or unavailable repository. Validate a validation-only repository only when its recorded validation permission allows it.</respect>
 </protocol>

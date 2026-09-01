@@ -1,7 +1,12 @@
 <protocol id="run">
   <preflight>Validate required input, target artifact, stage, and access before output.</preflight>
-  <checkpoint>Save stage, run state, last action, resume reference, and next action before questions, edits, validation, retries, or handoff.</checkpoint>
-  <resume>Resume paused work when prerequisites hold; ask one interactive resume question for stopped or ambiguous work.</resume>
-  <blocked>Record blocker and continuation condition; retry only when that condition changes or the user directs it.</blocked>
+  <checkpoint>Before material questions, edits, validation, retries, or handoff, save stage, run state, last action, resume reference, and exactly one next action in the command's state record.</checkpoint>
+  <state-records>
+    <work-item>devspec/work-items/&lt;id&gt;/meta.md</work-item>
+    <foundation>devspec/foundation/decisions.md</foundation>
+    <quickfix>Front matter in devspec/quickfixes/QF-###-slug.md</quickfix>
+  </state-records>
+  <resume>Resume paused work when prerequisites hold; ask one interactive material resume question when the saved state is stopped or ambiguous.</resume>
+  <blocked>Record the material blocker and continuation condition; retry only when that condition changes or the user directs it.</blocked>
   <closure>Report artifact, outcome, blocker if any, and exactly one registered next action.</closure>
 </protocol>

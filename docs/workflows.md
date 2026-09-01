@@ -16,7 +16,7 @@ Use the smallest route that preserves a durable, reviewable record. Git-tracked 
 
 Use `devspec.quickfix` only when the request is one localized enhancement or bug fix with one primary scope. Examples: a UI copy correction, focused test adjustment, or local configuration fix.
 
-Use the work-item route for public contracts, data migrations, authentication/security work, breaking changes, unresolved risk, or multiple concerns. Grooming is optional; use it when the story has material ambiguity, risk, or incomplete acceptance criteria. `clarify` asks one interactive blocker question, records the decision, and resumes the originating stage.
+Use the work-item route for public contracts, data migrations, authentication/security work, breaking changes, unresolved risk, or multiple concerns. Grooming is optional; use it when the story has material ambiguity, risk, or incomplete acceptance criteria. `clarify` asks one interactive material blocker question, records the decision, and resumes the originating stage.
 
 ## 3. Install and maintain the framework
 

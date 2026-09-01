@@ -13,7 +13,7 @@ Invocation: `/devspec.techstack`
   </protocols>
   <input>Stack evidence, target stack, or delivery constraint.</input>
   <rules>
-    <rule>Inspect manifests, lockfiles, runtime configuration, and CI before asking questions.</rule>
+    <rule>Inspect manifests, lockfiles, runtime configuration, and CI before asking material questions.</rule>
     <rule>Record runtime, languages, frameworks, data stores, tooling, supported versions, and material constraints.</rule>
   </rules>
   <actions>Inspect manifests and configuration before asking for missing material facts.</actions>

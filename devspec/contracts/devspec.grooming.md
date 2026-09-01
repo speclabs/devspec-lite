@@ -1,11 +1,11 @@
 # devspec.grooming
 
-Make one draft story buildable through scoped review and targeted questions.
+Make one draft story buildable through scoped review and material questions.
 
 Invocation: `/devspec.grooming GHUB-123-customer-export`
 
 <workflow command="devspec.grooming">
-  <purpose>Make one draft story buildable through scoped review and targeted questions.</purpose>
+  <purpose>Make one draft story buildable through scoped review and material questions.</purpose>
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />

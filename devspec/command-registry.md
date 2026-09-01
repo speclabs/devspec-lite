@@ -9,7 +9,7 @@
 | `devspec.coding-standards` | Capture short, evidence-backed conventions and anti-patterns. | `rules` |
 | `devspec.rules` | Capture non-negotiable engineering, security, compliance, delivery, and accessibility rules. | `story` |
 | `devspec.story` | Create one concise work-item intake from a request or provider reference. | `grooming-or-finalize` |
-| `devspec.grooming` | Make one draft story buildable through scoped review and targeted questions. | `clarify-or-finalize` |
+| `devspec.grooming` | Make one draft story buildable through scoped review and material questions. | `clarify-or-finalize` |
 | `devspec.clarify` | Resolve one active blocker and resume its originating stage. | `resume-origin` |
 | `devspec.changerequest` | Append one related post-finalization requirement without rewriting history. | `finalize` |
 | `devspec.finalize` | Produce a concise readiness brief and validation plan. | `clarify-or-tasks` |

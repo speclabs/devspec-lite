@@ -16,7 +16,7 @@ Invocation: `/devspec.extract`
   <rules>
     <rule>Inspect owned source, tests, manifests, configuration, infrastructure, scripts, and docs; exclude dependencies, caches, generated output, and repositories outside approved scope.</rule>
     <rule>For multi-repository work, record every repository role, path, access boundary, and evidence before reading, editing, or validating it.</rule>
-    <rule>Ask one clarification for every unresolved question. Label all durable findings confirmed, observed, inferred, or blocked; do not invent roles, workflows, business rules, validation rules, integrations, or diagrams.</rule>
+    <rule>Ask one clarification for every unresolved material question. Label all durable findings confirmed, observed, inferred, or blocked; do not invent roles, workflows, business rules, validation rules, integrations, or diagrams.</rule>
     <rule>Initialize and complete every listed foundation artifact from its template when missing: project context, technology stack, codebase structure, coding standards with local examples, rules, technical baseline, roles, workflows, workflow rules, extraction state, exploration state, and coverage.</rule>
     <rule>For every confirmed business workflow, record its business area, participating roles, trigger, outcome, business rules, validation rules, evidence, and applicable exceptions.</rule>
     <rule>Create the applicable evidence-backed SVG baseline diagrams directly: system architecture; application landscape; infrastructure topology; integration sequence or context; and a journey or process-flow diagram for every confirmed workflow. Add domain-model or state-lifecycle diagrams only when evidence supports them.</rule>

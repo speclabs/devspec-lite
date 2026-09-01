@@ -4,6 +4,7 @@ Create a missing canonical artifact from its matching template before editing it
 
 | Template | Canonical artifact | Command |
 |---|---|---|
+| `_template/decisions.md` | `decisions.md` | foundation and extraction commands |
 | `_template/project-context.md` | `project-context.md` | `devspec.projectcontext` or `devspec.extract` |
 | `_template/tech-stack.md` | `tech-stack.md` | `devspec.techstack` or `devspec.extract` |
 | `_template/codebase-structure.md` | `codebase-structure.md` | `devspec.codebase-structure` or `devspec.extract` |

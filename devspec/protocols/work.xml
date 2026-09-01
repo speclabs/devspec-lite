@@ -1,6 +1,6 @@
 <protocol id="work">
-  <scope>Select the smallest affected area and direct dependencies; exclude generated, dependency, cache, and unrelated source.</scope>
-  <initialize>When a target artifact or its parent folder is missing, create it from the matching _template artifact before editing. For a new work item, initialize every file from devspec/work-items/_template, including meta.md. Never overwrite an existing artifact.</initialize>
+  <scope>Select the smallest affected area and direct dependencies; exclude generated application outputs, dependency directories, caches, and unrelated source. Canonical `devspec/` artifacts remain in scope when the command owns them.</scope>
+  <initialize>When a target artifact, required state record, or its parent folder is missing, create it from the matching _template artifact before editing. Resolve foundation artifacts through devspec/foundation/template-map.md. For a new work item, initialize every file from devspec/work-items/_template, including meta.md and decisions.md. For a new quickfix, initialize devspec/quickfixes/QF-###-slug.md from devspec/quickfixes/_template.md. Never overwrite an existing artifact.</initialize>
   <evidence>Label durable facts as confirmed, observed, inferred, or blocked.</evidence>
   <change>Prefer existing patterns and the smallest safe change; do not add speculative abstractions or dependencies.</change>
   <artifacts>Update targeted sections only, link instead of duplicate, and preserve user-authored useful content.</artifacts>
