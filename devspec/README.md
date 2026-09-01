@@ -1,6 +1,6 @@
 # Devspec Lite
 
-Foundation: `projectcontext → techstack → codebase-structure → coding-standards → rules`.
+New repository foundation: `projectcontext → techstack → codebase-structure → coding-standards → rules`. Existing repository baseline: `extract` completes the foundation and applicable diagrams.
 
 Work item: `story → grooming` when needed `→ finalize → tasks → implement → review`.
 

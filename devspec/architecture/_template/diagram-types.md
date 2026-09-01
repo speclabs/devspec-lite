@@ -13,7 +13,9 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 
 | Type | Use when the reader asks | Minimum evidence | Show |
 |---|---|---|---|
-| Architecture | What owns or connects to what? | source roots, integration points | boundaries, components, integrations |
+| System architecture | What owns or connects to what across the system? | source roots, integration points | boundaries, components, integrations |
+| Application landscape | Which applications exist and how do they relate? | application roots, ownership, interfaces | applications, responsibilities, interface links |
+| Infrastructure topology | Where and on what does the system run? | deployment and infrastructure configuration | runtime, environments, providers, network or data dependencies |
 | Domain model | What data concepts relate? | types/schema/contracts | entities, fields only when useful, cardinality |
 | Journey map | What happens to an actor over time? | observed user/system flow | stages, actor actions, system touchpoints, outcome |
 | Mind map | What belongs in this problem space? | scoped discovery | central concern, grouped branches, open risks |

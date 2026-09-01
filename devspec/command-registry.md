@@ -2,7 +2,7 @@
 
 | Command | Purpose | Next route |
 |---|---|---|
-| `devspec.extract` | Backfill concise foundation evidence from an existing repository. | `projectcontext` |
+| `devspec.extract` | Build the complete evidence-backed baseline for an existing scoped system. | `story-or-complete-foundation` |
 | `devspec.projectcontext` | Capture product purpose, users, outcomes, and scope boundaries. | `techstack` |
 | `devspec.techstack` | Capture evidence-backed runtime, frameworks, data, tooling, and delivery constraints. | `codebase-structure` |
 | `devspec.codebase-structure` | Capture owned source roots, module boundaries, integrations, and repository access. | `coding-standards` |

@@ -4,10 +4,17 @@ Create a missing canonical artifact from its matching template before editing it
 
 | Template | Canonical artifact | Command |
 |---|---|---|
-| `_template/project-context.md` | `project-context.md` | `devspec.projectcontext` |
-| `_template/tech-stack.md` | `tech-stack.md` | `devspec.techstack` |
-| `_template/codebase-structure.md` | `codebase-structure.md` | `devspec.codebase-structure` |
-| `_template/coding-standards.md` | `coding-standards.md` | `devspec.coding-standards` |
-| `_template/rules.md` | `rules.md` | `devspec.rules` |
+| `_template/project-context.md` | `project-context.md` | `devspec.projectcontext` or `devspec.extract` |
+| `_template/tech-stack.md` | `tech-stack.md` | `devspec.techstack` or `devspec.extract` |
+| `_template/codebase-structure.md` | `codebase-structure.md` | `devspec.codebase-structure` or `devspec.extract` |
+| `_template/coding-standards.md` | `coding-standards.md` | `devspec.coding-standards` or `devspec.extract` |
+| `_template/rules.md` | `rules.md` | `devspec.rules` or `devspec.extract` |
+| `_template/technical-baseline.md` | `technical-baseline.md` | `devspec.extract` |
+| `_template/roles.md` | `roles.md` | `devspec.extract` |
+| `_template/workflows.md` | `workflows.md` | `devspec.extract` |
+| `_template/workflow-rules.md` | `workflow-rules.md` | `devspec.extract` |
 | `_template/extraction-state.md` | `extraction-state.md` | `devspec.extract` |
 | `_template/exploration-state.md` | `exploration-state.md` | `devspec.extract` |
+| `_template/extraction-coverage.md` | `extraction-coverage.md` | `devspec.extract` |
+| `_template/discovery-exclusions.md` | `discovery-exclusions.md` | `devspec.extract` |
+| `_template/provider-integrations.md` | `provider-integrations.md` | provider-backed work |

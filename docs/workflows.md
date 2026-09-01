@@ -7,8 +7,8 @@ Use the smallest route that preserves a durable, reviewable record. Generated `d
 ![Foundation routes](assets/foundation-routes.svg)
 
 - New repository: start with `devspec.projectcontext`.
-- Existing repository: run `devspec.extract` first so later foundation artifacts use observed evidence.
-- Continue with `techstack`, `codebase-structure`, `coding-standards`, and `rules`.
+- Existing repository: run `devspec.extract` once. It completes the evidence-backed technical, workflow, rule, and SVG diagram baseline; do not rerun individual foundation or diagram commands afterward.
+- New repository: use `projectcontext`, `techstack`, `codebase-structure`, `coding-standards`, `rules`, and `diagram` as input-driven authoring commands.
 
 ## 2. Deliver a change
 
@@ -36,7 +36,7 @@ Assign a stable `DIA-###` ID, keep status in the queue, and add only completed d
 | Situation | Route |
 |---|---|
 | New service repository | `projectcontext → techstack → codebase-structure → coding-standards → rules` |
-| Existing service with unknown conventions | `extract → foundation route` |
+| Existing service with unknown conventions | `extract` — complete baseline extraction |
 | Correct a known empty-state label | `quickfix` with `UI` scope |
 | Add a customer-export API and authorization | `story → grooming → finalize → tasks → implement → review` |
 | A requirement is blocked by a data-retention decision | `clarify`, then resume the saved stage |

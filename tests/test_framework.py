@@ -7,7 +7,7 @@ from xml.etree import ElementTree
 
 from devspec_lite.cli import main
 from devspec_lite.definitions import COMMANDS
-from devspec_lite.framework import PROFILES, doctor, install_framework
+from devspec_lite.framework import PROFILES, doctor, install_framework, xml_block
 
 
 class FrameworkTests(unittest.TestCase):
@@ -73,6 +73,22 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("devspec/contracts/devspec.quickfix.md", (target / ".github/prompts/devspec.quickfix.prompt.md").read_text(encoding="utf-8"))
             self.assertEqual([], doctor(target, "copilot"))
 
+    def test_extract_completes_existing_system_baseline(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "existing"])
+            extract = ElementTree.fromstring(xml_block((target / "devspec/contracts/devspec.extract.md").read_text(encoding="utf-8")))
+            refs = {protocol.attrib["ref"] for protocol in extract.find("protocols")}
+            self.assertTrue({"ask", "run", "work", "repo-access"}.issubset(refs))
+            outputs = {artifact.attrib["path"] for artifact in extract.find("outputs")}
+            self.assertIn("devspec/foundation/workflows.md", outputs)
+            self.assertIn("devspec/foundation/workflow-rules.md", outputs)
+            self.assertIn("devspec/architecture/artifact-queue.md", outputs)
+            self.assertTrue((target / "devspec/foundation/_template/technical-baseline.md").is_file())
+            self.assertTrue((target / "devspec/foundation/_template/extraction-coverage.md").is_file())
+            diagram_types = (target / "devspec/architecture/_template/diagram-types.md").read_text(encoding="utf-8")
+            self.assertIn("Infrastructure topology", diagram_types)
+            self.assertIn("Application landscape", diagram_types)
     def test_installs_complete_compact_artifact_structure(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)

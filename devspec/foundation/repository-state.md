@@ -1,4 +1,4 @@
 # Repository State
 
 - State: existing
-- Start with: `devspec.extract → devspec.projectcontext`
+- Start with: `devspec.extract`
