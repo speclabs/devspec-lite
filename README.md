@@ -37,3 +37,7 @@ uvx devspec-lite doctor --target . --profile all
 ![Delivery route for quickfix and work items](docs/assets/delivery-routes.svg)
 
 Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, grooming, clarification, and change-request examples.
+
+## How to
+
+Follow the scenario-based [how-to guide](docs/how-to.md) to choose the right command, establish an existing or new repository baseline, start and deliver a story, work across multiple repositories, or route a small fix safely.

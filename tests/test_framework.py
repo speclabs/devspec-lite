@@ -252,7 +252,6 @@ class FrameworkTests(unittest.TestCase):
                     self.assertIn(transition.attrib["next"], valid_next)
                     self.assertIn(transition.attrib["run"], {"active", "blocked", "complete"})
 
-if __name__ == "__main__":
     def test_doctor_rejects_invalid_lifecycle_transition(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
@@ -262,4 +261,6 @@ if __name__ == "__main__":
             contract.write_text(text, encoding="utf-8")
             issues = doctor(target, "codex")
             self.assertTrue(any("invalid lifecycle transition" in issue for issue in issues))
+
+if __name__ == "__main__":
     unittest.main()
