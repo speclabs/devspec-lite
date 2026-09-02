@@ -14,7 +14,7 @@ Invocation: `/devspec.story Add customer export`
   <input>One provider reference or one manual feature, bug, security issue, or task.</input>
   <rules>
     <rule>Handle exactly one work item; ask a material selection question when input contains independent items.</rule>
-    <rule>Read only the foundation rules and workflow rules relevant to the requested behavior and code area; do not scan unrelated historical work-item decisions.</rule>
+    <rule>Read only the coding standards, codebase structure, foundation rules, and workflow rules relevant to the requested behavior and code area; do not scan unrelated historical work-item decisions.</rule>
     <rule>Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.</rule>
     <rule>Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
   </rules>

@@ -20,6 +20,8 @@ Use the work-item route for public contracts, data migrations, authentication/se
 
 A material decision is work-item-local unless it applies beyond that story. At finalization, promote a reusable business or validation decision to `foundation/workflow-rules.md` with a stable rule ID; promote a reusable engineering constraint to `foundation/rules.md`. New stories read only relevant foundation rules and the affected code area, not every historic decision file. Code and tests are the primary enforcement; add a developer comment only for non-obvious rationale and cite the canonical rule ID.
 
+Every project maintains one OWASP Top 10:2025 baseline in `foundation/rules.md`. Finalization cites only the relevant coding standards, codebase boundaries, and OWASP controls; implementation records targeted tests and available project-native security evidence. A developer may propose a false-positive or not-applicable finding, but it is accepted only after the reviewer confirms the developer's rationale and enforceable evidence. “Internal-only”, authenticated-only, or limited access is not enough by itself; a configuration, network, deployment, or access-control proof is required. Revalidate any confirmed exception after a material change to its code, access, deployment, integration, or exposure.
+
 ## 3. Install and maintain the framework
 
 ![Install and maintenance flow](assets/maintenance-flow.svg)

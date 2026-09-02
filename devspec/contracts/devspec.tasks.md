@@ -14,7 +14,7 @@ Invocation: `/devspec.tasks GHUB-123-customer-export`
   </protocols>
   <input>A ready finalization brief.</input>
   <rules>
-    <rule>Each task names scope, dependency, source justification, applicable decision or canonical rule IDs, validation, and done condition.</rule>
+    <rule>Each task names scope, dependency, source justification, applicable decision or canonical rule IDs, validation, and done condition. Cite the finalization foundation trace for coding standards, codebase boundaries, and OWASP controls instead of duplicating them per task.</rule>
     <rule>Order dependencies before dependents and split only work too broad to validate safely.</rule>
   </rules>
   <actions>Trace tasks to readiness items and validation evidence; sequence dependencies first.</actions>
