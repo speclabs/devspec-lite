@@ -18,6 +18,8 @@ Use `devspec.quickfix` only when the request is one localized enhancement or bug
 
 Use the work-item route for public contracts, data migrations, authentication/security work, breaking changes, unresolved risk, or multiple concerns. Grooming is optional; use it when the story has material ambiguity, risk, or incomplete acceptance criteria. `clarify` asks one interactive material blocker question, records the decision, and resumes the originating stage.
 
+A material decision is work-item-local unless it applies beyond that story. At finalization, promote a reusable business or validation decision to `foundation/workflow-rules.md` with a stable rule ID; promote a reusable engineering constraint to `foundation/rules.md`. New stories read only relevant foundation rules and the affected code area, not every historic decision file. Code and tests are the primary enforcement; add a developer comment only for non-obvious rationale and cite the canonical rule ID.
+
 ## 3. Install and maintain the framework
 
 ![Install and maintenance flow](assets/maintenance-flow.svg)

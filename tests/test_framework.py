@@ -72,6 +72,32 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue((target / "AGENTS.md").is_file())
             self.assertFalse((target / ".github").exists())
 
+    def test_reusable_decision_traceability_is_installed(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            decisions = (target / "devspec/work-items/_template/decisions.md").read_text(encoding="utf-8")
+            workflow_rules = (target / "devspec/foundation/_template/workflow-rules.md").read_text(encoding="utf-8")
+            engineering_rules = (target / "devspec/foundation/_template/rules.md").read_text(encoding="utf-8")
+            tasks = (target / "devspec/work-items/_template/tasks.md").read_text(encoding="utf-8")
+            implementation = (target / "devspec/work-items/_template/implement.md").read_text(encoding="utf-8")
+            review = (target / "devspec/work-items/_template/review.md").read_text(encoding="utf-8")
+            finalize = (target / "devspec/contracts/devspec.finalize.md").read_text(encoding="utf-8")
+            implement_contract = (target / "devspec/contracts/devspec.implement.md").read_text(encoding="utf-8")
+            review_contract = (target / "devspec/contracts/devspec.review.md").read_text(encoding="utf-8")
+            story = (target / "devspec/contracts/devspec.story.md").read_text(encoding="utf-8")
+            self.assertIn("Applicability", decisions)
+            self.assertIn("Canonical rule link", decisions)
+            self.assertIn("Rule ID", workflow_rules)
+            self.assertIn("Source decision", workflow_rules)
+            self.assertIn("Rule ID", engineering_rules)
+            self.assertIn("Decision or rule IDs", tasks)
+            self.assertIn("Decision or rule IDs", implementation)
+            self.assertIn("Decision and Rule Verification", review)
+            self.assertIn("Promote a reusable business or validation decision", finalize)
+            self.assertIn("canonical rule ID", implement_contract)
+            self.assertIn("implemented-as-decided", review_contract)
+            self.assertIn("do not scan unrelated historical work-item decisions", story)
     def test_contract_xml_and_quickfix_routing_are_present(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)

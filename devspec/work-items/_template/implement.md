@@ -1,4 +1,4 @@
 # Implementation
 
-| Task | Changed areas | Validation | Outcome |
-|---|---|---|---|
+| Task | Decision or rule IDs | Changed areas | Validation | Outcome |
+|---|---|---|---|---|

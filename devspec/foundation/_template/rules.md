@@ -1,4 +1,4 @@
 # Rules
 
-| Rule | Why | Enforcement |
-|---|---|---|
+| Rule ID | Rule | Why | Enforcement | Source decision |
+|---|---|---|---|---|

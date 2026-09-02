@@ -19,5 +19,5 @@ updated: <yyyy-mm-dd>
 
 ## Decisions
 
-| ID | Material question | Evidence | Impact | Choices | Recommended | Recommendation justification | Answer or skip reason | Status |
-|---|---|---|---|---|---|---|---|---|
+| ID | Material question | Evidence | Impact | Choices | Recommended | Recommendation justification | Applicability | Canonical rule link | Answer or skip reason | Status |
+|---|---|---|---|---|---|---|---|---|---|---|

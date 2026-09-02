@@ -15,6 +15,7 @@ Invocation: `/devspec.finalize GHUB-123-customer-export`
   <rules>
     <rule>Check only material readiness gaps: scope, criteria, behavior, data, integration, security, compliance, validation, and delivery constraints.</rule>
     <rule>Mark ready only when remaining gaps cannot materially change implementation or validation; otherwise create one material blocker question.</rule>
+    <rule>Classify every accepted material decision as work-item-local or reusable. Promote a reusable business or validation decision to devspec/foundation/workflow-rules.md with a stable rule ID and source decision link; promote a reusable engineering constraint to devspec/foundation/rules.md. Record the resulting canonical rule link in decisions.md.</rule>
     <rule>Write a concise implementation brief and validation plan, not implementation code.</rule>
   </rules>
   <actions>Scan only material readiness gaps; do not invent implementation detail.</actions>

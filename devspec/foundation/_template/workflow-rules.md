@@ -1,4 +1,4 @@
 # Workflow Rules
 
-| Workflow ID | Class | Rule | Validation or enforcement | Exception | Evidence |
-|---|---|---|---|---|---|
+| Rule ID | Workflow ID | Applicability | Rule | Validation or enforcement | Exception | Source decision | Evidence |
+|---|---|---|---|---|---|---|---|

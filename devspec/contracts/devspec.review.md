@@ -13,7 +13,8 @@ Invocation: `/devspec.review GHUB-123-customer-export`
   </protocols>
   <input>Finalization, tasks, implementation record, and changed work.</input>
   <rules>
-    <rule>Compare changed work to approved scope, task source coverage, and validation evidence.</rule>
+    <rule>Compare changed work to approved scope, task source coverage, validation evidence, and every applicable accepted material decision or canonical rule.</rule>
+    <rule>Record each decision or rule verification as implemented-as-decided, intentionally-superseded with a recorded replacement, or not-verified. Treat an unrecorded contradiction as rework-required.</rule>
     <rule>Write findings only; do not silently edit implementation code.</rule>
     <rule>Record exactly one outcome: accepted, rework-required, or blocked; record exactly one next action.</rule>
   </rules>
