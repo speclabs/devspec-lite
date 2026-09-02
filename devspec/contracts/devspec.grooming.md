@@ -2,16 +2,17 @@
 
 Make one draft story buildable through scoped review and material questions.
 
-Invocation: `/devspec.grooming GHUB-123-customer-export`
+Invocation: `/devspec.grooming [work-item-id]`
 
 <workflow command="devspec.grooming">
   <purpose>Make one draft story buildable through scoped review and material questions.</purpose>
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="current-work-item" />
     <protocol ref="work" />
   </protocols>
-  <input>One draft work-item identifier or clear current draft.</input>
+  <input>An optional work-item ID or clear current draft.</input>
   <rules>
     <rule>Read only the draft, relevant coding standards, codebase structure, foundation rules and workflow rules, selected code area, and direct dependencies; do not scan unrelated historical work-item decisions.</rule>
     <rule>Improve behavior, acceptance criteria, scope, technical constraints, edge cases, dependencies, compatibility risks, and blockers in place.</rule>

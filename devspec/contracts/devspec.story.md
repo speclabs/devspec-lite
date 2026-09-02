@@ -9,6 +9,7 @@ Invocation: `/devspec.story Add customer export`
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="current-work-item" />
     <protocol ref="work" />
   </protocols>
   <input>One provider reference or one manual feature, bug, security issue, or task.</input>
@@ -17,6 +18,9 @@ Invocation: `/devspec.story Add customer export`
     <rule>Read only the coding standards, codebase structure, foundation rules, and workflow rules relevant to the requested behavior and code area; do not scan unrelated historical work-item decisions.</rule>
     <rule>Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.</rule>
     <rule>Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
+    <rule>Treat an explicit story request as new-work intent unless it is clearly related finalized scope, which routes to changerequest.</rule>
+    <rule>When creating a story or accepting a validated explicit ID, set current-work-item context for the current branch; preserve meta.md as the canonical state record.</rule>
+    <rule>For an ordinary request with current context, resume clearly related pre-finalization work; ask one classification question before switching stories or accepting independent scope.</rule>
   </rules>
   <entry>One selected request with a valid work-item folder at intake and an active scope revision; reject finalized scope changes and independent bundled requests.</entry>
   <outputs>

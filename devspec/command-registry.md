@@ -18,3 +18,5 @@
 | `devspec.review` | Review changed work, record an outcome, and set one next action. | `devspec.implement`, `devspec.clarify`, or terminal |
 | `devspec.diagram` | Create one targeted evidence-backed diagram with duplicate checks and durable queue state. | return to caller |
 | `devspec.quickfix` | Implement and validate one localized, low-risk enhancement or bug fix. | terminal, `devspec.clarify`, or `devspec.story` |
+
+Work-item IDs are optional for `grooming`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`. Without an ID, resolve the private per-worktree current context and run only the work item's recorded `next` action. Use an explicit ID to switch stories; when several eligible stories exist, ask the user to choose.

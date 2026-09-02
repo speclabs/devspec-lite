@@ -2,17 +2,18 @@
 
 Implement pending ready tasks with focused checkpoints and validation.
 
-Invocation: `/devspec.implement GHUB-123-customer-export`
+Invocation: `/devspec.implement [work-item-id]`
 
 <workflow command="devspec.implement">
   <purpose>Implement pending ready tasks with focused checkpoints and validation.</purpose>
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="current-work-item" />
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
-  <input>Ready finalization and pending task records.</input>
+  <input>An optional work-item ID with ready finalization and pending task records.</input>
   <rules>
     <rule>Confirm every task is in finalized scope, unblocked, and ordered before editing code.</rule>
     <rule>Checkpoint before edits and focused validation; stop for a material ambiguity instead of expanding scope.</rule>

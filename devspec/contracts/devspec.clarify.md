@@ -2,15 +2,16 @@
 
 Resolve one active blocker and resume its originating stage.
 
-Invocation: `/devspec.clarify GHUB-123-customer-export`
+Invocation: `/devspec.clarify [work-item-id]`
 
 <workflow command="devspec.clarify">
   <purpose>Resolve one active blocker and resume its originating stage.</purpose>
   <protocols>
     <protocol ref="ask" />
+    <protocol ref="current-work-item" />
     <protocol ref="run" />
   </protocols>
-  <input>One foundation, work item, or quickfix record with one active material blocker question.</input>
+  <input>An optional work-item ID, or one foundation or quickfix record, with one active material blocker question.</input>
   <rules>
     <rule>Resolve the one highest-priority material decision in its active queue and append its answer to decisions.md.</rule>
     <rule>Do not accept scope changes after finalization; route them to changerequest.</rule>

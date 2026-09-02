@@ -6,7 +6,8 @@
     <foundation>devspec/foundation/decisions.md</foundation>
     <quickfix>Front matter in devspec/quickfixes/QF-###-slug.md</quickfix>
   </state-records>
-  <resume>Resume paused work when prerequisites hold; ask one interactive material resume question when the saved state is stopped or ambiguous.</resume>
+  <context>For a work-item continuation, use current-work-item before validating stage. Dispatch only the saved next action; do not skip a stage.</context>
+  <resume>Resume paused work when prerequisites hold. Clear or recover stale local context, and ask one interactive selection question when multiple work items or a stopped state make continuation ambiguous.</resume>
   <blocked>Record the material blocker and continuation condition; retry only when that condition changes or the user directs it.</blocked>
   <closure>Report artifact, outcome, blocker if any, and exactly one registered next action.</closure>
 </protocol>

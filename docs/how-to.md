@@ -19,6 +19,11 @@ Git-tracked `devspec/` artifacts are the project record. Do not skip a command b
 | One evidence-backed architecture or workflow visual is needed | `devspec.diagram` | Return to the caller's workflow. |
 | A known foundation artifact needs a narrow update | Its matching foundation command | Return to the caller after the update. |
 
+## Continue current work without an ID
+
+Say `continue` or run the next work-item command without an ID. Devspec resolves private per-worktree context, reads the selected `meta.md` next action, and resumes only that action. If context is missing or multiple active stories exist, it asks you to select one; use an ID only to switch stories explicitly.
+
+
 
 ## 1. Map an existing service before changing it
 
@@ -63,20 +68,20 @@ uvx devspec-lite doctor --target . --profile all
 **Scenario.** Product asks for a customer-export API with authorization, audit evidence, and automated validation.
 
 1. Start one work item: `/devspec.story Add customer export API with authorization`.
-2. Run `/devspec.grooming <work-item-id>` when the code area, compatibility, risk, or acceptance criteria needs scoped analysis. Otherwise move directly to `/devspec.finalize <work-item-id>`.
+2. Run `/devspec.grooming` when the code area, compatibility, risk, or acceptance criteria needs scoped analysis. Otherwise move directly to `/devspec.finalize`.
 3. After finalization reports `ready`, run the delivery route:
 
 ```text
-/devspec.tasks <work-item-id>
-/devspec.implement <work-item-id>
-/devspec.review <work-item-id>
+/devspec.tasks
+/devspec.implement
+/devspec.review
 ```
 
 4. Follow the review outcome exactly:
 
    - `accepted`: the work item is complete; no next command is required.
-   - `rework-required`: run `/devspec.implement <work-item-id>` for the affected tasks.
-   - `blocked`: run `/devspec.clarify <work-item-id>`, then resume the saved command.
+   - `rework-required`: run `/devspec.implement` for the affected tasks.
+   - `blocked`: run `/devspec.clarify`, then resume the saved command.
 
 **What to expect.** Finalization, tasks, implementation, and review are stamped with the same scope revision. Review checks the recorded changed-work baseline and the validation evidence, not just the code diff.
 
@@ -114,7 +119,7 @@ uvx devspec-lite doctor --target . --profile all
 
 **Scenario.** After export implementation begins, product asks for a new JSON format in the same feature.
 
-1. Run `/devspec.changerequest <work-item-id> Add JSON export`.
+1. Run `/devspec.changerequest Add JSON export`.
 2. Follow the route back through `/devspec.finalize`, `/devspec.tasks`, implementation, and review.
 
 **What to expect.** The command increments `scope_revision`, retains previous records as superseded history, and prevents implementation against stale tasks.
@@ -124,6 +129,6 @@ uvx devspec-lite doctor --target . --profile all
 **Scenario.** Finalization is blocked because the required data-retention period is unknown.
 
 
-1. Run `/devspec.clarify <work-item-id>` and answer the one recorded decision.
+1. Run `/devspec.clarify` and answer the one recorded decision.
 
 **What to expect.** Clarification resumes the exact saved stage and next command. It does not add new scope or bypass a required review.

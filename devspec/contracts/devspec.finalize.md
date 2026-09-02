@@ -2,16 +2,17 @@
 
 Produce a concise readiness brief and validation plan.
 
-Invocation: `/devspec.finalize GHUB-123-customer-export`
+Invocation: `/devspec.finalize [work-item-id]`
 
 <workflow command="devspec.finalize">
   <purpose>Produce a concise readiness brief and validation plan.</purpose>
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="current-work-item" />
     <protocol ref="work" />
   </protocols>
-  <input>A groomed or otherwise complete draft work item.</input>
+  <input>An optional work-item ID or a groomed current draft.</input>
   <rules>
     <rule>Check only material readiness gaps: scope, criteria, behavior, data, integration, security, compliance, validation, and delivery constraints.</rule>
     <rule>Mark ready only when remaining gaps cannot materially change implementation or validation; otherwise create one material blocker question.</rule>

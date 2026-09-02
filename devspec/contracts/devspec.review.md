@@ -2,16 +2,17 @@
 
 Review changed work against readiness, tasks, and validation evidence.
 
-Invocation: `/devspec.review GHUB-123-customer-export`
+Invocation: `/devspec.review [work-item-id]`
 
 <workflow command="devspec.review">
   <purpose>Review changed work against readiness, tasks, and validation evidence.</purpose>
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="current-work-item" />
     <protocol ref="work" />
   </protocols>
-  <input>Finalization, tasks, implementation record, and changed work.</input>
+  <input>An optional work-item ID with finalization, tasks, implementation record, and changed work.</input>
   <rules>
     <rule>Compare changed work to approved scope, task source coverage, finalization foundation trace, validation evidence, and every applicable accepted material decision or canonical rule.</rule>
     <rule>Record each decision or rule verification as implemented-as-decided, intentionally-superseded with a recorded replacement, or not-verified. Treat an unrecorded contradiction as rework-required.</rule>

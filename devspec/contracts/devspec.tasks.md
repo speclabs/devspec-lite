@@ -2,17 +2,18 @@
 
 Create ordered, independently verifiable implementation tasks.
 
-Invocation: `/devspec.tasks GHUB-123-customer-export`
+Invocation: `/devspec.tasks [work-item-id]`
 
 <workflow command="devspec.tasks">
   <purpose>Create ordered, independently verifiable implementation tasks.</purpose>
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="current-work-item" />
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
-  <input>A ready finalization brief.</input>
+  <input>An optional work-item ID with a ready current finalization brief.</input>
   <rules>
     <rule>Each task names scope, dependency, source justification, applicable decision or canonical rule IDs, validation, and done condition. Cite the finalization foundation trace for coding standards, codebase boundaries, and OWASP controls instead of duplicating them per task.</rule>
     <rule>Order dependencies before dependents and split only work too broad to validate safely.</rule>
