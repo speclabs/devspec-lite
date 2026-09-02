@@ -262,5 +262,32 @@ class FrameworkTests(unittest.TestCase):
             issues = doctor(target, "codex")
             self.assertTrue(any("invalid lifecycle transition" in issue for issue in issues))
 
+    def test_current_work_item_protocol_and_optional_ids_are_installed(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            protocol = ElementTree.fromstring((target / "devspec/protocols/current-work-item.xml").read_text(encoding="utf-8"))
+            self.assertIn("git rev-parse --git-path devspec/current-work-item.json", protocol.findtext("location"))
+            self.assertIn("selection source", protocol.findtext("record"))
+            self.assertIn("devspec.clarify", protocol.findtext("continuation"))
+            self.assertFalse((target / "devspec/work-items/current.md").exists())
+            for command in ("story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"):
+                with self.subTest(command=command):
+                    contract = (target / f"devspec/contracts/devspec.{command}.md").read_text(encoding="utf-8")
+                    workflow = ElementTree.fromstring(xml_block(contract))
+                    refs = {item.attrib["ref"] for item in workflow.find("protocols")}
+                    self.assertIn("current-work-item", refs)
+                    if command != "story":
+                        self.assertIn(f"/devspec.{command} [work-item-id]", contract)
+            how_to = (Path(__file__).resolve().parents[1] / "docs/how-to.md").read_text(encoding="utf-8")
+            self.assertIn("Continue current work without an ID", how_to)
+            self.assertIn("selected `meta.md` next action", how_to)
+            self.assertIn("post-finalization route", how_to)
+            tracked_context = target / "devspec/work-items/current.md"
+            tracked_context.parent.mkdir(parents=True, exist_ok=True)
+            tracked_context.write_text("current: STORY-001\n", encoding="utf-8")
+            issues = doctor(target, "all")
+            self.assertTrue(any("tracked current-story artifact" in issue for issue in issues))
+
 if __name__ == "__main__":
     unittest.main()

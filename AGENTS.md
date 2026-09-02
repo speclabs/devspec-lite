@@ -1,6 +1,6 @@
 # Devspec Lite
 
-Use Git-tracked `devspec/` artifacts as canonical state.
+Use Git-tracked `devspec/` artifacts as canonical state. For a clear work-item continuation, resolve the per-worktree current context and run only its saved next action; ask before switching among multiple stories.
 
 - `devspec.extract`: read `devspec/contracts/devspec.extract.md`.
 - `devspec.projectcontext`: read `devspec/contracts/devspec.projectcontext.md`.

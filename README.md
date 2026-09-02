@@ -41,3 +41,4 @@ Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, gro
 ## How to
 
 Follow the scenario-based [how-to guide](docs/how-to.md) to choose the right command, establish an existing or new repository baseline, start and deliver a story, work across multiple repositories, or route a small fix safely.
+After starting a story, use the normal work-item commands or `continue` without repeating its ID; private per-worktree context resumes only the recorded next action.

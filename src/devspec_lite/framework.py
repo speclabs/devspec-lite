@@ -59,7 +59,7 @@ def install_framework(root: Path, profile: str, repo_state: str) -> None:
     for source in install_files():
         target = root / "devspec" / source.relative_to(source_root)
         write_file(target, source.read_text(encoding="utf-8"))
-    route = "devspec.extract → devspec.projectcontext" if repo_state == "existing" else "devspec.projectcontext"
+    route = "devspec.extract" if repo_state == "existing" else "devspec.projectcontext"
     write_file(root / "devspec/foundation/repository-state.md", f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n")
     install_adapters(root, profile)
 
@@ -104,11 +104,11 @@ def doctor(root: Path, profile: str) -> list[str]:
     current_context_commands = {"story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"}
     protocol_text_requirements = {
         "current-work-item": {
-            "location": ("git rev-parse --git-path devspec/current-work-item.json", "Never commit"),
+            "location": ("git rev-parse --git-path devspec/current-work-item.json", "Never create or commit"),
             "record": ("work-item ID", "current branch", "selection source", "timestamp", "never committed or pushed"),
-            "selection": ("validated explicit ID", "Exactly one eligible non-terminal"),
+            "selection": ("validated explicit ID", "exactly one eligible non-terminal"),
             "validation": ("branch changed", "stage and next action"),
-            "continuation": ("saved next action", "devspec.clarify", "terminal item is not resumed"),
+            "continuation": ("saved meta.md next action", "devspec.clarify", "terminal item is not resumed"),
             "clear": ("accepted review",),
         },
     }
@@ -131,6 +131,12 @@ def doctor(root: Path, profile: str) -> list[str]:
                 missing = sorted(set(required) - present)
                 if missing:
                     issues.append(f"missing protocol tags: {path}: {', '.join(missing)}")
+                protocol = ElementTree.fromstring(path.read_text(encoding="utf-8"))
+                for tag, phrases in protocol_text_requirements.get(name, {}).items():
+                    value = protocol.findtext(tag, default="")
+                    for phrase in phrases:
+                        if phrase not in value:
+                            issues.append(f"missing current-story resolver requirement: {path}: {tag}: {phrase}")
     for command in COMMANDS:
         path = root / f"devspec/contracts/devspec.{command.name}.md"
         if path.is_file():

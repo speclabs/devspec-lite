@@ -32,7 +32,7 @@ Invocation: `/devspec.review [work-item-id]`
     <transition outcome="rework-required" stage="implementation" run="active" next="devspec.implement" />
     <transition outcome="blocked" stage="review" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Verify the recorded changed-work baseline. Accepted is terminal; rework returns only affected tasks to implementation.</closure>
+  <closure>Verify the recorded changed-work baseline. Accepted is terminal and clears current-work-item context; rework returns only affected tasks to implementation and blocked work preserves context.</closure>
   <actions>Record the review outcome, one next action, and any actionable findings; do not silently change implementation code.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/review.md</artifact>
   <handoff>devspec.implement-or-devspec.clarify-or-none</handoff>

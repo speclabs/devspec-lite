@@ -122,7 +122,7 @@ uvx devspec-lite doctor --target . --profile all
 1. Run `/devspec.changerequest Add JSON export`.
 2. Follow the route back through `/devspec.finalize`, `/devspec.tasks`, implementation, and review.
 
-**What to expect.** The command increments `scope_revision`, retains previous records as superseded history, and prevents implementation against stale tasks.
+**What to expect.** This is the post-finalization route: the command increments `scope_revision`, retains previous records as superseded history, and prevents implementation against stale tasks.
 
 ### Resolve a material question without guessing
 
