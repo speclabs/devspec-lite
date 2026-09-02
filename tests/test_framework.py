@@ -235,5 +235,31 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue(any("duplicates workflow logic" in issue for issue in issues))
 
 
+    def test_lifecycle_contracts_are_complete_and_routable(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "existing"])
+            self.assertTrue((target / "devspec/lifecycle.md").is_file())
+            required = {"entry", "outputs", "transitions", "closure"}
+            valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
+            for command in COMMANDS:
+                contract = (target / f"devspec/contracts/devspec.{command.name}.md").read_text(encoding="utf-8")
+                workflow = ElementTree.fromstring(xml_block(contract))
+                self.assertFalse(required - {child.tag for child in workflow})
+                transitions = workflow.find("transitions")
+                self.assertIsNotNone(transitions)
+                for transition in transitions or ():
+                    self.assertIn(transition.attrib["next"], valid_next)
+                    self.assertIn(transition.attrib["run"], {"active", "blocked", "complete"})
+
 if __name__ == "__main__":
+    def test_doctor_rejects_invalid_lifecycle_transition(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "new"])
+            contract = target / "devspec/contracts/devspec.rules.md"
+            text = contract.read_text(encoding="utf-8").replace('next="devspec.story"', 'next="devspec.missing"')
+            contract.write_text(text, encoding="utf-8")
+            issues = doctor(target, "codex")
+            self.assertTrue(any("invalid lifecycle transition" in issue for issue in issues))
     unittest.main()

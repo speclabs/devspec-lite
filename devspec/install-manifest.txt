@@ -2,6 +2,7 @@
 README.md
 command-registry.md
 glossary.md
+lifecycle.md
 install-manifest.txt
 contracts/*.md
 protocols/*.xml

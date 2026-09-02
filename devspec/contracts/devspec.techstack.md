@@ -17,6 +17,15 @@ Invocation: `/devspec.techstack`
     <rule>Inspect manifests, lockfiles, runtime configuration, and CI before asking material questions.</rule>
     <rule>Record runtime, languages, frameworks, data stores, tooling, supported versions, and material constraints.</rule>
   </rules>
+  <entry>Completed project context in the new foundation chain, or an explicit targeted update; reject an existing-system baseline request.</entry>
+  <outputs>
+    <artifact path="devspec/foundation/tech-stack.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="foundation-updated" stage="foundation" run="active" next="devspec.codebase-structure" />
+    <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
+  </transitions>
+  <closure>Record inspected evidence and one registered next command; blocked evidence routes to devspec.clarify.</closure>
   <actions>Inspect manifests and configuration before asking for missing material facts.</actions>
   <artifact>devspec/foundation/tech-stack.md</artifact>
   <handoff>codebase-structure</handoff>

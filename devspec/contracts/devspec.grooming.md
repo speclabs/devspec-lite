@@ -17,7 +17,17 @@ Invocation: `/devspec.grooming GHUB-123-customer-export`
     <rule>Improve behavior, acceptance criteria, scope, technical constraints, edge cases, dependencies, compatibility risks, and blockers in place.</rule>
     <rule>Do not groom finalized scope; route new scope to changerequest.</rule>
   </rules>
+  <entry>Active work item at grooming for the current scope revision; reject finalized, blocked, stale, or unrelated scope.</entry>
+  <outputs>
+    <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="ready-for-finalization" stage="finalization" run="active" next="devspec.finalize" />
+    <transition outcome="material-blocker" stage="grooming" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Do not advance while a material question remains unanswered; record the one blocker and resume reference.</closure>
   <actions>Improve draft story and decisions in place; suggest only material questions.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/story.md</artifact>
-  <handoff>clarify-or-finalize</handoff>
+  <handoff>devspec.clarify-or-devspec.finalize</handoff>
 </workflow>

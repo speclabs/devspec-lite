@@ -94,6 +94,12 @@ def expected_paths(profile: str) -> list[Path]:
 def doctor(root: Path, profile: str) -> list[str]:
     issues = [f"missing: {path}" for path in expected_paths(profile) if not (root / path).is_file()]
     for name in PROTOCOLS:
+    valid_stages = {"foundation", "intake", "grooming", "finalization", "tasks", "implementation", "review", "complete", "triage", "routed", "caller", "origin"}
+    valid_runs = {"active", "blocked", "complete"}
+    valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
+    lifecycle_templates = {
+        "devspec/work-items/_template/meta.md": ("scope_revision:", "finalized_revision:", "planned_revision:", "implemented_revision:", "reviewed_revision:"), "devspec/work-items/_template/tasks.md": ("Scope revision:", "Source justification", "Done condition"), "devspec/work-items/_template/implement.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/review.md": ("Scope revision:", "Changed-work baseline:"),
+    }
         path = root / f"devspec/protocols/{name}.xml"
         if path.is_file():
             try:
@@ -119,14 +125,39 @@ def doctor(root: Path, profile: str) -> list[str]:
                 workflow = ElementTree.fromstring(xml_block(text))
                 if workflow.tag != "workflow" or workflow.attrib.get("command") != f"devspec.{command.name}":
                     issues.append(f"invalid contract identity: {path}")
-                required = {"purpose", "protocols", "input", "rules", "actions", "artifact", "handoff"}
+                required = {"purpose", "protocols", "input", "rules", "entry", "outputs", "transitions", "closure", "actions", "artifact", "handoff"}
                 present = {child.tag for child in workflow}
                 missing = sorted(required - present)
                 if missing:
                     issues.append(f"missing contract tags: {path}: {', '.join(missing)}")
             except (ValueError, ElementTree.ParseError) as exc:
                 issues.append(f"invalid contract XML: {path}: {exc}")
+                outputs = workflow.find("outputs")
+                if outputs is None or not list(outputs):
+                    issues.append(f"missing contract outputs: {path}")
+                transitions = workflow.find("transitions")
+                if transitions is None or not list(transitions):
+                    issues.append(f"missing contract transitions: {path}")
+                elif transitions is not None:
+                    for transition in transitions:
+                        stage = transition.attrib.get("stage")
+                        run = transition.attrib.get("run")
+                        next_command = transition.attrib.get("next")
+                        if not transition.attrib.get("outcome") or stage not in valid_stages or run not in valid_runs or next_command not in valid_next:
+                            issues.append(f"invalid lifecycle transition: {path}")
+                        if run == "blocked" and next_command != "devspec.clarify":
+                            issues.append(f"blocked transition must clarify: {path}")
+                        if next_command == "none" and run != "complete":
+                            issues.append(f"terminal transition must be complete: {path}")
     adapters = ADAPTERS if profile == "all" else (profile,)
+    registry = root / "devspec/command-registry.md"
+    registry_text = registry.read_text(encoding="utf-8") if registry.is_file() else ""
+    for command in COMMANDS:
+        if f"devspec.{command.name}" not in registry_text:
+            issues.append(f"missing registry command: devspec.{command.name}")
+    for template, required_text in lifecycle_templates.items():
+        text = (root / template).read_text(encoding="utf-8") if (root / template).is_file() else ""
+        for expected in required_text:
     for adapter in adapters:
         if adapter == "codex":
             text = (root / "AGENTS.md").read_text(encoding="utf-8") if (root / "AGENTS.md").is_file() else ""

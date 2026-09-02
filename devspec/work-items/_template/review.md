@@ -1,5 +1,7 @@
 # Review
 
+- Scope revision: <n>
+- Changed-work baseline: <same baseline recorded by implementation>
 - Outcome: accepted | rework-required | blocked
 - Next action:
 

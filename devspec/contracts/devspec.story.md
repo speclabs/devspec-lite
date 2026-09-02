@@ -18,7 +18,17 @@ Invocation: `/devspec.story Add customer export`
     <rule>Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.</rule>
     <rule>Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
   </rules>
+  <entry>One selected request with a valid work-item folder at intake and an active scope revision; reject finalized scope changes and independent bundled requests.</entry>
+  <outputs>
+    <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="grooming-required" stage="grooming" run="active" next="devspec.grooming" />
+    <transition outcome="ready-for-finalization" stage="finalization" run="active" next="devspec.finalize" />
+  </transitions>
+  <closure>Record the selected route. Use grooming when code-area evidence, compatibility, risk, or acceptance criteria needs scoped analysis.</closure>
   <actions>Choose one work item, validate its target folder, and preserve finalized baselines.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/story.md</artifact>
-  <handoff>grooming-or-finalize</handoff>
+  <handoff>devspec.grooming-or-devspec.finalize</handoff>
 </workflow>

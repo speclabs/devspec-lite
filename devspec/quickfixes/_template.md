@@ -17,6 +17,7 @@ updated: <yyyy-mm-dd>
 - Validation:
 - Outcome:
 
+- Route: complete | devspec.clarify | devspec.story
 ## Decisions
 
 | ID | Material question | Evidence | Impact | Choices | Recommended | Recommendation justification | Applicability | Canonical rule link | Answer or skip reason | Status |

@@ -1,5 +1,8 @@
 # Finalization
 
+- Scope revision: <n>
+- Status: ready | blocked | superseded
+
 ## Readiness
 
 ## Foundation Traceability

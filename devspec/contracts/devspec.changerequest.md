@@ -16,6 +16,16 @@ Invocation: `/devspec.changerequest GHUB-123 Add JSON export`
     <rule>Append the next CR-### entry and CR-scoped criteria; never rewrite baseline evidence.</rule>
     <rule>Ask one material classification question when it is unclear whether the request is related or a new linked work item.</rule>
   </rules>
+  <entry>Related requirement for a finalized-or-later work item with an active current scope revision; reject independent, blocked, or pre-finalization requests.</entry>
+  <outputs>
+    <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="related-change-accepted" stage="finalization" run="active" next="devspec.finalize" />
+    <transition outcome="classification-blocked" stage="finalization" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Append the CR, increment scope_revision, mark downstream records superseded, and preserve their historical evidence.</closure>
   <actions>Classify scope as related or independent; append the next CR identifier when related.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/story.md</artifact>
   <handoff>finalize</handoff>

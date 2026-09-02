@@ -20,7 +20,17 @@ Invocation: `/devspec.finalize GHUB-123-customer-export`
     <rule>Do not mark ready while a relevant OWASP category, required control, or security-validation plan is unresolved.</rule>
     <rule>Write a concise implementation brief and validation plan, not implementation code.</rule>
   </rules>
+  <entry>Active work item at finalization with a complete current-revision story; reject stale finalization, blocked work, or incomplete draft scope.</entry>
+  <outputs>
+    <artifact path="devspec/work-items/&lt;id&gt;/finalize.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="ready" stage="tasks" run="active" next="devspec.tasks" />
+    <transition outcome="material-blocker" stage="finalization" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Stamp the readiness brief with the current scope revision. Preserve earlier revision sections as superseded history.</closure>
   <actions>Scan only material readiness gaps; do not invent implementation detail.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/finalize.md</artifact>
-  <handoff>clarify-or-tasks</handoff>
+  <handoff>devspec.clarify-or-devspec.tasks</handoff>
 </workflow>

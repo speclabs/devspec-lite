@@ -24,6 +24,12 @@ Invocation: `/devspec.extract`
     <rule>Use the diagram queue and overview as the only diagram record. Validate every SVG XML file, record its evidence and status, and do not create duplicate diagrams.</rule>
     <rule>Keep one extraction coverage item active and write discovered facts to their destination artifact, not queue state. Reuse recorded discovery methods and do not repeat a failed method unless its condition changed.</rule>
   </rules>
+  <entry>Existing repository with approved source scope and no active incompatible extraction run; reject new-repository foundation authoring.</entry>
+  <transitions>
+    <transition outcome="foundation-ready" stage="foundation" run="active" next="devspec.story" />
+    <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Complete the listed baseline outputs before routing to story. Record every material evidence gap as blocked with a continuation condition.</closure>
   <outputs>
     <artifact path="devspec/foundation/project-context.md" />
     <artifact path="devspec/foundation/tech-stack.md" />
@@ -42,5 +48,5 @@ Invocation: `/devspec.extract`
   </outputs>
   <actions>Complete the existing-system baseline, create applicable SVG diagrams, and record remaining gaps or blocked evidence.</actions>
   <artifact>devspec/foundation/extraction-coverage.md</artifact>
-  <handoff>story-or-complete-foundation</handoff>
+  <handoff>devspec.story-or-devspec.clarify</handoff>
 </workflow>

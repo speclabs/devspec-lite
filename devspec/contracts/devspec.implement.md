@@ -22,6 +22,16 @@ Invocation: `/devspec.implement GHUB-123-customer-export`
     <rule>Record project-native security evidence for every applicable OWASP control. A suspected false positive or not-applicable finding requires the agent to ask one material confirmation question of the implementing developer, then record the explicit confirmation, rationale, enforceable supporting evidence, and material-change revalidation trigger; it remains proposed until review.</rule>
     <rule>Do not classify a known unresolved vulnerability as not applicable merely because access is limited, authenticated, or internal-only.</rule>
   </rules>
+  <entry>Active work item at implementation with current-revision ready finalization and ordered pending tasks; reject stale plans, blocked tasks, or changed scope.</entry>
+  <outputs>
+    <artifact path="devspec/work-items/&lt;id&gt;/implement.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/tasks.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="implementation-complete" stage="review" run="active" next="devspec.review" />
+    <transition outcome="material-blocker" stage="implementation" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Record the changed-work baseline and mark a task complete only after its recorded validation passes; preserve superseded revisions.</closure>
   <actions>Stay within finalized scope; checkpoint before edits and validation.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/implement.md</artifact>
   <handoff>review</handoff>

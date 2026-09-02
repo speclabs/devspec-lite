@@ -1,5 +1,9 @@
 # Implementation
 
+- Scope revision: <n>
+- Changed-work baseline: <commit, diff, or recorded checkpoint>
+- Status: active | blocked | complete | superseded
+
 | Task | Decision or rule IDs | Changed areas | Validation | Outcome |
 |---|---|---|---|---|
 

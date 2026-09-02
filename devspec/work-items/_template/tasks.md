@@ -1,4 +1,7 @@
 # Tasks
 
-| ID | Task | Scope | Depends on | Decision or rule IDs | Validation | Status |
+- Scope revision: <n>
+- Status: active | superseded
+
+| ID | Task | Scope | Depends on | Source justification | Decision or rule IDs | Validation | Done condition | Status |
 |---|---|---|---|---|---|---|

@@ -18,7 +18,17 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
     <rule>Create a QF record, implement, and run focused validation in the same command.</rule>
     <rule>Route public API contracts, database schema or migration, authentication or security work, breaking changes, unrelated concerns, and unresolved risk to story and suggested grooming without editing code.</rule>
   </rules>
+  <entry>One documented localized low-risk request at triage with one primary scope; reject contracts, migrations, security work, breaking changes, unrelated concerns, and unresolved risk.</entry>
+  <outputs>
+    <artifact path="devspec/quickfixes/QF-###-slug.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="complete" stage="complete" run="complete" next="none" />
+    <transition outcome="material-blocker" stage="triage" run="blocked" next="devspec.clarify" />
+    <transition outcome="routed" stage="routed" run="complete" next="devspec.story" />
+  </transitions>
+  <closure>Record the selected route, validation evidence, and terminal next action. Direct implementation is allowed only for the declared low-risk scope.</closure>
   <actions>Select one primary scope, route risky work, then implement and validate directly.</actions>
   <artifact>devspec/quickfixes/QF-###-slug.md</artifact>
-  <handoff>complete-or-story</handoff>
+  <handoff>none-or-devspec.clarify-or-devspec.story</handoff>
 </workflow>

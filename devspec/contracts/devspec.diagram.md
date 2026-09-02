@@ -22,7 +22,17 @@ Invocation: `/devspec.diagram runtime architecture format=svg`
     <rule>Default to SVG with title and description and validate its XML; write Mermaid or HTML only when explicitly requested.</rule>
     <rule>Keep labels short and place explanations in supporting Markdown rather than the graphic.</rule>
   </rules>
+  <entry>One approved diagram subject in the caller's current scope with duplicate check and queue access; reject requests that would alter caller lifecycle state.</entry>
+  <outputs>
+    <artifact path="devspec/architecture/artifact-queue.md" />
+    <artifact path="devspec/architecture/overview.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="diagram-complete" stage="caller" run="active" next="return-to-caller" />
+    <transition outcome="evidence-blocked" stage="caller" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Validate the queued output, index only completed diagrams, and leave the caller's saved stage unchanged.</closure>
   <actions>Use SVG by default; write Mermaid or HTML only when requested.</actions>
   <artifact>devspec/architecture/artifact-queue.md</artifact>
-  <handoff>continue-current-workflow</handoff>
+  <handoff>return-to-caller</handoff>
 </workflow>

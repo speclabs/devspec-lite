@@ -21,7 +21,18 @@ Invocation: `/devspec.review GHUB-123-customer-export`
     <rule>Write findings only; do not silently edit implementation code.</rule>
     <rule>Record exactly one outcome: accepted, rework-required, or blocked; record exactly one next action.</rule>
   </rules>
+  <entry>Active work item at review with complete implementation and matching finalization and task records for the current scope revision; reject an unknown changed-work baseline.</entry>
+  <outputs>
+    <artifact path="devspec/work-items/&lt;id&gt;/review.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+  </outputs>
+  <transitions>
+    <transition outcome="accepted" stage="complete" run="complete" next="none" />
+    <transition outcome="rework-required" stage="implementation" run="active" next="devspec.implement" />
+    <transition outcome="blocked" stage="review" run="blocked" next="devspec.clarify" />
+  </transitions>
+  <closure>Verify the recorded changed-work baseline. Accepted is terminal; rework returns only affected tasks to implementation.</closure>
   <actions>Record the review outcome, one next action, and any actionable findings; do not silently change implementation code.</actions>
   <artifact>devspec/work-items/&lt;id&gt;/review.md</artifact>
-  <handoff>implement-or-close</handoff>
+  <handoff>devspec.implement-or-devspec.clarify-or-none</handoff>
 </workflow>
