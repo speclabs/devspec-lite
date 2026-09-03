@@ -44,7 +44,7 @@ uvx devspec-lite init --target . --profile all --repo-state existing
 uvx devspec-lite doctor --target . --profile all
 ```
 
-2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. For extraction, recommend `reference-only` unless the developer explicitly needs a stronger boundary. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
+2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all standard access choices and recommend `edit-and-test`; that grants normal delivery capability, while the active command still prevents unnecessary source changes. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
 3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
 4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and applicable diagrams.
 5. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
