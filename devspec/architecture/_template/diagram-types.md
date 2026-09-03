@@ -4,7 +4,7 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 
 ## Shared visual grammar
 
-- Start from the matching upstream-derived SVG template in this directory; do not reduce a selected family to generic boxes and arrows.
+- Start from the matching family-specific SVG template in this directory; do not reduce a selected family to generic boxes and arrows.
 - Use the template's 1600 by 900 dark canvas, subtle grid, framed surface, short eyebrow, title, and evidence-backed subtitle.
 - Draw connectors behind cards. Use semantic role colors only to distinguish meaning, not decoration; keep boundaries and optional or exception paths visually distinct.
 - Keep labels short; use supporting Markdown for details. Every SVG needs a title and description, complete replacement of template placeholders, and XML validation.

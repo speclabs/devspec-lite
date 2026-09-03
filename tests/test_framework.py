@@ -252,7 +252,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue((target / "devspec/architecture/artifact-queue.md").is_file())
             self.assertTrue((target / "devspec/architecture/overview.md").is_file())
 
-    def test_upstream_derived_diagram_templates_are_installed_and_well_formed(self) -> None:
+    def test_family_specific_diagram_templates_are_installed_and_well_formed(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
             main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
@@ -275,7 +275,7 @@ class FrameworkTests(unittest.TestCase):
                     self.assertIsNotNone(root.find("{http://www.w3.org/2000/svg}title"))
                     self.assertIsNotNone(root.find("{http://www.w3.org/2000/svg}desc"))
             diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
-            self.assertIn("Start each SVG from the matching upstream-derived template", diagram)
+            self.assertIn("Start each SVG from the matching family-specific template", diagram)
             self.assertIn("connectors behind cards", diagram)
 
     def test_init_refuses_changed_managed_file(self) -> None:
