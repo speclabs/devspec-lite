@@ -10,6 +10,11 @@
 | Foundation reference, decision, or rule ID | Expected intentional outcome | Evidence | Status | Finding or action |
 |---|---|---|---|---|
 
+## Architecture and Diagram Verification
+
+| Architecture or diagram reference | Expected implementation or validation impact | Evidence | Status | Finding or action |
+|---|---|---|---|---|
+
 ## Security Verification
 
 | Finding ID | OWASP category | Disposition | Developer confirmation | Rationale and enforceable evidence | Reviewer confirmation | Revalidate when | Status or action |

@@ -13,7 +13,7 @@ Invocation: `/devspec.clarify [work-item-id]`
   </protocols>
   <input>An optional work-item ID, or one foundation or quickfix record, with one active material blocker question.</input>
   <rules>
-    <rule>Resolve the one highest-priority material decision in its active queue and append its answer to decisions.md.</rule>
+    <rule>Resolve the one highest-priority material decision in its active queue and append its answer to decisions.md. For a work item, append the origin command, question, resolution, evidence, and exact resume command to clarify.md.</rule>
     <rule>Do not accept scope changes after finalization; route them to changerequest.</rule>
     <rule>Return to the saved stage and next action after resolution.</rule>
   </rules>
@@ -21,6 +21,7 @@ Invocation: `/devspec.clarify [work-item-id]`
   <outputs>
     <artifact path="devspec/foundation/decisions.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/clarify.md" />
     <artifact path="devspec/quickfixes/QF-###-slug.md" />
   </outputs>
   <transitions>

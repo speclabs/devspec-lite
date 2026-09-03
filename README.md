@@ -28,7 +28,7 @@ uvx devspec-lite init --target . --profile all --repo-state new
 uvx devspec-lite doctor --target . --profile all
 ```
 
-`init` copies canonical Markdown + XML contracts, concise templates, and the wrappers for the selected agent profile. Use the `devspec.*` commands exposed by your agent host.
+`init` copies canonical Markdown + XML contracts, concise templates, and the wrappers for the selected agent profile. Use the `devspec.*` commands exposed by your agent host. Use `devspec-lite diff --target .` to inspect installed-framework drift and `devspec-lite sync --target . --profile all --dry-run` before applying a framework upgrade.
 
 ## Choose a workflow route
 

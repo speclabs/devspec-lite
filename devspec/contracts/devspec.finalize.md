@@ -17,7 +17,7 @@ Invocation: `/devspec.finalize [work-item-id]`
     <rule>Check only material readiness gaps: scope, criteria, behavior, data, integration, security, compliance, validation, and delivery constraints.</rule>
     <rule>Mark ready only when remaining gaps cannot materially change implementation or validation; otherwise create one material blocker question.</rule>
     <rule>Classify every accepted material decision as work-item-local or reusable. Promote a reusable business or validation decision to devspec/foundation/workflow-rules.md with a stable rule ID and source decision link; promote a reusable engineering constraint to devspec/foundation/rules.md. Record the resulting canonical rule link in decisions.md.</rule>
-    <rule>Record one compact foundation trace for the relevant coding conventions, owned areas and boundaries, canonical rules, and OWASP categories. For every relevant OWASP category, state applicability, required control, and planned project-native evidence.</rule>
+    <rule>Record one compact foundation trace for the relevant coding conventions, owned areas and boundaries, canonical rules, applicable active `CP-###` principles, and OWASP categories. Record a separate architecture and diagram trace for relevant overview entries, completed diagrams, or queued candidates, including implementation and validation impact; no diagram is required. For every relevant OWASP category, state applicability, required control, and planned project-native evidence.</rule>
     <rule>Do not mark ready while a relevant OWASP category, required control, or security-validation plan is unresolved.</rule>
     <rule>Write a concise implementation brief and validation plan, not implementation code.</rule>
   </rules>

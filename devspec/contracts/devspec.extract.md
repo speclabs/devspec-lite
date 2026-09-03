@@ -19,7 +19,7 @@ Invocation: `/devspec.extract`
     <rule>For multi-repository work, record every repository role, path, access boundary, and evidence before reading, editing, or validating it.</rule>
     <rule>For every approved repository, record an observed repository layout in `devspec/foundation/codebase-structure.md`: a readable `text` tree rooted at its confirmed local path that includes solution or manifest files, owned source and test roots, meaningful modules, configuration, and integration or migration locations. Keep the tree representative rather than exhaustive; exclude dependencies, caches, generated output, and secrets.</rule>
     <rule>Ask one clarification for every unresolved material question. Label all durable findings confirmed, observed, inferred, or blocked; do not invent roles, workflows, business rules, validation rules, integrations, or diagrams.</rule>
-    <rule>Initialize and complete every listed foundation artifact from its template when missing: project context, technology stack, codebase structure, coding standards with followable local examples, rules, technical baseline, roles, workflows, workflow rules, extraction state, exploration state, and coverage.</rule>
+    <rule>Initialize and complete every listed foundation artifact from its template when missing: project context, technology stack, codebase structure, coding standards with followable local examples, rules, technical baseline, roles, workflows, workflow rules, extraction state, exploration state, and coverage. Record rare cross-work-item principle candidates in `devspec/constitution.md` with stable `CP-###` IDs, evidence, and candidate state; do not promote inferred candidates.</rule>
     <rule>For each observed coding convention that changes implementation or review behavior, assign a stable `CS-###` ID and capture one or more concise, concrete local code or test snippets as `EX-###` entries under `## Standards Examples`. Each entry names the applicable standard IDs, source location, and fenced language-appropriate code; one example may apply to multiple standards. Record a relevant anti-pattern when repository evidence supports one.</rule>
     <rule>Populate the single OWASP Top 10:2025 baseline in rules.md from observed code, dependencies, configuration, deployment, and access evidence. Record controls, gaps, and unknowns; do not infer an internal-only or limited-access boundary without enforceable evidence.</rule>
     <rule>For every confirmed business workflow, record its business area, participating roles, trigger, outcome, business rules, validation rules, evidence, and applicable exceptions.</rule>
@@ -37,6 +37,7 @@ Invocation: `/devspec.extract`
   </transitions>
   <closure>Complete the listed baseline outputs and present the diagram candidate list before routing to story. Record every material evidence gap as blocked with a continuation condition, and preserve ungenerated candidates for `/devspec.diagram`.</closure>
   <outputs>
+    <artifact path="devspec/constitution.md" />
     <artifact path="devspec/foundation/project-context.md" />
     <artifact path="devspec/foundation/tech-stack.md" />
     <artifact path="devspec/foundation/codebase-structure.md" />

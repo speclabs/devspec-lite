@@ -1,5 +1,6 @@
 # Canonical Devspec Lite artifacts installed by automated and manual setup.
 README.md
+constitution.md
 command-registry.md
 glossary.md
 lifecycle.md

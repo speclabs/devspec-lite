@@ -1,19 +1,39 @@
-"""Render and validate the compact framework tree."""
+"""Render, synchronize, and validate the compact framework tree."""
 
 from __future__ import annotations
 
+import hashlib
+import json
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree
 
+from . import __version__
 from .definitions import COMMANDS, PROTOCOLS, canonical_root, install_files
 
 PROFILES = ("all", "copilot", "codex", "claude", "cursor", "gemini", "antigravity")
 ADAPTERS = PROFILES[1:]
+MANIFEST_PATH = Path("devspec/.install-manifest.json")
+FRAMEWORK_OWNED = "framework-owned"
+PROJECT_OWNED = "project-owned"
 
 
-def write_file(path: Path, content: str) -> None:
+@dataclass(frozen=True)
+class ManagedFile:
+    path: Path
+    content: str
+    ownership: str
+
+    @property
+    def digest(self) -> str:
+        return hashlib.sha256(self.content.encode("utf-8")).hexdigest()
+
+
+
+def write_file(path: Path, content: str, *, force: bool = False) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    if path.exists() and path.read_text(encoding="utf-8") != content:
+    if path.exists() and path.read_text(encoding="utf-8") != content and not force:
         raise ValueError(f"Refusing to overwrite changed managed file: {path}")
     path.write_text(content, encoding="utf-8", newline="\n")
 
@@ -33,36 +53,6 @@ def wrapper_text(adapter: str, command) -> tuple[str, str]:
     raise ValueError(adapter)
 
 
-def install_adapters(root: Path, profile: str) -> None:
-    adapters = ADAPTERS if profile == "all" else (profile,)
-    for adapter in adapters:
-        if adapter == "codex":
-            command_lines = "\n".join(f"- `devspec.{c.name}`: read `devspec/contracts/devspec.{c.name}.md`." for c in COMMANDS)
-            write_file(root / "AGENTS.md", "# Devspec Lite\n\nUse Git-tracked `devspec/` artifacts as canonical state. For a clear work-item continuation, resolve the per-worktree current context and run only its saved next action; ask before switching among multiple stories.\n\n" + command_lines + "\n")
-        elif adapter == "cursor":
-            commands = ", ".join(f"`devspec.{c.name}`" for c in COMMANDS)
-            write_file(root / ".cursor/rules/devspec-workflow.mdc", f"---\ndescription: Devspec Lite workflow\nalwaysApply: false\n---\nFor {commands}, read the matching `devspec/contracts/` file and listed protocols. For a clear continuation, resolve per-worktree current context and run only the saved next action; ask before switching stories.\n")
-        elif adapter == "copilot":
-            for command in COMMANDS:
-                path, combined = wrapper_text(adapter, command)
-                prompt, agent = combined.split("\n---AGENT---\n", 1)
-                write_file(root / path, prompt)
-                write_file(root / f".github/agents/devspec.{command.name}.agent.md", agent)
-        else:
-            for command in COMMANDS:
-                path, content = wrapper_text(adapter, command)
-                write_file(root / path, content)
-
-
-def install_framework(root: Path, profile: str, repo_state: str) -> None:
-    source_root = canonical_root()
-    for source in install_files():
-        target = root / "devspec" / source.relative_to(source_root)
-        write_file(target, source.read_text(encoding="utf-8"))
-    route = "devspec.extract" if repo_state == "existing" else "devspec.projectcontext"
-    write_file(root / "devspec/foundation/repository-state.md", f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n")
-    install_adapters(root, profile)
-
 def xml_block(text: str) -> str:
     start = text.index("<workflow")
     end = text.index("</workflow>") + len("</workflow>")
@@ -70,25 +60,8 @@ def xml_block(text: str) -> str:
 
 
 def expected_paths(profile: str) -> list[Path]:
-    source_root = canonical_root()
-    paths = [Path("devspec") / source.relative_to(source_root) for source in install_files()]
-    paths.append(Path("devspec/foundation/repository-state.md"))
-    adapters = ADAPTERS if profile == "all" else (profile,)
-    for adapter in adapters:
-        if adapter == "codex":
-            paths.append(Path("AGENTS.md"))
-        elif adapter == "cursor":
-            paths.append(Path(".cursor/rules/devspec-workflow.mdc"))
-        elif adapter == "copilot":
-            for c in COMMANDS:
-                paths.extend((Path(f".github/prompts/devspec.{c.name}.prompt.md"), Path(f".github/agents/devspec.{c.name}.agent.md")))
-        elif adapter == "claude":
-            paths.extend(Path(f".claude/skills/devspec-{c.name}/SKILL.md") for c in COMMANDS)
-        elif adapter == "gemini":
-            paths.extend(Path(f".gemini/commands/devspec/{c.name}.toml") for c in COMMANDS)
-        elif adapter == "antigravity":
-            paths.extend(Path(f".agents/skills/devspec-{c.name}.md") for c in COMMANDS)
-    return paths
+    # Validation consumes the installer payload so adapter coverage cannot drift.
+    return [item.path for item in managed_payload(profile, "existing")]
 
 
 def doctor(root: Path, profile: str) -> list[str]:
@@ -100,7 +73,7 @@ def doctor(root: Path, profile: str) -> list[str]:
     valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
     lifecycle_templates = {
         "devspec/work-items/_template/meta.md": ("scope_revision:", "finalized_revision:", "planned_revision:", "implemented_revision:", "reviewed_revision:"),
-        "devspec/work-items/_template/story.md": ("Source Record", "Immutable provider ID", "MCP resolution method", "User confirmation"), "devspec/work-items/_template/tasks.md": ("Scope revision:", "Source justification", "Done condition"), "devspec/work-items/_template/implement.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/review.md": ("Scope revision:", "Changed-work baseline:"),
+        "devspec/work-items/_template/story.md": ("Source Record", "Immutable provider ID", "MCP resolution method", "User confirmation"), "devspec/work-items/_template/tasks.md": ("Scope revision:", "Source justification", "Done condition"), "devspec/work-items/_template/implement.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/review.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/clarify.md": ("Origin command", "Resolution", "Resume command"),
     }
     current_context_commands = {"story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"}
     protocol_text_requirements = {
@@ -222,3 +195,198 @@ def doctor(root: Path, profile: str) -> list[str]:
                         if "<workflow" in text:
                             issues.append(f"wrapper duplicates workflow logic: {path}")
     return issues
+
+
+# Upgrade lifecycle. These definitions intentionally follow the compact installer
+# above so existing callers retain their public import locations.
+def _sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _state_from_target(root: Path) -> str:
+    state_file = root / "devspec/foundation/repository-state.md"
+    if state_file.is_file():
+        text = state_file.read_text(encoding="utf-8")
+        if "State: new" in text:
+            return "new"
+    return "existing"
+
+
+def _ownership(relative: Path) -> str:
+    if relative == Path("constitution.md"):
+        return PROJECT_OWNED
+    if relative in {Path("architecture/overview.md"), Path("architecture/artifact-queue.md")}:
+        return PROJECT_OWNED
+    if relative == Path("foundation/repository-state.md"):
+        return PROJECT_OWNED
+    return FRAMEWORK_OWNED
+
+
+def managed_payload(profile: str, repo_state: str) -> tuple[ManagedFile, ...]:
+    source_root = canonical_root()
+    files: list[ManagedFile] = []
+    for source in install_files():
+        relative = source.relative_to(source_root)
+        files.append(ManagedFile(Path("devspec") / relative, source.read_text(encoding="utf-8"), _ownership(relative)))
+    route = "devspec.extract" if repo_state == "existing" else "devspec.projectcontext"
+    files.append(ManagedFile(Path("devspec/foundation/repository-state.md"), f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n", PROJECT_OWNED))
+    adapters = ADAPTERS if profile == "all" else (profile,)
+    for adapter in adapters:
+        if adapter == "codex":
+            command_lines = "\n".join(f"- `devspec.{c.name}`: read `devspec/contracts/devspec.{c.name}.md`." for c in COMMANDS)
+            files.append(ManagedFile(Path("AGENTS.md"), "# Devspec Lite\n\nUse Git-tracked `devspec/` artifacts as canonical state. For a clear work-item continuation, resolve the per-worktree current context and run only its saved next action; ask before switching among multiple stories.\n\n" + command_lines + "\n", FRAMEWORK_OWNED))
+        elif adapter == "cursor":
+            commands = ", ".join(f"`devspec.{c.name}`" for c in COMMANDS)
+            files.append(ManagedFile(Path(".cursor/rules/devspec-workflow.mdc"), f"---\ndescription: Devspec Lite workflow\nalwaysApply: false\n---\nFor {commands}, read the matching `devspec/contracts/` file and listed protocols. For a clear continuation, resolve per-worktree current context and run only the saved next action; ask before switching stories.\n", FRAMEWORK_OWNED))
+        elif adapter == "copilot":
+            for command in COMMANDS:
+                prompt_path, combined = wrapper_text(adapter, command)
+                prompt, agent = combined.split("\n---AGENT---\n", 1)
+                files.extend((ManagedFile(Path(prompt_path), prompt, FRAMEWORK_OWNED), ManagedFile(Path(f".github/agents/devspec.{command.name}.agent.md"), agent, FRAMEWORK_OWNED)))
+        else:
+            for command in COMMANDS:
+                wrapper_path, content = wrapper_text(adapter, command)
+                files.append(ManagedFile(Path(wrapper_path), content, FRAMEWORK_OWNED))
+    return tuple(sorted(files, key=lambda item: item.path.as_posix()))
+
+
+def read_install_manifest(root: Path) -> dict | None:
+    path = root / MANIFEST_PATH
+    if not path.is_file():
+        return None
+    try:
+        value = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return None
+    return value if isinstance(value, dict) else None
+
+
+def manifest_profile(root: Path) -> str | None:
+    profile = (read_install_manifest(root) or {}).get("profile")
+    return profile if profile in PROFILES else None
+
+
+def _manifest_entries(manifest: dict | None, key: str = "files") -> dict[str, dict]:
+    entries = (manifest or {}).get(key, [])
+    return {entry["path"]: entry for entry in entries if isinstance(entry, dict) and isinstance(entry.get("path"), str)}
+
+
+def _write_manifest(root: Path, profile: str, repo_state: str, files: tuple[ManagedFile, ...], previous: dict | None = None) -> None:
+    current = {item.path.as_posix() for item in files}
+    retired = _manifest_entries(previous, "retained_obsolete")
+    for path, entry in _manifest_entries(previous).items():
+        if path not in current:
+            retired[path] = entry
+    retired = {path: entry for path, entry in retired.items() if path not in current}
+    data = {
+        "schema_version": 1,
+        "devspec_lite_version": __version__,
+        "profile": profile,
+        "repo_state": repo_state,
+        "installed_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
+        "files": [{"path": item.path.as_posix(), "sha256": item.digest, "ownership": item.ownership} for item in files],
+        "retained_obsolete": [retired[key] for key in sorted(retired)],
+    }
+    manifest_path = root / MANIFEST_PATH
+    manifest_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest_path.write_text(json.dumps(data, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+
+
+def _copy_plan(root: Path, files: tuple[ManagedFile, ...], previous: dict | None, *, mode: str, force: bool) -> tuple[list[ManagedFile], list[str], list[str]]:
+    old = _manifest_entries(previous)
+    writable: list[ManagedFile] = []
+    conflicts: list[str] = []
+    skipped: list[str] = []
+    for item in files:
+        target = root / item.path
+        name = item.path.as_posix()
+        if not target.exists():
+            writable.append(item)
+            continue
+        digest = _sha256(target)
+        if digest == item.digest:
+            skipped.append(name)
+            continue
+        if item.ownership == PROJECT_OWNED:
+            if mode == "sync":
+                skipped.append(f"{name} (project-owned)")
+            else:
+                conflicts.append(f"{name} already exists and differs")
+            continue
+        if mode == "sync" and old.get(name, {}).get("sha256") == digest:
+            writable.append(item)
+        elif force:
+            writable.append(item)
+        else:
+            conflicts.append(f"{name} has local changes" if mode == "sync" else f"{name} already exists and differs")
+    return writable, conflicts, skipped
+
+
+def _apply_files(root: Path, files: list[ManagedFile]) -> int:
+    for item in files:
+        write_file(root / item.path, item.content, force=True)
+    return len(files)
+
+
+def install_framework(root: Path, profile: str, repo_state: str, *, force: bool = False) -> None:
+    previous = read_install_manifest(root)
+    files = managed_payload(profile, repo_state)
+    writable, conflicts, _ = _copy_plan(root, files, previous, mode="init", force=force)
+    if conflicts:
+        raise ValueError("; ".join(conflicts))
+    _apply_files(root, writable)
+    _write_manifest(root, profile, repo_state, files, previous)
+
+
+def diff_framework(root: Path, profile: str) -> dict[str, list[str]]:
+    manifest = read_install_manifest(root)
+    files = managed_payload(profile, _state_from_target(root))
+    old = _manifest_entries(manifest)
+    report = {"profile": [], "missing": [], "modified": [], "stale": [], "protected": [], "obsolete": []}
+    if manifest and manifest.get("profile") != profile:
+        report["profile"].append(f"manifest profile is '{manifest.get('profile')}', requested profile is '{profile}'")
+    for item in files:
+        target = root / item.path
+        name = item.path.as_posix()
+        if item.ownership == PROJECT_OWNED and target.exists():
+            report["protected"].append(name)
+            continue
+        if not target.exists():
+            report["missing"].append(name)
+            continue
+        digest = _sha256(target)
+        if digest == item.digest:
+            continue
+        if old.get(name, {}).get("sha256") == digest:
+            report["stale"].append(name)
+        else:
+            report["modified"].append(name)
+    current = {item.path.as_posix() for item in files}
+    for name in sorted(set(old) | set(_manifest_entries(manifest, "retained_obsolete"))):
+        if name not in current and (root / Path(name)).exists():
+            report["obsolete"].append(name)
+    return report
+
+
+def sync_framework(root: Path, profile: str, *, dry_run: bool = False, force: bool = False) -> tuple[list[str], list[str], list[str], list[str]]:
+    previous = read_install_manifest(root)
+    state = _state_from_target(root)
+    files = managed_payload(profile, state)
+    obsolete = diff_framework(root, profile)["obsolete"]
+    writable, conflicts, skipped = _copy_plan(root, files, previous, mode="sync", force=force)
+    if not conflicts and not dry_run:
+        _apply_files(root, writable)
+        _write_manifest(root, profile, state, files, previous)
+    return [item.path.as_posix() for item in writable], conflicts, skipped, obsolete
+
+
+def doctor_warnings(root: Path, profile: str) -> list[str]:
+    manifest = read_install_manifest(root)
+    if not manifest:
+        return [f"install manifest is missing: {MANIFEST_PATH.as_posix()}"]
+    warnings: list[str] = []
+    if manifest.get("profile") != profile:
+        warnings.append(f"profile mismatch: manifest has '{manifest.get('profile')}', doctor checked '{profile}'")
+    if manifest.get("devspec_lite_version") != __version__:
+        warnings.append(f"installed Devspec Lite version '{manifest.get('devspec_lite_version', 'unknown')}' differs from package version '{__version__}'")
+    return warnings

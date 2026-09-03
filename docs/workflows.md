@@ -37,7 +37,7 @@ For an evidence-backed architecture or workflow visual, choose a pattern from th
 Assign a stable `DIA-###` ID, keep status in the queue, and add only completed diagram links to the overview index.
 
 
-`init` is idempotent for unchanged managed files. It will not overwrite a changed contract or wrapper. For CLI-managed repositories, use `doctor` before and after an upgrade or profile addition. Manual-copy updates follow the [manual-copy guide](manual-copy.md). There is no separate `sync` command: validate, rerun `init` with the same profile, then validate again.
+`init` is idempotent for unchanged managed files. It will not overwrite a changed contract or wrapper. For CLI-managed repositories, use `diff`, then `sync --dry-run`, followed by `sync` and `doctor` after an upgrade or profile addition. Manual-copy updates follow the [manual-copy guide](manual-copy.md). `sync` never deletes retained obsolete files.
 
 ## Examples
 

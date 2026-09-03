@@ -15,7 +15,7 @@ Invocation: `/devspec.tasks [work-item-id]`
   </protocols>
   <input>An optional work-item ID with a ready current finalization brief.</input>
   <rules>
-    <rule>Each task names scope, dependency, source justification, applicable decision or canonical rule IDs, validation, and done condition. Cite the finalization foundation trace for coding standards, codebase boundaries, and OWASP controls instead of duplicating them per task.</rule>
+    <rule>Each task names scope, dependency, source justification, applicable decision or canonical rule IDs, validation, and done condition. Cite the finalization foundation and architecture traces for coding standards, codebase boundaries, diagrams, and OWASP controls instead of duplicating them per task.</rule>
     <rule>Order dependencies before dependents and split only work too broad to validate safely.</rule>
   </rules>
   <entry>Active work item at tasks with a ready finalization matching the current scope revision; reject blocked, stale, or superseded readiness evidence.</entry>

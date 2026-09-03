@@ -16,10 +16,11 @@ The terminal CLI is `devspec-lite`. After initialization, the installed agent wr
 | Check version | `devspec-lite --version` | Confirms the installed CLI. |
 | Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new|existing>` | Copies canonical artifacts and selected wrappers. |
 | Validate | `devspec-lite doctor --target <path> --profile <profile>` | Read-only check of contracts, protocols, templates, and wrappers. |
-| Synchronize canonical artifacts | `doctor → init → doctor` | There is deliberately no `devspec-lite sync` command. |
+| Compare installed framework files | `devspec-lite diff --target <path>` | Read-only drift report. |
+| Synchronize canonical artifacts | `devspec-lite sync --target <path> --profile <profile> --dry-run` | Preview, then run without `--dry-run`; use `--force` only for reviewed framework-owned edits. |
 | Run delivery work | Agent command such as `devspec.story` or `devspec.quickfix` | Use after initialization; see the [workflow guide](workflows.md). |
 
-`devspec-lite upgrade` and `devspec-lite sync` are not CLI commands. This guide uses the actual package-manager upgrade commands and the safe synchronization sequence instead.
+`devspec-lite upgrade` is not a CLI command; upgrade the package with its package manager, then use `diff` and `sync` to update the installed framework files.
 
 ## 1. Install Devspec Lite
 
@@ -82,17 +83,18 @@ brew upgrade devspec-lite
 
 After upgrading, synchronize and validate the target repository.
 
-## 5. Synchronize canonical framework files
+## 5. Compare and synchronize canonical framework files
 
-There is intentionally no separate `sync` command. Run Doctor first, then rerun `init` with the same profile:
+Preview the exact upgrade first, then apply it:
 
 ```powershell
-devspec-lite doctor --target D:\Code\orders --profile all
-devspec-lite init --target D:\Code\orders --profile all --repo-state existing
+devspec-lite diff --target D:\Code\orders
+devspec-lite sync --target D:\Code\orders --profile all --dry-run
+devspec-lite sync --target D:\Code\orders --profile all
 devspec-lite doctor --target D:\Code\orders --profile all
 ```
 
-`init` is safe for unchanged managed files and adds missing canonical files. It refuses to overwrite a changed managed file. If `devspec/contracts/devspec.story.md` was customized locally, preserve the customization and merge the desired update manually instead of forcing an overwrite.
+`sync` adds missing files and replaces packaged files that have not been locally edited. It never overwrites a locally modified framework-owned file unless `--force` is supplied, never overwrites project-owned artifacts, and never deletes retained obsolete wrappers. Use `--force` only after reviewing `diff`.
 
 ## 6. Change or add a profile
 

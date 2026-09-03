@@ -12,14 +12,15 @@ Invocation: `/devspec.projectcontext`
     <protocol ref="work" />
   </protocols>
   <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
-  <input>Product context or a confirmed source.</input>
+  <input>Product context, a confirmed source, or an explicit durable-principle promotion or retirement.</input>
   <rules>
-    <rule>Capture purpose, users, outcomes, boundaries, and delivery context only.</rule>
+    <rule>Capture purpose, users, outcomes, boundaries, and delivery context only. When the developer explicitly promotes or retires a rare cross-work-item principle, update `devspec/constitution.md` with its stable `CP-###` ID, evidence, state, and append-only history; do not infer a promotion.</rule>
     <rule>Mark each material statement confirmed, observed, inferred, or blocked.</rule>
   </rules>
   <entry>New foundation chain with project context absent, or an explicit targeted update; reject an existing-system baseline request.</entry>
   <outputs>
     <artifact path="devspec/foundation/project-context.md" />
+    <artifact path="devspec/constitution.md" />
   </outputs>
   <transitions>
     <transition outcome="foundation-updated" stage="foundation" run="active" next="devspec.techstack" />
