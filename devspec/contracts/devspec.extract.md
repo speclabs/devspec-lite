@@ -12,8 +12,9 @@ Invocation: `/devspec.extract`
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
-  <input>Current repository or explicitly scoped repositories, including each repository role, path, and allowed access.</input>
+  <input>Explicitly confirmed source repository scope, or current canonical evidence that names each repository's role, local path, and allowed access.</input>
   <rules>
+    <rule>Treat the agent's current workspace or scaffolding directory as a proposed source target, never proof. Before inspecting source, obtain either an explicit user confirmation that names every source repository, role, path, and read, edit, and validation permission, or current canonical evidence that records those facts. If neither exists, ask one scope-confirmation question and record the accepted source scope in `devspec/foundation/codebase-structure.md` before reading source; later commands may use that current record as scope evidence.</rule>
     <rule>Inspect owned source, tests, manifests, configuration, infrastructure, scripts, and docs; exclude dependencies, caches, generated output, and repositories outside approved scope.</rule>
     <rule>For multi-repository work, record every repository role, path, access boundary, and evidence before reading, editing, or validating it.</rule>
     <rule>Ask one clarification for every unresolved material question. Label all durable findings confirmed, observed, inferred, or blocked; do not invent roles, workflows, business rules, validation rules, integrations, or diagrams.</rule>
@@ -24,7 +25,7 @@ Invocation: `/devspec.extract`
     <rule>Use the diagram queue and overview as the only diagram record. Validate every SVG XML file, record its evidence and status, and do not create duplicate diagrams.</rule>
     <rule>Keep one extraction coverage item active and write discovered facts to their destination artifact, not queue state. Reuse recorded discovery methods and do not repeat a failed method unless its condition changed.</rule>
   </rules>
-  <entry>Existing repository with approved source scope and no active incompatible extraction run; reject new-repository foundation authoring.</entry>
+  <entry>Existing system with confirmed source scope and no active incompatible extraction run; reject new-repository foundation authoring or an assumed workspace target.</entry>
   <transitions>
     <transition outcome="foundation-ready" stage="foundation" run="active" next="devspec.story" />
     <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
@@ -46,7 +47,7 @@ Invocation: `/devspec.extract`
     <artifact path="devspec/architecture/artifact-queue.md" />
     <artifact path="devspec/architecture/overview.md" />
   </outputs>
-  <actions>Complete the existing-system baseline, create applicable SVG diagrams, and record remaining gaps or blocked evidence.</actions>
+  <actions>Confirm and record source scope before inspection, then complete the existing-system baseline, create applicable SVG diagrams, and record remaining gaps or blocked evidence.</actions>
   <artifact>devspec/foundation/extraction-coverage.md</artifact>
   <handoff>devspec.story-or-devspec.clarify</handoff>
 </workflow>

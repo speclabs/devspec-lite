@@ -1,0 +1,59 @@
+# Beginner command examples
+
+Use these examples from the agent host that has the Devspec Lite wrapper installed. Single-repository or multi-repository scope evidence is a prerequisite for every command. They are starting prompts, not commands to run in a fixed order: each command validates its own entry state and reports the one permitted next action.
+
+## Confirm repository scope before every command
+
+No `devspec.*` command treats the agent's current workspace as proof of its repository boundary. Before every command, provide either an explicit confirmation or current canonical evidence that identifies the scaffold, source repositories, and permissions. A brand-new repository can confirm that it has no source yet.
+
+Use this scope prefix before each command example, changing the paths and permissions for the real system:
+
+```text
+Scope confirmed: scaffold D:\Code\orders-spec; orders API D:\Code\orders-api (primary, read/edit/validate); orders web D:\Code\orders-web (dependent, read/edit/validate).
+```
+
+```text
+/devspec.extract
+Source scope confirmed by the engineering lead:
+- orders API — D:\Code\orders-api — primary source — read/edit/validate
+- orders web — D:\Code\orders-web — dependent UI — read/edit/validate
+The Devspec scaffold is D:\Code\orders-spec.
+```
+
+Current canonical evidence may be used only when it already names the repository path, role, and permissions in `foundation/codebase-structure.md` or another current foundation record, and still reflects the requested work. If neither confirmation nor evidence exists, answer the agent's one scope-confirmation question before it inspects any source.
+
+## Choose where the scaffold lives
+
+| Layout | Use it when | What to do |
+|---|---|---|
+| In the project repository | One repository owns both code and Devspec records. | Run `init --target .` from that repository. Commit `devspec/` and the selected agent wrapper with the code. |
+| Dedicated scaffold repository | Several repositories share one change record, or the team keeps specifications separately. | Create a Git repository such as `D:\Code\orders-spec`, run `init --target D:\Code\orders-spec`, and open that directory in the agent host. State every source repository's path, role, and permissions in the request. Commit the Devspec artifacts to the scaffold repository. |
+
+The scaffold location is not a source-access grant. When it is outside the code repository, source code remains outside the scaffold until the developer explicitly confirms the repository boundary. Keep only one authoritative work-item record for a change: in the owning project repository or in the dedicated scaffold repository.
+
+## Work with multiple repositories
+
+Name a primary repository that owns the change record, then list every dependent repository. For each one, state a local path plus independent `read`, `edit`, and `validate` permissions. For example, a documentation repository might be `read/edit/validate`; a production-infrastructure repository may be `read` only. The agent must not infer missing permissions, edit a reference-only repository, or validate it.
+
+## Command examples
+
+| Command | Use it when | Beginner example |
+|---|---|---|
+| `devspec.extract` | An existing system needs its first evidence-backed baseline. | `/devspec.extract Source scope confirmed: catalog API at D:\Code\catalog-api (primary, read/edit/validate).` |
+| `devspec.projectcontext` | A new repository needs its product purpose and boundaries. | `/devspec.projectcontext We are creating an internal inventory service for warehouse staff.` |
+| `devspec.techstack` | Project context is complete and the team must record its intended stack. | `/devspec.techstack Use .NET 10, PostgreSQL, Docker, and GitHub Actions; no source exists yet.` |
+| `devspec.codebase-structure` | The new project needs owned areas and integration boundaries. | `/devspec.codebase-structure Plan API, application, domain, and tests under src and tests.` |
+| `devspec.coding-standards` | The structure is known and implementation conventions need recording. | `/devspec.coding-standards Use existing team C# naming, nullable references, and xUnit conventions.` |
+| `devspec.rules` | The new foundation needs enforceable engineering and security rules. | `/devspec.rules Require pull-request review, secret scanning, and OWASP controls with test evidence.` |
+| `devspec.story` | One feature, bug, migration, or security request needs a work item. | `/devspec.story Add CSV export for warehouse stock with manager authorization.` |
+| `devspec.grooming` | The active draft needs code-area, compatibility, or risk analysis. | `/devspec.grooming Analyze export limits, authorization behavior, and CSV compatibility.` |
+| `devspec.finalize` | The active story is complete enough for a readiness and validation plan. | `/devspec.finalize` |
+| `devspec.tasks` | Finalization is ready and implementation work needs ordered tasks. | `/devspec.tasks` |
+| `devspec.implement` | Current-revision tasks are ready to change code. | `/devspec.implement` |
+| `devspec.review` | Implementation and its recorded validation are complete. | `/devspec.review` |
+| `devspec.clarify` | One active material blocker has a recorded question. | `/devspec.clarify The retention period is seven years.` |
+| `devspec.changerequest` | A related requirement arrives after finalization. | `/devspec.changerequest Also support JSON export for the same authorized managers.` |
+| `devspec.diagram` | A specific architecture or workflow visual needs evidence. | `/devspec.diagram Show the confirmed order-to-shipment workflow and its API integration.` |
+| `devspec.quickfix` | One localized, low-risk correction has one primary scope. | `/devspec.quickfix Fix the misspelled Orders empty-state label; scope: UI.` |
+
+For `grooming`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`, omit an ID only when the current per-worktree context selects the right active work item. Give an explicit ID to switch stories; when several eligible stories exist, select one instead of guessing.

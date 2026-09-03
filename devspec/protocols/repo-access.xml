@@ -1,5 +1,5 @@
 <protocol id="repo-access">
-  <when>Load only when a task depends on more than one repository.</when>
-  <validate>Before reading, editing, or validating, record each repository's role, local path, workspace availability, and separate read, edit, and validation permissions.</validate>
+  <when>Load before accessing a repository outside the scaffolding root, whenever source scope is not already confirmed, and whenever a task depends on more than one repository.</when>
+  <validate>Before reading, editing, or validating, record each repository's role, local path, workspace availability, and separate read, edit, and validation permissions. Treat the current workspace as a proposed target until an explicit user confirmation or current canonical evidence names that repository and boundary.</validate>
   <respect>Never edit a reference-only, validation-only, release-coordination, or unavailable repository. Never validate a reference-only, release-coordination, or unavailable repository. Validate a validation-only repository only when its recorded validation permission allows it.</respect>
 </protocol>

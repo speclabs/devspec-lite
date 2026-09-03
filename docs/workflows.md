@@ -7,7 +7,8 @@ Use the smallest route that preserves a durable, reviewable record. Git-tracked 
 ![Foundation routes](assets/foundation-routes.svg)
 
 - New repository: start with `devspec.projectcontext`.
-- Existing repository: run `devspec.extract` once. It completes the evidence-backed technical, workflow, rule, and SVG diagram baseline; do not rerun individual foundation or diagram commands afterward.
+- Before every command, confirm the single-repository or multi-repository scope, including the scaffold location and each source repository's role, path, and permissions, unless current canonical evidence records it. The current workspace alone is not proof of scope.
+- Existing repository: run `devspec.extract` once with confirmed scope. It completes the evidence-backed technical, workflow, rule, and SVG diagram baseline; do not rerun individual foundation or diagram commands afterward.
 - New repository: use `projectcontext`, `techstack`, `codebase-structure`, `coding-standards`, `rules`, and `diagram` as input-driven authoring commands.
 
 ## 2. Deliver a change

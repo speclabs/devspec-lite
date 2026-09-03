@@ -6,6 +6,12 @@ Git-tracked `devspec/` artifacts are the project record. Do not skip a command b
 
 > Commands validate their entry state. If a command says the work is blocked, use `devspec.clarify`; do not force the next route.
 
+## Choose the scaffold and confirm source scope
+
+The `devspec/` scaffold may live in the code repository or in a separate Git repository that records a multi-repository change. The directory open in the agent host is the scaffold location, not automatic permission to inspect source. Before every `devspec.*` command, explicitly confirm single-repository or multi-repository scope: the scaffold location and every source repository's path, role, and `read`, `edit`, and `validate` permissions. A new repository may explicitly confirm that no source exists yet. Current canonical evidence may replace a repeated confirmation only when it records the same facts.
+
+Use the [beginner command examples](command-examples.md) to choose a scaffold layout, confirm one or more repository boundaries, and copy a safe first prompt for every command.
+
 ## Choose the first command
 
 | Developer situation | Run | Then |
@@ -36,9 +42,10 @@ uvx devspec-lite init --target . --profile all --repo-state existing
 uvx devspec-lite doctor --target . --profile all
 ```
 
-2. In your agent host, run `/devspec.extract`.
-3. Give it the approved repository scope and access boundaries; it inspects source, tests, configuration, and documentation, then creates the evidence-backed foundation and applicable diagrams.
-4. If material evidence is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
+2. Confirm the source scope before extraction. The current workspace is only a proposed target; name the repository path, role, and read, edit, and validation permissions, or point to current canonical evidence that records them.
+3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
+4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and applicable diagrams.
+5. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
 
 **What to expect.** `extract` is the existing-system baseline command. Do not run individual foundation or diagram commands afterward just to recreate its baseline; use a targeted update only when a known artifact needs one.
 
@@ -49,7 +56,8 @@ uvx devspec-lite doctor --target . --profile all
 **Scenario.** Your team has created an empty service repository and wants a durable engineering baseline before accepting feature work.
 
 1. Initialize it with `--repo-state new`.
-2. Run these agent commands in order:
+2. Confirm the repository scope before the first command, for example: `Scope confirmed: scaffold and planned source at D:\Code\inventory; no source exists yet; read/edit/validate.`
+3. Run these agent commands in order:
 
 ```text
 /devspec.projectcontext
@@ -59,7 +67,7 @@ uvx devspec-lite doctor --target . --profile all
 /devspec.rules
 ```
 
-3. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route.
+4. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route.
 
 **What to expect.** Each command records its artifact and advances to the next command. After `rules`, the foundation is ready for `/devspec.story`.
 
@@ -89,8 +97,8 @@ uvx devspec-lite doctor --target . --profile all
 
 **Scenario.** A checkout-flow change needs an API in `D:\Code\orders-api` and a web application in `D:\Code\orders-web`.
 
-1. Choose the repository that owns the change record as the primary Devspec repository. Keep the work-item artifacts there.
-2. Initialize each repository that will be used by an agent host, selecting the appropriate profile and repository state.
+1. Choose one Git-tracked scaffold location for the change record: either the primary code repository or a dedicated Devspec repository. Keep the work-item artifacts in that one location.
+2. Initialize the scaffold location with the appropriate profile and repository state. When it is a dedicated scaffold repository, open that directory in the agent host; do not assume it grants access to the code repositories.
 3. Start the story from the primary repository and state the repository roles, local paths, and read, edit, and validation permissions in the request. For example:
 
 ```text

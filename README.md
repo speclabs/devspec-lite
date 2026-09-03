@@ -12,7 +12,7 @@ Devspec Lite is a compact, resumable spec-driven workflow for AI coding agents. 
 | macOS/Linux package-manager installation | [Homebrew](docs/setup-homebrew.md) |
 | Already installed the CLI; need init, upgrade, or profile changes | [CLI lifecycle](docs/setup-lifecycle.md) |
 
-Manual copying and CLI installation produce the same canonical `devspec/` content and agent wrappers. Choose one setup route; the CLI is optional.
+Manual copying and CLI installation produce the same canonical `devspec/` content and agent wrappers. In either route, set the target repository's `repository-state.md` to `new` or `existing`. Choose one setup route; the CLI is optional.
 
 ## CLI quick start
 
@@ -41,4 +41,4 @@ Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, gro
 ## How to
 
 Follow the scenario-based [how-to guide](docs/how-to.md) to choose the right command, establish an existing or new repository baseline, start and deliver a story, work across multiple repositories, or route a small fix safely.
-After starting a story, use the normal work-item commands or `continue` without repeating its ID; private per-worktree context resumes only the recorded next action.
+Before every `devspec.*` command, confirm the single-repository or multi-repository scope, unless current canonical evidence records it. After starting a story, use the normal work-item commands or `continue` without repeating its ID; private per-worktree context resumes only the recorded next action. See the [beginner command examples](docs/command-examples.md) for scaffold layouts, source-scope confirmation, multi-repository boundaries, and a first prompt for every command.

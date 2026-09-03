@@ -103,6 +103,7 @@ def doctor(root: Path, profile: str) -> list[str]:
     }
     current_context_commands = {"story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"}
     protocol_text_requirements = {
+        "run": {"preflight": ("Before every command", "single-repository or multi-repository scope", "current workspace as proposed", "do not inspect or change source")},
         "current-work-item": {
             "location": ("git rev-parse --git-path devspec/current-work-item.json", "Never create or commit"),
             "record": ("work-item ID", "current branch", "selection source", "timestamp", "never committed or pushed"),

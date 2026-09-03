@@ -1,5 +1,5 @@
 <protocol id="run">
-  <preflight>Validate required input, target artifact, stage, and access before output.</preflight>
+  <preflight>Before every command, confirm single-repository or multi-repository scope from either explicit developer confirmation or current canonical evidence. The confirmation or evidence must name the scaffolding location and every source repository's role, local path, and read, edit, and validation permission; a new repository may explicitly confirm that no source exists yet. Treat the current workspace as proposed, never proof. If scope evidence is absent, ask one confirmation question and do not inspect or change source. Then validate required input, target artifact, stage, and access before output.</preflight>
   <checkpoint>Before material questions, edits, validation, retries, or handoff, save stage, run state, last action, resume reference, and exactly one next action in the command's state record.</checkpoint>
   <state-records>
     <work-item>devspec/work-items/&lt;id&gt;/meta.md</work-item>

@@ -10,7 +10,7 @@ Clone the repository at its latest `main` branch:
 git clone --depth 1 --branch main https://github.com/speclabs/devspec-lite.git
 ```
 
-The `main` checkout supplies the canonical `devspec/` directory and prebuilt agent-profile wrappers. No workflow content is generated during manual setup.
+The `main` checkout supplies the canonical `devspec/` directory and prebuilt agent-profile wrappers. No workflow content is generated during manual setup; repository state is target-specific setup metadata.
 
 ## 2. Copy one profile
 
@@ -27,14 +27,32 @@ Copy `devspec/` and the folder or file for the agent host into the target reposi
 
 Do not pre-copy individual foundation or work-item templates. When an agent needs a missing target artifact, the shared `work` protocol creates it from the matching `_template`; creating a work item initializes every file in `devspec/work-items/_template`, including `meta.md`.
 
+## 3. Set the target repository state
+
+After copying `devspec/`, replace `devspec/foundation/repository-state.md` with the state that matches the target repository. Do not retain the state from the `main` checkout.
+
+| Target repository | File contents |
+|---|---|
+| Existing source code | `State: existing` and `Start with: devspec.extract` |
+| New or empty repository | `State: new` and `Start with: devspec.projectcontext` |
+
+Use this exact Markdown structure:
+
+```text
+# Repository State
+
+- State: <existing|new>
+- Start with: `devspec.<extract|projectcontext>`
+```
+
 ## Manual-copy lifecycle
 
 ![Manual copy flow](assets/manual-copy-flow.svg)
 
-## 3. Verify and commit
+## 4. Verify and commit
 
-Verify that every path listed in `devspec/install-manifest.txt` exists and that the selected agent wrapper is present. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
+Verify that every path listed in `devspec/install-manifest.txt` exists, that the selected agent wrapper is present, and that `devspec/foundation/repository-state.md` has the target's intended state and start command. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
 
-## 4. Update manually
+## 5. Update manually
 
-Pull the latest `main` branch, or make a fresh `main` checkout. Compare the incoming files with the target repository, copy the approved changes, preserve local customizations, and commit the update. The CLI `doctor`, `init`, and package-manager upgrade paths are optional alternatives; they are not prerequisites for manual setup.
+Pull the latest `main` branch, or make a fresh `main` checkout. Compare the incoming files with the target repository, copy the approved changes, preserve local customizations, and retain the target's own `repository-state.md`. The CLI `doctor`, `init`, and package-manager upgrade paths are optional alternatives; they are not prerequisites for manual setup.
