@@ -154,6 +154,21 @@ class FrameworkTests(unittest.TestCase):
             diagram_types = (target / "devspec/architecture/_template/diagram-types.md").read_text(encoding="utf-8")
             self.assertIn("Infrastructure topology", diagram_types)
             self.assertIn("Application landscape", diagram_types)
+
+    def test_coding_standard_examples_are_extracted_and_can_be_developer_defined(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            extract = (target / "devspec/contracts/devspec.extract.md").read_text(encoding="utf-8")
+            standards = (target / "devspec/contracts/devspec.coding-standards.md").read_text(encoding="utf-8")
+            template = (target / "devspec/foundation/_template/coding-standards.md").read_text(encoding="utf-8")
+            implement = (target / "devspec/contracts/devspec.implement.md").read_text(encoding="utf-8")
+            self.assertIn("concrete local code or test example developers can follow", extract)
+            self.assertIn("developer-defined custom standards with examples to follow", standards)
+            self.assertIn("Mark it developer-defined rather than observed", standards)
+            self.assertIn("Developer-defined", template)
+            self.assertIn("Follow example", template)
+            self.assertIn("coding standards and their follow examples", implement)
     def test_command_scopes_and_closure_are_explicit(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)

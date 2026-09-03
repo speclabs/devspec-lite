@@ -69,7 +69,8 @@ uvx devspec-lite doctor --target . --profile all
 /devspec.rules
 ```
 
-4. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route.
+4. Use `/devspec.coding-standards` to add a team-defined standard at any time as a targeted update. Include a concise example that future implementations should follow; the artifact distinguishes it from an observed source convention.
+5. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route.
 
 **What to expect.** Each command records its artifact and advances to the next command. After `rules`, the foundation is ready for `/devspec.story`.
 
