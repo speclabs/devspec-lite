@@ -46,10 +46,12 @@ uvx devspec-lite doctor --target . --profile all
 
 2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all standard access choices and recommend `edit-and-test`; that grants normal delivery capability, while the active command still prevents unnecessary source changes. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
 3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
-4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and applicable diagrams.
-5. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
+4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and prepares a list of applicable diagrams.
+5. At extraction closure, it shows the list and asks: **“Do you want me generate all the possible diagrams?”** Choose **Yes** to generate every listed diagram, **No** to leave the list prepared, or enter selected IDs or subjects. For example, enter `DIA-001, DIA-004` to generate only those two.
+6. Any prepared diagram can be generated later with `/devspec.diagram <DIA-ID-or-subject>`, for example `/devspec.diagram DIA-002`.
+7. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
 
-**What to expect.** `extract` is the existing-system baseline command. Do not run individual foundation or diagram commands afterward just to recreate its baseline; use a targeted update only when a known artifact needs one.
+**What to expect.** `extract` is the existing-system baseline command. It prepares diagrams before generating them, so a developer can keep the list only, generate all, choose a subset, or later run `/devspec.diagram DIA-002` for one queued diagram. Do not rerun individual foundation commands just to recreate its baseline.
 
 - Next command when ready: `/devspec.story <request>`.
 

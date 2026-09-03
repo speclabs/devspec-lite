@@ -2,7 +2,7 @@
 
 | Command | Purpose | Next route |
 |---|---|---|
-| `devspec.extract` | Build the complete evidence-backed baseline for an existing scoped system. | `devspec.story` or `devspec.clarify` |
+| `devspec.extract` | Build the complete evidence-backed baseline for an existing scoped system, prepare the applicable diagram list, then obtain explicit all-or-selected generation approval. | `devspec.story` or `devspec.clarify` |
 | `devspec.projectcontext` | Capture product purpose, users, outcomes, and scope boundaries. | `techstack` |
 | `devspec.techstack` | Capture evidence-backed runtime, frameworks, data, tooling, and delivery constraints. | `codebase-structure` |
 | `devspec.codebase-structure` | Capture or customize owned roots, representative repository layout trees, boundaries, integrations, and access. | `coding-standards` |

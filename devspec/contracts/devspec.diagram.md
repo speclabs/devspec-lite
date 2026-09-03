@@ -12,13 +12,13 @@ Invocation: `/devspec.diagram runtime architecture format=svg`
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
-  <scope>Use for one targeted diagram in the current approved context. devspec.extract owns the complete existing-system diagram baseline.</scope>
-  <input>Diagram subject, work item, or format request in the current repository or an explicitly scoped multi-repository system.</input>
+  <scope>Use for one targeted diagram in the current approved context. devspec.extract owns existing-system diagram discovery, candidate listing, and all-or-selected generation approval.</scope>
+  <input>Diagram queue ID, subject, work item, or format request in the current repository or an explicitly scoped multi-repository system.</input>
   <rules>
     <rule>Select the diagram type from devspec/architecture/_template/diagram-types.md; load only the needed pattern.</rule>
     <rule>Create only evidence-backed, non-duplicate diagrams and persist queue or overview state for recovery.</rule>
     <rule>For a multi-repository diagram, use repo-access before reading or validating another repository.</rule>
-    <rule>Record subject, type, evidence, format, status, and next in the queue; index completed output in the overview.</rule>
+    <rule>Accept a stable queued `DIA-###` ID or diagram subject, record subject, type, evidence, format, status, and next in the queue, and index completed output in the overview.</rule>
     <rule>Default to SVG with title and description and validate its XML; write Mermaid or HTML only when explicitly requested.</rule>
     <rule>Keep labels short and place explanations in supporting Markdown rather than the graphic.</rule>
   </rules>

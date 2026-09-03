@@ -21,7 +21,7 @@ Use a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`,
 ## 2. Start the right workflow
 
 - New repository: author the foundation intentionally with `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules`.
-- Existing repository: run `devspec.extract` once. It creates the evidence-backed technical, workflow, rules, and SVG-diagram baseline; do not separately run the individual foundation or diagram commands for that baseline.
+- Existing repository: run `devspec.extract` once. It creates the evidence-backed technical, workflow, and rules baseline, prepares the possible-diagram list, and asks whether to generate all or selected diagrams. Select **No** to keep only the list; later generate one with `/devspec.diagram DIA-###`, for example `/devspec.diagram DIA-002`.
 
 Work route: `devspec.story → devspec.grooming` when needed `→ devspec.finalize → devspec.tasks → devspec.implement → devspec.review`.
 

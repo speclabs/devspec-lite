@@ -48,7 +48,7 @@ Before enabling an organization connector, record its approved read and write bo
 
 | Command | Use it when | Beginner example |
 |---|---|---|
-| `devspec.extract` | An existing system needs its first evidence-backed baseline. | `/devspec.extract Source scope confirmed: catalog API at D:\Code\catalog-api (primary, read/edit/validate).` |
+| `devspec.extract` | An existing system needs its first evidence-backed baseline and diagram candidate list. | `/devspec.extract Source scope confirmed: catalog API at D:\Code\catalog-api (primary, read/edit/validate).` After the list is shown, answer `Yes`, `No`, or enter IDs such as `DIA-001, DIA-003`. |
 | `devspec.projectcontext` | A new repository needs its product purpose and boundaries. | `/devspec.projectcontext We are creating an internal inventory service for warehouse staff.` |
 | `devspec.techstack` | Project context is complete and the team must record its intended stack. | `/devspec.techstack Use .NET 10, PostgreSQL, Docker, and GitHub Actions; no source exists yet.` |
 | `devspec.codebase-structure` | The project needs owned areas, integration boundaries, or a custom per-repository layout tree. | `/devspec.codebase-structure Add a Developer-defined layout for the database repository: solution → sqlproj → dbo/Tables, Stored Procedures, and MigrationScripts.` |
@@ -62,7 +62,7 @@ Before enabling an organization connector, record its approved read and write bo
 | `devspec.review` | Implementation and its recorded validation are complete. | `/devspec.review` |
 | `devspec.clarify` | One active material blocker has a recorded question. | `/devspec.clarify The retention period is seven years.` |
 | `devspec.changerequest` | A related requirement arrives after finalization. | `/devspec.changerequest Also support JSON export for the same authorized managers.` |
-| `devspec.diagram` | A specific architecture or workflow visual needs evidence. | `/devspec.diagram Show the confirmed order-to-shipment workflow and its API integration.` |
+| `devspec.diagram` | A specific architecture or workflow visual needs evidence, including one previously prepared candidate. | `/devspec.diagram DIA-002` or `/devspec.diagram Show the confirmed order-to-shipment workflow and its API integration.` |
 | `devspec.quickfix` | One localized, low-risk correction has one primary scope. | `/devspec.quickfix Fix the misspelled Orders empty-state label; scope: UI.` |
 
 For `grooming`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`, omit an ID only when the current per-worktree context selects the right active work item. Give an explicit ID to switch stories; when several eligible stories exist, select one instead of guessing.

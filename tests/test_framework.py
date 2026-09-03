@@ -161,6 +161,22 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("## Repository Layouts", structure_template)
             self.assertIn("Origin:** Observed | Developer-defined", structure_template)
 
+    def test_extract_prepares_diagrams_and_requests_generation_confirmation(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            extract = (target / "devspec/contracts/devspec.extract.md").read_text(encoding="utf-8")
+            diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
+            how_to = (Path(__file__).resolve().parents[1] / "docs/how-to.md").read_text(encoding="utf-8")
+            self.assertIn("Do you want me generate all the possible diagrams?", extract)
+            self.assertIn("Yes — generate all listed diagrams", extract)
+            self.assertIn("No — prepare the list only", extract)
+            self.assertIn("Choose diagrams — enter the IDs or subjects to generate", extract)
+            self.assertIn("/devspec.diagram &lt;DIA-ID-or-subject&gt;", extract)
+            self.assertIn("do not generate an SVG", extract)
+            self.assertIn("Accept a stable queued `DIA-###` ID", diagram)
+            self.assertIn("/devspec.diagram DIA-002", how_to)
+
     def test_coding_standard_examples_are_extracted_and_can_be_developer_defined(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
