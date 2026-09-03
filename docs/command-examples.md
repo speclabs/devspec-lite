@@ -6,21 +6,15 @@ Use these examples from the agent host that has the Devspec Lite wrapper install
 
 No `devspec.*` command treats the agent's current workspace as proof of its repository boundary. Before every command, provide either an explicit confirmation or current canonical evidence that identifies the scaffold, source repositories, and permissions. A brand-new repository can confirm that it has no source yet.
 
-Use this scope prefix before each command example, changing the paths and permissions for the real system:
+When evidence is absent, collect scope in this order for every command:
 
-```text
-Scope confirmed: scaffold D:\Code\orders-spec; orders API D:\Code\orders-api (primary, read/edit/validate); orders web D:\Code\orders-web (dependent, read/edit/validate).
-```
+1. Ask one free-form repository path question. The text input should say, “Which repository is in scope? Enter its local path or name.” Show examples such as `D:\Code\orders-api` and `D:\Code\orders-web`, and let the developer type another value. Do not ask about access yet.
+2. After the path is confirmed, ask one interactive access question. Recommended: **Read, edit, and validate** — for example, inspect `D:\Code\orders-api`, change approved code and Devspec artifacts, then run its tests. Other choices: **Read and validate only** — inspect and run tests without edits; **Read only** — use it as a reference without edits or validation. Include **Custom Answer** for a different boundary.
+3. Repeat the path question and then the access question for each additional repository. Record the scaffold path, repository role, and the separate read, edit, and validation permissions before continuing.
 
-```text
-/devspec.extract
-Source scope confirmed by the engineering lead:
-- orders API — D:\Code\orders-api — primary source — read/edit/validate
-- orders web — D:\Code\orders-web — dependent UI — read/edit/validate
-The Devspec scaffold is D:\Code\orders-spec.
-```
+For a new project, the path answer may say `D:\Code\inventory — no source exists yet`; access is still confirmed after the path.
 
-Current canonical evidence may be used only when it already names the repository path, role, and permissions in `foundation/codebase-structure.md` or another current foundation record, and still reflects the requested work. If neither confirmation nor evidence exists, answer the agent's one scope-confirmation question before it inspects any source.
+Current canonical evidence may be used only when it already names the repository path, role, and permissions in `foundation/codebase-structure.md` or another current foundation record, and still reflects the requested work. If neither confirmation nor evidence exists, complete the path question and then the access question for every repository before the agent inspects any source.
 
 ## Choose where the scaffold lives
 

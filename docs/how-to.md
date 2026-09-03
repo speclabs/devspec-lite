@@ -8,7 +8,7 @@ Git-tracked `devspec/` artifacts are the project record. Do not skip a command b
 
 ## Choose the scaffold and confirm source scope
 
-The `devspec/` scaffold may live in the code repository or in a separate Git repository that records a multi-repository change. The directory open in the agent host is the scaffold location, not automatic permission to inspect source. Before every `devspec.*` command, explicitly confirm single-repository or multi-repository scope: the scaffold location and every source repository's path, role, and `read`, `edit`, and `validate` permissions. A new repository may explicitly confirm that no source exists yet. Current canonical evidence may replace a repeated confirmation only when it records the same facts.
+The `devspec/` scaffold may live in the code repository or in a separate Git repository that records a multi-repository change. The directory open in the agent host is the scaffold location, not automatic permission to inspect source. Before every `devspec.*` command, confirm single-repository or multi-repository scope in two steps when current evidence is absent: first ask for one repository name or local path in a free-form text input with examples; after that path is confirmed, ask one interactive access question with examples, Custom Answer, and one recommendation. Repeat the two questions for each repository, recording its role and separate `read`, `edit`, and `validate` permissions. A new repository may explicitly confirm that no source exists yet. Current canonical evidence may replace a repeated confirmation only when it records the same facts.
 
 Use the [beginner command examples](command-examples.md) to choose a scaffold layout, confirm one or more repository boundaries, and copy a safe first prompt for every command.
 
@@ -44,7 +44,7 @@ uvx devspec-lite init --target . --profile all --repo-state existing
 uvx devspec-lite doctor --target . --profile all
 ```
 
-2. Confirm the source scope before extraction. The current workspace is only a proposed target; name the repository path, role, and read, edit, and validation permissions, or point to current canonical evidence that records them.
+2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose access after the path is confirmed. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
 3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
 4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and applicable diagrams.
 5. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
