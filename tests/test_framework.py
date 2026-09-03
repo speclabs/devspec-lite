@@ -154,6 +154,12 @@ class FrameworkTests(unittest.TestCase):
             diagram_types = (target / "devspec/architecture/_template/diagram-types.md").read_text(encoding="utf-8")
             self.assertIn("Infrastructure topology", diagram_types)
             self.assertIn("Application landscape", diagram_types)
+            structure = (target / "devspec/contracts/devspec.codebase-structure.md").read_text(encoding="utf-8")
+            structure_template = (target / "devspec/foundation/_template/codebase-structure.md").read_text(encoding="utf-8")
+            self.assertIn("record an observed repository layout", (target / "devspec/contracts/devspec.extract.md").read_text(encoding="utf-8"))
+            self.assertIn("developer-provided layout tree", structure)
+            self.assertIn("## Repository Layouts", structure_template)
+            self.assertIn("Origin:** Observed | Developer-defined", structure_template)
 
     def test_coding_standard_examples_are_extracted_and_can_be_developer_defined(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
