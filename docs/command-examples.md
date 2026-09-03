@@ -35,6 +35,21 @@ The scaffold location is not a source-access grant. When it is outside the code 
 
 Name a primary repository that owns the change record, then list every dependent repository. For each one, state a local path plus independent `read`, `edit`, and `validate` permissions. For example, a documentation repository might be `read/edit/validate`; a production-infrastructure repository may be `read` only. The agent must not infer missing permissions, edit a reference-only repository, or validate it.
 
+## Intake from MCP providers
+
+Use the same `/devspec.story` command for GitHub Issues, Azure DevOps work items, Jira issues, GitLab issues, or another provider. A provider connector is optional: manual text intake continues to work without one. When a connector is available and authenticated, Devspec resolves exactly one named URL or identifier with an approved read method, normalizes its reference, and stores a concise redacted snapshot in `story.md`.
+
+The intake command is read-only. It never changes state, fields, assignees, labels, comments, links, or provider records. On success, it shows the provider, identifier, title, type and status when available, canonical link, and short summary, then asks one confirmation question before creating the work-item folder. The choices are Confirm and continue, Reject and retry input, Switch to manual intake, Cancel, and Custom Answer; each includes an example, and exactly one recommended choice with its justification. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content. Provider writes require a separate explicit request and an approved integration workflow.
+
+```text
+/devspec.story https://github.com/acme/orders/issues/42
+
+/devspec.story JIRA-123
+
+/devspec.story https://dev.azure.com/acme/commerce/_workitems/edit/12345
+```
+
+Before enabling an organization connector, record its approved read and write boundaries in `foundation/provider-integrations.md`; never put credentials or tokens in Devspec artifacts.
 ## Command examples
 
 | Command | Use it when | Beginner example |
@@ -45,7 +60,7 @@ Name a primary repository that owns the change record, then list every dependent
 | `devspec.codebase-structure` | The new project needs owned areas and integration boundaries. | `/devspec.codebase-structure Plan API, application, domain, and tests under src and tests.` |
 | `devspec.coding-standards` | The structure is known and implementation conventions need recording. | `/devspec.coding-standards Use existing team C# naming, nullable references, and xUnit conventions.` |
 | `devspec.rules` | The new foundation needs enforceable engineering and security rules. | `/devspec.rules Require pull-request review, secret scanning, and OWASP controls with test evidence.` |
-| `devspec.story` | One feature, bug, migration, or security request needs a work item. | `/devspec.story Add CSV export for warehouse stock with manager authorization.` |
+| `devspec.story` | One feature, bug, migration, security request, or accessible provider work item needs intake. | `/devspec.story https://github.com/acme/warehouse/issues/42` or `/devspec.story Add CSV export for warehouse stock with manager authorization.` |
 | `devspec.grooming` | The active draft needs code-area, compatibility, or risk analysis. | `/devspec.grooming Analyze export limits, authorization behavior, and CSV compatibility.` |
 | `devspec.finalize` | The active story is complete enough for a readiness and validation plan. | `/devspec.finalize` |
 | `devspec.tasks` | Finalization is ready and implementation work needs ordered tasks. | `/devspec.tasks` |

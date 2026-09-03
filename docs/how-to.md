@@ -12,6 +12,8 @@ The `devspec/` scaffold may live in the code repository or in a separate Git rep
 
 Use the [beginner command examples](command-examples.md) to choose a scaffold layout, confirm one or more repository boundaries, and copy a safe first prompt for every command.
 
+For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, or other provider work-item URL or identifier to `/devspec.story` only when an authenticated MCP connector is available. Intake reads the item, shows a summary, and asks for explicit structured confirmation before creating the work item; it never writes back to the provider. See [MCP provider intake](command-examples.md#intake-from-mcp-providers).
+
 ## Choose the first command
 
 | Developer situation | Run | Then |

@@ -1,5 +1,25 @@
 # Story
 
+## Source Record
+
+| Field | Value |
+|---|---|
+| External reference | |
+| Provider and work-item type | |
+| Immutable provider ID | |
+| Canonical URL | |
+| Retrieved at (UTC) | |
+| MCP resolution method | |
+| Fields used | |
+| Resolved summary shown | |
+| Confirmation basis | `devspec/foundation/provider-integrations.md` |
+| User confirmation | confirmed, rejected, pending |
+| Manual intake used | yes, no |
+| Manual description | |
+| Manual acceptance criteria | |
+
+Record a concise, redacted summary of the provider title, description, acceptance criteria, state, and relevant links used for intake. Do not record credentials, access tokens, or unnecessary personal data.
+
 ## Summary
 
 ## Acceptance Criteria
