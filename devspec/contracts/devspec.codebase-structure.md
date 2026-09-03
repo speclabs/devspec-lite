@@ -16,7 +16,7 @@ Invocation: `/devspec.codebase-structure`
   <input>Repository layout, work area, integration, or multi-repository context.</input>
   <rules>
     <rule>Map owned source roots, boundaries, integration points, and validation locations.</rule>
-    <rule>Load repo-access only when work crosses repositories; never infer edit access.</rule>
+    <rule>Use repo-access whenever scope or access evidence is missing and when work crosses repositories. Record one named least-privilege access requirement per repository; never infer access from its path.</rule>
   </rules>
   <entry>Completed technology stack in the new foundation chain, or an explicit targeted update; reject an existing-system baseline request.</entry>
   <outputs>
@@ -27,7 +27,7 @@ Invocation: `/devspec.codebase-structure`
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
   </transitions>
   <closure>Record repository access boundaries and one registered next command; blocked evidence routes to devspec.clarify.</closure>
-  <actions>Map owned areas and use repo-access only when more than one repository is involved.</actions>
+  <actions>Map owned areas and record repository paths, roles, and named access requirements before relying on them.</actions>
   <artifact>devspec/foundation/codebase-structure.md</artifact>
   <handoff>coding-standards</handoff>
 </workflow>

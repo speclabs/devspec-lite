@@ -9,7 +9,7 @@ No `devspec.*` command treats the agent's current workspace as proof of its repo
 When evidence is absent, collect scope in this order for every command:
 
 1. Ask one free-form repository path question. The text input should say, “Which repository is in scope? Enter its local path or name.” Show examples such as `D:\Code\orders-api` and `D:\Code\orders-web`, and let the developer type another value. Do not ask about access yet.
-2. After the path is confirmed, ask one interactive access question. Recommended: **Read, edit, and validate** — for example, inspect `D:\Code\orders-api`, change approved code and Devspec artifacts, then run its tests. Other choices: **Read and validate only** — inspect and run tests without edits; **Read only** — use it as a reference without edits or validation. Include **Custom Answer** for a different boundary.
+2. After the path is confirmed, ask: **What access requirement applies to `D:\Code\orders-api`?** Use named repository values instead of a mixed list of verbs. Recommended for extraction: **Reference-only** — inspect source, configuration, and tests as evidence without edits or validation. Other choices: **Edit** — update approved files without running validations; **Edit-and-test** — make approved changes and run focused tests; **Validation-only** — run approved validations without edits; **Unavailable** — record a blocker. Include **Custom Answer** for a different boundary. Recommend the least privilege needed by the current command.
 3. Repeat the path question and then the access question for each additional repository. Record the scaffold path, repository role, and the separate read, edit, and validation permissions before continuing.
 
 For a new project, the path answer may say `D:\Code\inventory — no source exists yet`; access is still confirmed after the path.
@@ -27,7 +27,7 @@ The scaffold location is not a source-access grant. When it is outside the code 
 
 ## Work with multiple repositories
 
-Name a primary repository that owns the change record, then list every dependent repository. For each one, state a local path plus independent `read`, `edit`, and `validate` permissions. For example, a documentation repository might be `read/edit/validate`; a production-infrastructure repository may be `read` only. The agent must not infer missing permissions, edit a reference-only repository, or validate it.
+Name a primary repository that owns the change record, then list every dependent repository. For each one, state a local path plus one named access requirement (`reference-only`, `edit`, `edit-and-test`, `validation-only`, `release-coordination`, or `unavailable`). For example, a documentation repository might be `read/edit/validate`; a production-infrastructure repository may be `read` only. The agent must not infer missing permissions, edit a reference-only repository, or validate it.
 
 ## Intake from MCP providers
 

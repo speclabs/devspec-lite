@@ -8,3 +8,16 @@
 - Current work-item context: a private, per-worktree Git-metadata selection used to resolve an omitted work-item ID. It is never a Git-tracked artifact and never replaces `meta.md` as canonical state.
 - Evidence: confirmed, observed, inferred, blocked.
 - OWASP exception: a reviewer-confirmed false-positive or not-applicable finding supported by enforceable evidence; it is distinct from an unresolved vulnerability.
+
+## Repository access requirements
+
+| Value | Meaning |
+|---|---|
+| `reference-only` | Read repository content as evidence only; do not edit or validate it. |
+| `edit` | Read and edit approved repository files; do not run validation there. |
+| `edit-and-test` | Read and edit approved repository files and run approved validations. |
+| `validation-only` | Read required files and run approved validations; do not edit repository files. |
+| `release-coordination` | Coordinate release information only; do not inspect, edit, or validate repository contents. |
+| `unavailable` | The repository cannot currently be accessed; record the impact as a blocker. |
+
+Use these values in `foundation/codebase-structure.md`. Select the least privilege that satisfies the current command; the repository location alone never grants access.
