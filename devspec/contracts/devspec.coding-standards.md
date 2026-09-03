@@ -12,11 +12,12 @@ Invocation: `/devspec.coding-standards`
     <protocol ref="work" />
   </protocols>
   <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
-  <input>Observed conventions, approved standards, or developer-defined custom standards with examples to follow.</input>
+  <input>Observed conventions, approved standards, or developer-defined custom standards with followable numbered examples or example updates.</input>
   <rules>
     <rule>Keep only conventions that change implementation or review behavior.</rule>
-    <rule>For an observed convention, cite its local source evidence and record a concise code or test example developers can follow. Record an anti-pattern when repository evidence supports one.</rule>
-    <rule>Accept a custom standard explicitly supplied or approved by a developer even when no local source example exists. Mark it developer-defined rather than observed, record its approval or request as evidence, and include a concise illustrative example for future implementations.</rule>
+    <rule>For an observed convention, assign a stable `CS-###` ID, cite its local source evidence, and record concise fenced code or test snippets as linked `EX-###` entries under `## Standards Examples`. Record an anti-pattern when repository evidence supports one.</rule>
+    <rule>Accept a custom standard explicitly supplied or approved by a developer even when no local source example exists. Mark it developer-defined rather than observed, record its approval or request as evidence, assign or retain a stable `CS-###` ID, and include a concise illustrative `EX-###` entry for future implementations. For a developer-defined example, identify its source as the user or developer directive and date.</rule>
+    <rule>For an explicit targeted update, accept added, replaced, or retired standards examples without rerunning extraction. Preserve existing `CS-###` and `EX-###` IDs, create new IDs without renumbering historical entries, and reconcile each standard's linked example IDs and origin.</rule>
   </rules>
   <entry>Completed codebase structure in the new foundation chain, or an explicit targeted update; reject an existing-system baseline request.</entry>
   <outputs>
@@ -26,8 +27,8 @@ Invocation: `/devspec.coding-standards`
     <transition outcome="foundation-updated" stage="foundation" run="active" next="devspec.rules" />
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
   </transitions>
-  <closure>Record each retained standard with its origin, a followable example, and an anti-pattern when applicable, then register one next command; blocked evidence routes to devspec.clarify.</closure>
-  <actions>Record only standards that change a developer action, preserving developer-defined examples as reusable implementation guidance.</actions>
+  <closure>Record each retained standard with its stable ID, origin, linked numbered examples, and an anti-pattern when applicable, then register one next command; blocked evidence routes to devspec.clarify.</closure>
+  <actions>Record only standards that change a developer action, preserving developer-defined numbered examples as reusable implementation guidance.</actions>
   <artifact>devspec/foundation/coding-standards.md</artifact>
   <handoff>rules</handoff>
 </workflow>

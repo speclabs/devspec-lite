@@ -6,7 +6,7 @@
 | `devspec.projectcontext` | Capture product purpose, users, outcomes, and scope boundaries. | `techstack` |
 | `devspec.techstack` | Capture evidence-backed runtime, frameworks, data, tooling, and delivery constraints. | `codebase-structure` |
 | `devspec.codebase-structure` | Capture or customize owned roots, representative repository layout trees, boundaries, integrations, and access. | `coding-standards` |
-| `devspec.coding-standards` | Capture reusable observed or developer-defined conventions, follow examples, and anti-patterns. | `rules` |
+| `devspec.coding-standards` | Capture or update reusable observed or developer-defined standards with linked numbered code examples and anti-patterns. | `rules` |
 | `devspec.rules` | Capture non-negotiable engineering, security, compliance, delivery, and accessibility rules. | `story` |
 | `devspec.story` | Create one concise work-item intake from a request or provider reference. | `devspec.grooming` or `devspec.finalize` |
 | `devspec.grooming` | Make one draft story buildable through scoped review and material questions. | `devspec.clarify` or `devspec.finalize` |
