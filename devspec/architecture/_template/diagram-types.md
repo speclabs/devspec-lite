@@ -4,10 +4,11 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 
 ## Shared visual grammar
 
-- Use a dark canvas, subtle grid, framed surface, short eyebrow, title, and evidence-backed subtitle.
-- Draw connectors behind cards. Use restrained accents only to distinguish meaning, not decoration.
-- Keep labels short; use supporting Markdown for details. Every SVG needs a title and description.
-- Include a small legend only when color, line style, or notation is not self-evident.
+- Start from the matching upstream-derived SVG template in this directory; do not reduce a selected family to generic boxes and arrows.
+- Use the template's 1600 by 900 dark canvas, subtle grid, framed surface, short eyebrow, title, and evidence-backed subtitle.
+- Draw connectors behind cards. Use semantic role colors only to distinguish meaning, not decoration; keep boundaries and optional or exception paths visually distinct.
+- Keep labels short; use supporting Markdown for details. Every SVG needs a title and description, complete replacement of template placeholders, and XML validation.
+- Include a small legend only when color, line style, or notation is not self-evident. Do not use external assets, scripts, iframes, foreign objects, remote fonts, or remote images.
 
 ## Select by question
 
@@ -25,8 +26,22 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 | State lifecycle | Which states and transitions are allowed? | persisted state/transition rules | start, states, transition labels, terminal or exception states |
 | Timeline | What depends on what, and when? | milestones/dependencies | phases, milestones, dependency or risk links |
 
+## Template selection
+
+| Diagram type | SVG template |
+|---|---|
+| System architecture, application landscape, infrastructure topology | `architecture-diagram.svg` |
+| Process flow | `process-flow-diagram.svg` |
+| Sequence | `sequence-diagram.svg` |
+| State lifecycle | `state-lifecycle-diagram.svg` |
+| Domain model | `domain-model-diagram.svg` |
+| Journey map | `journey-map-diagram.svg` |
+| Timeline | `timeline-plan-diagram.svg` |
+| Quadrant | `quadrant-analysis-diagram.svg` |
+| Mind map | `mindmap-diagram.svg` |
+
 ## Guardrails
 
-Do not infer entities, callers, timelines, ownership, user sentiment, or priorities. Record uncertain information in the work item or decisions file, not as a factual diagram label.
+Do not infer entities, callers, timelines, ownership, user sentiment, or priorities. Record uncertain information in the work item or decisions file, not as a factual diagram label. Keep a flowchart to one primary concern; split a diagram that cannot remain readable instead of shrinking text or crossing unrelated flows.
 
 For every completed diagram: save the output, update artifact-queue.md, and index the link in overview.md.

@@ -251,6 +251,33 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("Mermaid or HTML", diagram)
             self.assertTrue((target / "devspec/architecture/artifact-queue.md").is_file())
             self.assertTrue((target / "devspec/architecture/overview.md").is_file())
+
+    def test_upstream_derived_diagram_templates_are_installed_and_well_formed(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            template_root = target / "devspec/architecture/_template"
+            expected = (
+                "architecture-diagram.svg",
+                "process-flow-diagram.svg",
+                "sequence-diagram.svg",
+                "state-lifecycle-diagram.svg",
+                "domain-model-diagram.svg",
+                "journey-map-diagram.svg",
+                "timeline-plan-diagram.svg",
+                "quadrant-analysis-diagram.svg",
+                "mindmap-diagram.svg",
+            )
+            for name in expected:
+                with self.subTest(name=name):
+                    root = ElementTree.parse(template_root / name).getroot()
+                    self.assertEqual("0 0 1600 900", root.attrib["viewBox"])
+                    self.assertIsNotNone(root.find("{http://www.w3.org/2000/svg}title"))
+                    self.assertIsNotNone(root.find("{http://www.w3.org/2000/svg}desc"))
+            diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
+            self.assertIn("Start each SVG from the matching upstream-derived template", diagram)
+            self.assertIn("connectors behind cards", diagram)
+
     def test_init_refuses_changed_managed_file(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
