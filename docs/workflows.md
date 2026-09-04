@@ -32,9 +32,11 @@ Every project maintains one OWASP Top 10:2025 baseline in `foundation/rules.md`.
 
 ## Diagram sample
 
-For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md), then use the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md), its standalone [SVG sample](../devspec/architecture/_template/diagram-sample.svg), or its optional [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html).
+For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md), then use the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md), its standalone [SVG sample](../devspec/architecture/_template/diagram-sample.svg), the opt-in [motion sample](../devspec/architecture/_template/diagram-motion-sample.svg), or its optional [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html).
 
 Assign a stable `DIA-###` ID, keep status in the queue, and add only completed diagram links to the overview index.
+
+Diagram output defaults to static SVG with `motion=none`. Use `/devspec.diagram DIA-### motion=explain` when a confirmed sequence, flow, or state transition benefits from motion. The queue records `svg; motion=explain`; the animation must be finite, preserve a complete static final frame, and expose the same information when reduced motion is enabled. Request HTML separately when its presentation shell is needed.
 
 
 `init` is idempotent for unchanged managed files. It will not overwrite a changed contract or wrapper. For CLI-managed repositories, use `diff`, then `sync --dry-run`, followed by `sync` and `doctor` after an upgrade or profile addition. Manual-copy updates follow the [manual-copy guide](manual-copy.md). `sync` never deletes retained obsolete files.

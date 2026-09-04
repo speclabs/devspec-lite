@@ -62,7 +62,9 @@ Before enabling an organization connector, record its approved read and write bo
 | `devspec.review` | Implementation and its recorded validation are complete. | `/devspec.review` |
 | `devspec.clarify` | One active material blocker has a recorded question. | `/devspec.clarify The retention period is seven years.` |
 | `devspec.changerequest` | A related requirement arrives after finalization. | `/devspec.changerequest Also support JSON export for the same authorized managers.` |
-| `devspec.diagram` | A specific architecture or workflow visual needs evidence, including one previously prepared candidate. | `/devspec.diagram DIA-002` or `/devspec.diagram Show the confirmed order-to-shipment workflow and its API integration.` |
+| `devspec.diagram` | A specific architecture or workflow visual needs evidence, including one previously prepared candidate. | `/devspec.diagram DIA-002` for static SVG, or `/devspec.diagram DIA-002 motion=explain` for an evidence-backed animated sequence. |
 | `devspec.quickfix` | One localized, low-risk correction has one primary scope. | `/devspec.quickfix Fix the misspelled Orders empty-state label; scope: UI.` |
 
 For `grooming`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`, omit an ID only when the current per-worktree context selects the right active work item. Give an explicit ID to switch stories; when several eligible stories exist, select one instead of guessing.
+
+Diagram motion accepts `motion=none|explain` and defaults to `none`. A plain request for an animated diagram maps to `motion=explain`. Animated output remains SVG, is recorded as `svg; motion=explain` in the queue, and must retain complete static and reduced-motion meaning. Add `format=html` separately when a presentation shell is required.

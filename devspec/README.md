@@ -6,3 +6,5 @@ Work item: `story → grooming` when needed `→ finalize → tasks → implemen
 After `story` selects a work item, use the normal work-item commands without repeating its ID. Per-worktree private context resolves the selected story and its recorded `next` action; use an ID only to switch or disambiguate stories.
 
 Use `clarify` only for an active blocker and `quickfix` only for localized, low-risk changes. See `lifecycle.md` for all command transitions.
+
+`diagram` creates static SVG by default. Use `motion=explain` only for an evidence-backed sequence, flow, or state transition; animated output must retain complete static and reduced-motion meaning.

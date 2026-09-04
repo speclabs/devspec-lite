@@ -48,10 +48,19 @@ uvx devspec-lite doctor --target . --profile all
 3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
 4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and prepares a list of applicable diagrams.
 5. At extraction closure, it shows the list and asks: **“Do you want me generate all the possible diagrams?”** Choose **Yes** to generate every listed diagram, **No** to leave the list prepared, or enter selected IDs or subjects. For example, enter `DIA-001, DIA-004` to generate only those two.
-6. Any prepared diagram can be generated later with `/devspec.diagram <DIA-ID-or-subject>`, for example `/devspec.diagram DIA-002`.
+6. Any prepared diagram can be generated later with `/devspec.diagram <DIA-ID-or-subject>`, for example `/devspec.diagram DIA-002`. Static SVG is the default. Use `/devspec.diagram DIA-002 motion=explain` only when the confirmed sequence, flow, or state transition benefits from explanatory motion.
 7. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
 
 **What to expect.** `extract` is the existing-system baseline command. It prepares diagrams before generating them, so a developer can keep the list only, generate all, choose a subset, or later run `/devspec.diagram DIA-002` for one queued diagram. Do not rerun individual foundation commands just to recreate its baseline.
+
+### Add explanatory motion to a diagram
+
+1. Select one queued ID or provide one evidence-backed subject.
+2. Run `/devspec.diagram DIA-002 motion=explain`. A plain request for an animated diagram selects the same mode; `motion=none` is the default.
+3. Request `format=html` separately only when an HTML presentation shell is also needed. The inline SVG keeps the same animation and reduced-motion behavior.
+4. Check the queue records `svg; motion=explain`, then open the completed output from the architecture overview.
+
+**What to expect.** The SVG reveals only the confirmed order or transition, runs once, and finishes with the complete diagram visible. Labels, arrows, and state distinctions remain meaningful without animation. A reduced-motion preference disables the animation and shows the complete final frame immediately.
 
 - Next command when ready: `/devspec.story <request>`.
 
@@ -72,7 +81,7 @@ uvx devspec-lite doctor --target . --profile all
 ```
 
 4. Use `/devspec.coding-standards` to add a team-defined standard at any time as a targeted update. Include a concise example that future implementations should follow; the artifact distinguishes it from an observed source convention.
-5. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route.
+5. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route. Add `motion=explain` only for a confirmed sequence, flow, or state transition; otherwise keep the static default.
 
 **What to expect.** Each command records its artifact and advances to the next command. After `rules`, the foundation is ready for `/devspec.story`.
 
