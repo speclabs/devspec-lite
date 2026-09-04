@@ -44,4 +44,15 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 
 Do not infer entities, callers, timelines, ownership, user sentiment, or priorities. Record uncertain information in the work item or decisions file, not as a factual diagram label. Keep a flowchart to one primary concern; split a diagram that cannot remain readable instead of shrinking text or crossing unrelated flows.
 
+## Opt-in motion
+
+Use motion only for `motion=explain`, and only when an evidence-backed order or transition helps the reader understand the diagram. A plain request for an animated diagram selects this mode. Static SVG remains the default.
+
+- Put related shapes and labels in `<g>` elements and apply deterministic CSS animation delays in the represented sequence.
+- Use embedded CSS keyframes without scripts. Prefer `transform` and `opacity`; for connector drawing, set `pathLength="1"` and animate normalized `stroke-dashoffset`. Do not animate path geometry, points, filters, or layout attributes.
+- Run the explanation once and leave the complete final frame visible. Repeat only when the request explicitly describes a repeating operational state.
+- Keep labels, connectors, and state distinctions understandable without motion. Animation may reinforce meaning but must not carry it alone.
+- Add a `prefers-reduced-motion: reduce` rule that disables animation and transitions and explicitly restores final opacity, transform, and stroke offset values.
+- Validate XML, internal references, finite timing, the final frame, and the reduced-motion result. Use `diagram-motion-sample.svg` as the implementation pattern.
+
 For every completed diagram: save the output, update artifact-queue.md, and index the link in overview.md.

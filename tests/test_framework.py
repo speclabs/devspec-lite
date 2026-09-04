@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import tempfile
 import unittest
 from pathlib import Path
@@ -249,8 +250,47 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("title and description", diagram)
             self.assertIn("validate its XML", diagram)
             self.assertIn("Mermaid or HTML", diagram)
+            self.assertIn("motion=none|explain", diagram)
+            self.assertIn("svg; motion=explain", diagram)
             self.assertTrue((target / "devspec/architecture/artifact-queue.md").is_file())
             self.assertTrue((target / "devspec/architecture/overview.md").is_file())
+
+    def test_motion_diagram_sample_is_accessible_finite_and_self_contained(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            sample = target / "devspec/architecture/_template/diagram-motion-sample.svg"
+            root = ElementTree.parse(sample).getroot()
+            namespace = "{http://www.w3.org/2000/svg}"
+            self.assertEqual("0 0 1600 900", root.attrib["viewBox"])
+            self.assertEqual("img", root.attrib["role"])
+            self.assertNotIn("width", root.attrib)
+            self.assertNotIn("height", root.attrib)
+            self.assertIsNotNone(root.find(f"{namespace}title"))
+            self.assertIsNotNone(root.find(f"{namespace}desc"))
+            self.assertEqual([], root.findall(f".//{namespace}script"))
+            self.assertEqual([], root.findall(f".//{namespace}foreignObject"))
+
+            serialized = ElementTree.tostring(root, encoding="unicode")
+            ids = {element.attrib["id"] for element in root.iter() if "id" in element.attrib}
+            references = set(re.findall(r"url\(#([^)]+)\)", serialized))
+            references.update(
+                value[1:]
+                for element in root.iter()
+                for key, value in element.attrib.items()
+                if key.endswith("href") and value.startswith("#")
+            )
+            self.assertFalse(references - ids)
+            self.assertNotIn("http://", serialized.replace("http://www.w3.org/2000/svg", ""))
+            self.assertNotIn("https://", serialized)
+            self.assertNotRegex(serialized, r"\[[A-Z][A-Z0-9_ /-]*\]")
+
+            style = "".join(root.find(f".//{namespace}style").itertext())
+            self.assertIn("prefers-reduced-motion: reduce", style)
+            self.assertNotIn("infinite", style)
+            self.assertIn("animation: none !important", style)
+            self.assertIn("stroke-dashoffset: 0 !important", style)
+            self.assertTrue(any(path.attrib.get("pathLength") == "1" for path in root.findall(f".//{namespace}path")))
 
     def test_family_specific_diagram_templates_are_installed_and_well_formed(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
