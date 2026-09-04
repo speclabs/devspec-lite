@@ -15,6 +15,9 @@ Invocation: `/devspec.review [work-item-id]`
   <input>An optional work-item ID with finalization, tasks, implementation record, and changed work.</input>
   <rules>
     <rule>Compare changed work to approved scope, task source coverage, finalization foundation and architecture traces, validation evidence, and every applicable accepted material decision or canonical rule.</rule>
+    <rule>Check changed source against the shared work protocol for duplicated capabilities, unjustified dependencies, speculative abstractions, and unused configuration. Evaluate the choices against approved requirements, project conventions, and any recorded justification.</rule>
+    <rule>Record actionable complexity findings in the existing Findings table with the location, supporting evidence, and a suitable simpler alternative or removal that preserves required behavior and safeguards.</rule>
+    <rule>Require rework for demonstrated violations of approved scope or the shared implementation rule. Do not block acceptance solely because a different stylistic implementation is shorter.</rule>
     <rule>Record each decision or rule verification as implemented-as-decided, intentionally-superseded with a recorded replacement, or not-verified. Treat an unrecorded contradiction as rework-required.</rule>
     <rule>Verify every applicable OWASP control and its project-native evidence. Confirm a proposed false positive or not-applicable finding only when the implementing developer confirmed it, enforceable evidence supports the rationale, and the reviewer records confirmation.</rule>
     <rule>Do not record accepted while an applicable OWASP control lacks evidence or an exception lacks either confirmation. Treat unsupported internal-only, authenticated-only, or limited-access reasoning as an applicable risk with reduced exposure. A known unresolved vulnerability cannot be closed as an exception.</rule>
