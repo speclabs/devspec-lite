@@ -85,7 +85,7 @@ flowchart TD
 - Use this section when `Output format` includes `svg` or `html`.
 - Store the durable SVG at `devspec/architecture/diagrams/dia-###-<diagram-name>.svg`.
 - Store optional standalone HTML at `devspec/architecture/diagrams/dia-###-<diagram-name>.html`.
-- Select SVG templates from `devspec/architecture/_template/`: `architecture-diagram.svg`, `process-flow-diagram.svg`, `sequence-diagram.svg`, `state-lifecycle-diagram.svg`, `domain-model-diagram.svg`, `journey-map-diagram.svg`, `timeline-plan-diagram.svg`, `quadrant-analysis-diagram.svg`, or `mindmap-diagram.svg`. Every template must preserve the shared dark architecture-style visual contract unless a documented constraint requires a smaller custom SVG.
+- Select SVG templates from `devspec/architecture/_template/`: `architecture-diagram.svg`, `application-landscape-diagram.svg`, `infrastructure-topology-diagram.svg`, `process-flow-diagram.svg`, `sequence-diagram.svg`, `state-lifecycle-diagram.svg`, `domain-model-diagram.svg`, `journey-map-diagram.svg`, `timeline-plan-diagram.svg`, `quadrant-analysis-diagram.svg`, or `mindmap-diagram.svg`. Every template must preserve the shared dark architecture-style visual contract unless a documented constraint requires a smaller custom SVG.
 - Generated SVG must be standalone XML with inline styles and no external assets, `<script>`, `<iframe>`, `<foreignObject>`, remote fonts, remote images, secrets, credentials, internal-only URLs, or unresolved placeholders.
 - Generated HTML must be standalone static HTML with inline styles and no external assets, `<script>`, `<iframe>`, remote fonts, remote images, secrets, credentials, internal-only URLs, or unresolved placeholders.
 - Validate the SVG as XML before reporting generation complete.

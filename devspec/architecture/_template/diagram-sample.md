@@ -2,7 +2,7 @@
 
 Use this compact worked example as a pattern for the record. Replace every value with repository evidence; queue state belongs only in artifact-queue.md.
 
-The accompanying `diagram-sample.svg` is deliberately small so the pattern stays readable. A real diagram starts from the matching family template in this directory and keeps its 1600 by 900 canvas, as `diagram-types.md` requires.
+The accompanying `diagram-sample.svg` is a completed worked example on the shared 1600 by 900 canvas, so it shows the visual contract a real diagram must meet. A real diagram still starts from the matching family template in this directory rather than from this sample.
 
 ## Brief
 

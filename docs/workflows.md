@@ -29,9 +29,27 @@ Every project maintains one OWASP Top 10:2025 baseline in `foundation/rules.md`.
 
 ![Install and maintenance flow](assets/maintenance-flow.svg)
 
-## Diagram sample
+## 4. Generate one diagram
 
-For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md), then use the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md), its standalone [SVG sample](../devspec/architecture/_template/diagram-sample.svg), the opt-in [motion sample](../devspec/architecture/_template/diagram-motion-sample.svg), or its optional [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html).
+![Diagram route](assets/diagram-route.svg)
+
+For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md), then start the SVG from the family template that guide selects. Each diagram type has its own template in `devspec/architecture/_template/`:
+
+| Diagram type | SVG template |
+|---|---|
+| System architecture | [`architecture-diagram.svg`](../devspec/architecture/_template/architecture-diagram.svg) |
+| Application landscape | [`application-landscape-diagram.svg`](../devspec/architecture/_template/application-landscape-diagram.svg) |
+| Infrastructure topology | [`infrastructure-topology-diagram.svg`](../devspec/architecture/_template/infrastructure-topology-diagram.svg) |
+| Process flow | [`process-flow-diagram.svg`](../devspec/architecture/_template/process-flow-diagram.svg) |
+| Sequence | [`sequence-diagram.svg`](../devspec/architecture/_template/sequence-diagram.svg) |
+| State lifecycle | [`state-lifecycle-diagram.svg`](../devspec/architecture/_template/state-lifecycle-diagram.svg) |
+| Domain model | [`domain-model-diagram.svg`](../devspec/architecture/_template/domain-model-diagram.svg) |
+| Journey map | [`journey-map-diagram.svg`](../devspec/architecture/_template/journey-map-diagram.svg) |
+| Timeline | [`timeline-plan-diagram.svg`](../devspec/architecture/_template/timeline-plan-diagram.svg) |
+| Quadrant | [`quadrant-analysis-diagram.svg`](../devspec/architecture/_template/quadrant-analysis-diagram.svg) |
+| Mind map | [`mindmap-diagram.svg`](../devspec/architecture/_template/mindmap-diagram.svg) |
+
+For the record that accompanies a diagram, use the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md) and its worked [SVG sample](../devspec/architecture/_template/diagram-sample.svg). The opt-in [motion sample](../devspec/architecture/_template/diagram-motion-sample.svg) shows the animation pattern, and the [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html) shows the optional presentation shell.
 
 Assign a stable `DIA-###` ID, keep status in the queue, and add only completed diagram links to the overview index.
 

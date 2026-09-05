@@ -302,6 +302,8 @@ class FrameworkTests(unittest.TestCase):
             template_root = target / "devspec/architecture/_template"
             expected = (
                 "architecture-diagram.svg",
+                "application-landscape-diagram.svg",
+                "infrastructure-topology-diagram.svg",
                 "process-flow-diagram.svg",
                 "sequence-diagram.svg",
                 "state-lifecycle-diagram.svg",
@@ -320,6 +322,34 @@ class FrameworkTests(unittest.TestCase):
             diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
             self.assertIn("Start each SVG from the matching family-specific template", diagram)
             self.assertIn("connectors behind cards", diagram)
+            self.assertIn("Anchor every connector to a shape edge at both ends", diagram)
+            types = (target / "devspec/architecture/_template/diagram-types.md").read_text(encoding="utf-8")
+            for name in expected:
+                with self.subTest(mapped=name):
+                    self.assertIn(f"`{name}`", types)
+
+    def test_diagram_templates_have_no_dangling_marker_references(self) -> None:
+        """A marker-end pointing at a missing id renders a connector with no arrowhead."""
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            namespace = "{http://www.w3.org/2000/svg}"
+            for path in sorted((target / "devspec/architecture/_template").glob("*.svg")):
+                with self.subTest(template=path.name):
+                    root = ElementTree.parse(path).getroot()
+                    defined = {marker.attrib.get("id") for marker in root.iter(f"{namespace}marker")}
+                    referenced = set()
+                    for element in root.iter():
+                        for attribute in ("marker-end", "marker-start", "filter", "fill", "stroke"):
+                            value = element.attrib.get(attribute, "")
+                            if value.startswith("url(#"):
+                                referenced.add(value[5:-1])
+                    self.assertTrue(referenced <= defined | {node.attrib.get("id") for node in root.iter()},
+                                    f"{path.name} references an undefined id")
+                    serialized = ElementTree.tostring(root, encoding="unicode")
+                    self.assertNotIn("<script", serialized)
+                    self.assertNotIn("foreignObject", serialized)
+                    self.assertNotIn("<iframe", serialized)
 
     def test_init_refuses_changed_managed_file(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

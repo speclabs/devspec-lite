@@ -14,3 +14,4 @@
 | DIA-002 | Delivery route | workflow | command contracts, protocols | `docs/assets/delivery-routes.svg` |
 | DIA-003 | Install lifecycle | workflow | CLI, doctor, setup guides | `docs/assets/maintenance-flow.svg` |
 | DIA-004 | Manual copy route | workflow | manual copy guide, install manifest | `docs/assets/manual-copy-flow.svg` |
+| DIA-005 | Diagram route | workflow | diagram contract, clarify transition | `docs/assets/diagram-route.svg` |
