@@ -25,7 +25,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          package_version="$(PYTHONPATH=src python -c 'from devspec_lite import __version__; print(__version__)')"
+          package_version="$(PYTHONPATH=src python -c 'from devspec import __version__; print(__version__)')"
           if [[ "${GITHUB_REF_TYPE:-}" == "tag" ]]; then
             python scripts/verify_release_version.py --tag "${GITHUB_REF_NAME}"
             version="${GITHUB_REF_NAME#v}"
@@ -38,13 +38,13 @@ jobs:
           tarball_url="https://github.com/speclabs/devspec-lite/archive/refs/tags/v${version}.tar.gz"
           sha256="$(curl -fsSL "${tarball_url}" | sha256sum | awk '{print $1}')"
           mkdir -p dist/homebrew/Formula
-          sed -e "s/REPLACE_WITH_VERSION/${version}/g" -e "s/REPLACE_WITH_RELEASE_SHA256/${sha256}/g" packaging/homebrew/devspec-lite.rb > dist/homebrew/Formula/devspec-lite.rb
-          test "$(grep -c 'REPLACE_WITH_' dist/homebrew/Formula/devspec-lite.rb)" -eq 0
+          sed -e "s/REPLACE_WITH_VERSION/${version}/g" -e "s/REPLACE_WITH_RELEASE_SHA256/${sha256}/g" packaging/homebrew/devspec.rb > dist/homebrew/Formula/devspec.rb
+          test "$(grep -c 'REPLACE_WITH_' dist/homebrew/Formula/devspec.rb)" -eq 0
           echo "${sha256}  devspec-lite-v${version}.tar.gz" > "dist/homebrew/devspec-lite-v${version}.tar.gz.sha256"
       - name: Upload Homebrew artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: devspec-lite-homebrew-package
+          name: devspec-homebrew-package
           path: |
-            dist/homebrew/Formula/devspec-lite.rb
+            dist/homebrew/Formula/devspec.rb
             dist/homebrew/*.sha256

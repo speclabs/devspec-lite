@@ -9,9 +9,9 @@ The commands below need a published package. Until the first `v*` release is tag
 Install [uv](https://docs.astral.sh/uv/) using your platform's supported method, then run Devspec Lite without a permanent installation:
 
 ```text
-uvx --from devspec-lite devspec init --target . --profile all --repo-state existing
-uvx --from devspec-lite devspec doctor --target . --profile all
-uvx --from devspec-lite devspec --version
+uvx devspec init --target . --profile all --repo-state existing
+uvx devspec doctor --target . --profile all
+uvx devspec --version
 ```
 
 Use `--repo-state new` for a new repository.
@@ -35,7 +35,7 @@ python3 -m pipx ensurepath
 Then, in a new terminal on any platform:
 
 ```text
-pipx install devspec-lite
+pipx install devspec
 devspec --version
 devspec init --target . --profile all --repo-state existing
 devspec doctor --target . --profile all

@@ -28,10 +28,10 @@ Choose one supported CLI route:
 
 | Platform or preference | Example |
 |---|---|
-| One-off, any OS | `uvx --from devspec-lite devspec --help` |
-| Persistent Python install | `pipx install devspec-lite` |
-| Windows package manager | `winget install --id SpecLabs.DevspecLite --exact` |
-| Homebrew tap | `brew tap speclabs/devspec-lite && brew install devspec-lite` |
+| One-off, any OS | `uvx devspec --help` |
+| Persistent Python install | `pipx install devspec` |
+| Windows package manager | `winget install --id SpecLabs.Devspec --exact` |
+| Homebrew tap | `brew tap speclabs/devspec-lite && brew install devspec` |
 
 For a no-installer setup, use [manual copy from `main`](manual-copy.md).
 
@@ -69,16 +69,16 @@ Upgrade using the same installation method:
 
 ```powershell
 # uvx: use the latest package for the next command
-uvx --from devspec-lite@latest devspec --help
+uvx devspec@latest --help
 
 # pipx
-pipx upgrade devspec-lite
+pipx upgrade devspec
 
 # WinGet
-winget upgrade --id SpecLabs.DevspecLite --exact
+winget upgrade --id SpecLabs.Devspec --exact
 
 # Homebrew
-brew upgrade devspec-lite
+brew upgrade devspec
 ```
 
 After upgrading, synchronize and validate the target repository.

@@ -13,5 +13,5 @@ updated: 2026-08-28
 # Quickfix
 
 - Request: Add install, init, upgrade, synchronization, profile-change, and usage examples to setup guidance.
-- Validation: Commands match the public `devspec-lite init` and `doctor` interface; sync is documented without inventing a CLI command.
+- Validation: Commands match the public `devspec init` and `doctor` interface; sync is documented without inventing a CLI command.
 - Outcome: Complete.

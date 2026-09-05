@@ -40,16 +40,16 @@ jobs:
           .\.venv-winget\Scripts\python.exe -m pip install --upgrade pip pyinstaller $wheel.FullName
           New-Item -ItemType Directory -Force -Path build\winget | Out-Null
           @(
-            'from devspec_lite.cli import main'
+            'from devspec.cli import main'
             ''
             'raise SystemExit(main())'
-          ) | Set-Content -Path build\winget\devspec-lite-entry.py -Encoding UTF8
-          .\.venv-winget\Scripts\pyinstaller.exe --noconfirm --clean --onefile --name devspec --distpath dist\winget --workpath build\pyinstaller --specpath build\pyinstaller --collect-data devspec_lite build\winget\devspec-lite-entry.py
+          ) | Set-Content -Path build\winget\devspec-entry.py -Encoding UTF8
+          .\.venv-winget\Scripts\pyinstaller.exe --noconfirm --clean --onefile --name devspec --distpath dist\winget --workpath build\pyinstaller --specpath build\pyinstaller --collect-data devspec build\winget\devspec-entry.py
       - name: Smoke test portable executable
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $target = Join-Path $env:RUNNER_TEMP 'devspec-lite-winget-smoke'
+          $target = Join-Path $env:RUNNER_TEMP 'devspec-winget-smoke'
           New-Item -ItemType Directory -Force -Path $target | Out-Null
           .\dist\winget\devspec.exe --version
           .\dist\winget\devspec.exe init --target $target --profile all --repo-state existing
@@ -58,13 +58,13 @@ jobs:
         shell: pwsh
         run: |
           $ErrorActionPreference = 'Stop'
-          $version = if ($env:GITHUB_REF_NAME -match '^v(.+)$') { $Matches[1] } else { python -c "from devspec_lite import __version__; print(__version__)" }
+          $version = if ($env:GITHUB_REF_NAME -match '^v(.+)$') { $Matches[1] } else { python -c "from devspec import __version__; print(__version__)" }
           $hash = (Get-FileHash dist\winget\devspec.exe -Algorithm SHA256).Hash.ToLowerInvariant()
           "$hash  devspec.exe" | Set-Content -Path dist\winget\devspec.exe.sha256 -Encoding ASCII
           $url = "https://github.com/speclabs/devspec-lite/releases/download/v$version/devspec.exe"
-          $manifestRoot = "dist\winget\manifests\s\SpecLabs\DevspecLite\$version"
+          $manifestRoot = "dist\winget\manifests\s\SpecLabs\Devspec\$version"
           New-Item -ItemType Directory -Force -Path $manifestRoot | Out-Null
-          Get-ChildItem packaging\winget -Filter 'DevspecLite*.yaml' | ForEach-Object {
+          Get-ChildItem packaging\winget -Filter 'Devspec*.yaml' | ForEach-Object {
             $manifest = Get-Content $_.FullName -Raw
             $manifest = $manifest.Replace('REPLACE_WITH_VERSION', $version).Replace('REPLACE_WITH_RELEASE_URL', $url).Replace('REPLACE_WITH_RELEASE_SHA256', $hash)
             Set-Content -Path (Join-Path $manifestRoot $_.Name) -Value $manifest -Encoding UTF8
@@ -72,7 +72,7 @@ jobs:
       - name: Upload WinGet artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: devspec-lite-winget-package
+          name: devspec-winget-package
           path: |
             dist/winget/devspec.exe
             dist/winget/devspec.exe.sha256

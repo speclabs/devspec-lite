@@ -47,7 +47,7 @@ jobs:
           python -m venv .smoke
           $wheel = Get-ChildItem dist -Filter '*.whl' | Select-Object -First 1
           & .\.smoke\Scripts\python.exe -m pip install $wheel.FullName
-          $target = Join-Path $env:RUNNER_TEMP 'devspec-lite-wheel-smoke'
+          $target = Join-Path $env:RUNNER_TEMP 'devspec-wheel-smoke'
           New-Item -ItemType Directory -Force -Path $target | Out-Null
           .\.smoke\Scripts\devspec.exe --version
           .\.smoke\Scripts\devspec.exe init --target $target --profile all --repo-state existing

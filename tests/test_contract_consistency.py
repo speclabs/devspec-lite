@@ -16,8 +16,8 @@ from xml.etree import ElementTree
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
-from devspec_lite.definitions import COMMANDS, LIFECYCLE_ORDER, PROTOCOLS, lifecycle_commands  # noqa: E402
-from devspec_lite.framework import FRAMEWORK_OWNED, doctor, managed_payload  # noqa: E402
+from devspec.definitions import COMMANDS, LIFECYCLE_ORDER, PROTOCOLS, lifecycle_commands  # noqa: E402
+from devspec.framework import FRAMEWORK_OWNED, doctor, managed_payload  # noqa: E402
 
 CONTRACTS = REPO / "devspec/contracts"
 # Live project state and this project's own work products are deliberately not installed.
@@ -70,7 +70,7 @@ class RepositoryIsCurrentTests(unittest.TestCase):
         self.assertEqual([], doctor(REPO, "all"))
 
     def test_install_manifest_covers_every_canonical_file(self) -> None:
-        from devspec_lite.definitions import canonical_root, install_files
+        from devspec.definitions import canonical_root, install_files
 
         root = canonical_root()
         installed = {p.relative_to(root).as_posix() for p in install_files()}

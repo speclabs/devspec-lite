@@ -6,7 +6,7 @@ Use this route on macOS or Linux only after the Devspec Lite formula is publishe
 
 ```bash
 brew tap speclabs/devspec-lite
-brew install devspec-lite
+brew install devspec
 devspec --version
 ```
 

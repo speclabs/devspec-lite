@@ -1,4 +1,4 @@
-class DevspecLite < Formula
+class Devspec < Formula
   include Language::Python::Virtualenv
 
   desc "Compact, resumable spec-driven workflow templates for AI coding agents"

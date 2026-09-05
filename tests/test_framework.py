@@ -6,9 +6,9 @@ import unittest
 from pathlib import Path
 from xml.etree import ElementTree
 
-from devspec_lite.cli import main
-from devspec_lite.definitions import COMMANDS
-from devspec_lite.framework import PROFILES, doctor, install_framework, xml_block
+from devspec.cli import main
+from devspec.definitions import COMMANDS
+from devspec.framework import PROFILES, doctor, install_framework, xml_block
 
 
 class FrameworkTests(unittest.TestCase):

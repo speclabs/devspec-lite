@@ -5,7 +5,7 @@ Use this route on Windows only after the Devspec Lite package is published to Wi
 ## Install
 
 ```powershell
-winget install --id SpecLabs.DevspecLite --exact
+winget install --id SpecLabs.Devspec --exact
 devspec --version
 ```
 

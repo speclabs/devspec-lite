@@ -38,8 +38,8 @@ Say `continue` or run the next work-item command without an ID. Devspec resolves
 1. Initialize the repository as `existing` if it is not initialized yet.
 
 ```powershell
-uvx --from devspec-lite devspec init --target . --profile all --repo-state existing
-uvx --from devspec-lite devspec doctor --target . --profile all
+uvx devspec init --target . --profile all --repo-state existing
+uvx devspec doctor --target . --profile all
 ```
 
 2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all six named access choices. Exactly one is recommended, with a justification, and it is the least privilege that satisfies the command: for ordinary delivery work that is `edit-and-test`, but a repository you only read as evidence should be recommended `reference-only`. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.

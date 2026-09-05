@@ -245,7 +245,7 @@ def managed_payload(profile: str, repo_state: str) -> tuple[ManagedFile, ...]:
     route = "devspec.extract" if repo_state == "existing" else "devspec.projectcontext"
     files.append(ManagedFile(Path("devspec/foundation/repository-state.md"), f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n", PROJECT_OWNED))
     # Seed the live architecture records from their templates. Installing the canonical copies
-    # would hand every target repository devspec-lite's own diagram rows.
+    # would hand every target repository this project's own diagram rows.
     for target, template in SEEDED_FROM_TEMPLATE:
         files.append(ManagedFile(target, (source_root / template).read_text(encoding="utf-8"), PROJECT_OWNED))
     adapters = ADAPTERS if profile == "all" else (profile,)
@@ -298,7 +298,7 @@ def _write_manifest(root: Path, profile: str, repo_state: str, files: tuple[Mana
     retired = {path: entry for path, entry in retired.items() if path not in current}
     data = {
         "schema_version": 1,
-        "devspec_lite_version": __version__,
+        "devspec_version": __version__,
         "profile": profile,
         "repo_state": repo_state,
         "installed_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
@@ -405,6 +405,6 @@ def doctor_warnings(root: Path, profile: str) -> list[str]:
     warnings: list[str] = []
     if manifest.get("profile") != profile:
         warnings.append(f"profile mismatch: manifest has '{manifest.get('profile')}', doctor checked '{profile}'")
-    if manifest.get("devspec_lite_version") != __version__:
-        warnings.append(f"installed Devspec Lite version '{manifest.get('devspec_lite_version', 'unknown')}' differs from package version '{__version__}'")
+    if manifest.get("devspec_version") != __version__:
+        warnings.append(f"installed Devspec Lite version '{manifest.get('devspec_version', 'unknown')}' differs from package version '{__version__}'")
     return warnings
