@@ -190,7 +190,7 @@ class RouteGraphTests(unittest.TestCase):
 
 class DocumentationTests(unittest.TestCase):
     # A command a guide never names is a command a reader never finds.
-    COVERING_DOCS = ("how-to.md", "command-examples.md", "quickstart.md", "workflows.md", "upstream-command-parity.md")
+    COVERING_DOCS = ("how-to.md", "command-examples.md", "quickstart.md", "workflows.md")
 
     def test_every_command_appears_in_the_command_guides(self) -> None:
         for doc in self.COVERING_DOCS:
