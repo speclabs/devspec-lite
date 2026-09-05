@@ -18,14 +18,14 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 
 | Developer situation | Run | Then |
 |---|---|---|
-| Existing codebase with no trusted Devspec baseline | `devspec.extract` | Start a story after the baseline is ready. |
-| Brand-new repository | `devspec.projectcontext` | Continue the new-foundation route. |
+| `devspec/foundation/repository-state.md` says `existing` | `devspec.extract` | Start a work item after the baseline is ready. |
+| `devspec/foundation/repository-state.md` says `new` | `devspec.projectcontext` | Continue the new-foundation route. |
 | New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom when needed, then finalize, plan, implement, and review. |
 | One local, low-risk correction | `devspec.quickfix` | Complete directly, clarify a blocker, or route to a story. |
 | A recorded material decision blocks current work | `devspec.clarify` | Resume the exact saved command. |
 | A related requirement arrives after finalization | `devspec.changerequest` | Re-finalize the new scope revision. |
-| One evidence-backed architecture or workflow visual is needed | `devspec.diagram` | Return to the caller's workflow. |
-| A known foundation artifact needs a narrow update | Its matching foundation command | Return to the caller after the update. |
+| One evidence-backed architecture or workflow visual is needed | `devspec.diagram` | Return to the caller's workflow, or clarify an evidence blocker. |
+| A known foundation artifact needs a narrow update | Its matching foundation command | Return to the caller, or clarify an evidence blocker. |
 
 ## Continue current work without an ID
 
@@ -42,8 +42,8 @@ uvx devspec-lite init --target . --profile all --repo-state existing
 uvx devspec-lite doctor --target . --profile all
 ```
 
-2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all standard access choices and recommend `edit-and-test`; that grants normal delivery capability, while the active command still prevents unnecessary source changes. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
-3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
+2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all six named access choices. Exactly one is recommended, with a justification, and it is the least privilege that satisfies the command: for ordinary delivery work that is `edit-and-test`, but a repository you only read as evidence should be recommended `reference-only`. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
+3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, `edit-and-test`).`
 4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and prepares a list of applicable diagrams.
 5. At extraction closure, it shows the list and asks: **“Do you want me to generate all the possible diagrams?”** Choose **Yes** to generate every listed diagram, **No** to leave the list prepared, or enter selected IDs or subjects. For example, enter `DIA-001, DIA-004` to generate only those two.
 6. Any prepared diagram can be generated later with `/devspec.diagram <DIA-ID-or-subject>`, for example `/devspec.diagram DIA-002`. Static SVG is the default. Use `/devspec.diagram DIA-002 motion=explain` only when the confirmed sequence, flow, or state transition benefits from explanatory motion.
@@ -67,7 +67,7 @@ uvx devspec-lite doctor --target . --profile all
 **Scenario.** Your team has created an empty service repository and wants a durable engineering baseline before accepting feature work.
 
 1. Initialize it with `--repo-state new`.
-2. Confirm the repository scope before the first command, for example: `Scope confirmed: scaffold and planned source at D:\Code\inventory; no source exists yet; read/edit/validate.`
+2. Confirm the repository scope before the first command, for example: `Scope confirmed: scaffold and planned source at D:\Code\inventory; no source exists yet; `edit-and-test`.`
 3. Run these agent commands in order:
 
 ```text
@@ -81,7 +81,7 @@ uvx devspec-lite doctor --target . --profile all
 4. Use `/devspec.coding-standards` to add a team-defined standard at any time as a targeted update. Include a concise example that future implementations should follow; the artifact distinguishes it from an observed source convention.
 5. Use `/devspec.diagram <subject>` only when a specific evidence-backed visual is needed during this route. Add `motion=explain` only for a confirmed sequence, flow, or state transition; otherwise keep the static default.
 
-**What to expect.** Each command records its artifact and advances to the next command. After `rules`, the foundation is ready for `/devspec.story`.
+**What to expect.** Each command records its artifact and advances to the next command, or records an evidence blocker and routes to `/devspec.clarify`. After `devspec.rules`, the foundation is ready for `/devspec.story`.
 
 ## 3. Deliver a feature from request to accepted review
 
@@ -114,13 +114,13 @@ uvx devspec-lite doctor --target . --profile all
 3. Start the story from the primary repository and state the repository roles, local paths, and read, edit, and validation permissions in the request. For example:
 
 ```text
-/devspec.story Add checkout address validation. Primary: orders-api at D:\Code\orders-api (read/edit/validate). Dependent UI: orders-web at D:\Code\orders-web (read/edit/validate).
+/devspec.story Add checkout address validation. Primary: orders-api at D:\Code\orders-api (`edit-and-test`). Dependent UI: orders-web at D:\Code\orders-web (`edit-and-test`).
 ```
 
 4. When a command needs the second repository, it uses the `repo-access` protocol before reading, editing, or validating it. Record a repository as reference-only or validation-only when that is its real boundary.
 5. Run `/devspec.extract` instead of the individual foundation commands when you need an evidence-backed baseline for an explicitly scoped multi-repository existing system.
 
-**What to expect.** There is no separate multi-repository configuration command. The approved roles, paths, and access permissions are the configuration, recorded in canonical Devspec artifacts. Never infer edit access, and never validate a reference-only or unavailable repository.
+**What to expect.** There is no separate multi-repository configuration command. The approved roles, paths, and access permissions are the configuration, recorded in canonical Devspec artifacts. Never infer access from a path. Honor exactly the recorded requirement: never inspect a `release-coordination` or `unavailable` repository; never edit a `reference-only`, `validation-only`, `release-coordination`, or `unavailable` one; and never validate a `reference-only`, `edit`, `release-coordination`, or `unavailable` one. `devspec/protocols/repo-access.xml` is the authority.
 
 - Next command for a new change: `/devspec.story <one request with repository scope>`.
 

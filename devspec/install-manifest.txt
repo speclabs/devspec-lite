@@ -1,4 +1,7 @@
-# Canonical Devspec Lite artifacts installed by automated and manual setup.
+# Glob patterns for the canonical artifacts copied by automated and manual setup.
+# Not the full install list: repository-state.md is generated from the chosen repository
+# state, and architecture/overview.md and architecture/artifact-queue.md are seeded from
+# architecture/_template/ so a target repository starts with empty records.
 README.md
 constitution.md
 command-registry.md

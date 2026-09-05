@@ -14,11 +14,11 @@ The `main` checkout supplies the canonical `devspec/` directory and prebuilt age
 
 ## 2. Copy one profile
 
-Copy `devspec/` and the folder or file for the agent host into the target repository.
+Copy `devspec/` and the folder or file for the agent host into the target repository. Copy only the listed paths. In particular do not copy `.github/workflows/` — those are Devspec Lite's own release pipelines, and one of them requests publishing credentials.
 
 | Profile | Copy from the `main` checkout | Copy into the target repository |
 |---|---|---|
-| Copilot | `devspec/`, `.github/` | `devspec/`, `.github/` |
+| Copilot | `devspec/`, `.github/prompts/`, `.github/agents/` | `devspec/`, `.github/prompts/`, `.github/agents/` |
 | Codex | `devspec/`, `AGENTS.md` | `devspec/`, `AGENTS.md` |
 | Claude | `devspec/`, `.claude/` | `devspec/`, `.claude/` |
 | Cursor | `devspec/`, `.cursor/` | `devspec/`, `.cursor/` |
@@ -60,7 +60,7 @@ Use this exact Markdown structure:
 
 ## 4. Verify and commit
 
-Verify that every path listed in `devspec/install-manifest.txt` exists, that the selected agent wrapper is present, that `devspec/foundation/repository-state.md` has the target's intended state and start command, and that every row in step 2's reset table has been applied. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
+Verify that every glob pattern in `devspec/install-manifest.txt` resolves to at least one copied file, that the selected agent wrapper is present, that `devspec/foundation/repository-state.md` has the target's intended state and start command, and that every row in step 2's reset table has been applied. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
 
 ## 5. Update manually
 

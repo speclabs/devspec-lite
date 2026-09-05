@@ -14,7 +14,7 @@ The terminal CLI is `devspec-lite`. After initialization, the installed agent wr
 |---|---|---|
 | Install the CLI | `uvx`, `pipx`, WinGet, or Homebrew | Choose one package-manager route below. |
 | Check version | `devspec-lite --version` | Confirms the installed CLI. |
-| Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new|existing>` | Copies canonical artifacts and selected wrappers. |
+| Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new\|existing>` | Copies canonical artifacts and selected wrappers. |
 | Validate | `devspec-lite doctor --target <path> --profile <profile>` | Read-only check of contracts, protocols, templates, and wrappers. |
 | Compare installed framework files | `devspec-lite diff --target <path>` | Read-only drift report. |
 | Synchronize canonical artifacts | `devspec-lite sync --target <path> --profile <profile> --dry-run` | Preview, then run without `--dry-run`; use `--force` only for reviewed framework-owned edits. |

@@ -21,7 +21,7 @@ Canonical contracts in `devspec/contracts/` own command behavior. This document 
 | `review` | `devspec.review` or `devspec.clarify` |
 | `complete` | terminal (`next: none`) |
 
-Every non-terminal stage may route to `devspec.clarify`, and only to `devspec.clarify`, when it records a material blocker. `devspec/protocols/revision.xml` owns which revision each stage may read and write.
+A work-item stage that records a material blocker routes to `devspec.clarify` and nowhere else. The foundation, caller, and quickfix triage stages do the same; the quickfix `routed` stage is non-terminal and routes only to `devspec.story`. `devspec/protocols/revision.xml` owns which revision each stage may read and write.
 
 ## Route graph
 
@@ -29,4 +29,4 @@ Every non-terminal stage may route to `devspec.clarify`, and only to `devspec.cl
 - New repository: `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules → devspec.story`. A targeted foundation update returns to its caller after completing its declared artifact.
 - Work item: `devspec.story → devspec.grooming|devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. Review results are `accepted → complete`, `rework-required → devspec.implement`, or `blocked → devspec.clarify`.
 - Work-item IDs are optional selectors for switching or resolving ambiguity. Without one, the current-work-item protocol resolves which work item a command acts on.
-- `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` ends complete, blocks to `devspec.clarify`, or routes to `devspec.story`. `devspec.diagram` returns to its caller.
+- `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` ends complete, blocks to `devspec.clarify`, or routes to `devspec.story`. `devspec.diagram` returns to its caller, or blocks to `devspec.clarify`.

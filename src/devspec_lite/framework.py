@@ -326,10 +326,10 @@ def _copy_plan(root: Path, files: tuple[ManagedFile, ...], previous: dict | None
             skipped.append(name)
             continue
         if item.ownership == PROJECT_OWNED:
-            if mode == "sync":
-                skipped.append(f"{name} (project-owned)")
-            else:
-                conflicts.append(f"{name} already exists and differs")
+            # A project-owned file that already exists is the developer's own work, and its
+            # presence is expected when re-running init to add a profile. Never overwrite it,
+            # and never fail on it: the only escape would be --force, which would destroy it.
+            skipped.append(f"{name} (project-owned)")
             continue
         if mode == "sync" and old.get(name, {}).get("sha256") == digest:
             writable.append(item)
