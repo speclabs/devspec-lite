@@ -25,6 +25,8 @@ Use a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`,
 
 Work route: `devspec.story → devspec.grooming` when needed `→ devspec.finalize → devspec.tasks → devspec.implement → devspec.review`.
 
+When a command reports a blocker, run `devspec.clarify`: it resolves the one recorded decision and resumes the exact saved command. When a related requirement arrives after finalization, run `devspec.changerequest` to append it and re-finalize the new scope revision.
+
 Use `devspec.quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
 
 ## Workflow routes

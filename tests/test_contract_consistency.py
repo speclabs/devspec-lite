@@ -160,6 +160,18 @@ class RouteGraphTests(unittest.TestCase):
                 self.assertEqual(", ".join(f"`{v}`" for v in expected), row[2])
 
 
+class DocumentationTests(unittest.TestCase):
+    # A command a guide never names is a command a reader never finds.
+    COVERING_DOCS = ("how-to.md", "command-examples.md", "quickstart.md", "workflows.md", "upstream-command-parity.md")
+
+    def test_every_command_appears_in_the_command_guides(self) -> None:
+        for doc in self.COVERING_DOCS:
+            text = (REPO / "docs" / doc).read_text(encoding="utf-8")
+            for command in COMMANDS:
+                with self.subTest(doc=doc, command=command.name):
+                    self.assertIn(command.name, text)
+
+
 class ArtifactShapeTests(unittest.TestCase):
     def test_markdown_tables_are_well_formed(self) -> None:
         separator = re.compile(r"\|(\s*:?-+:?\s*\|)+$")
@@ -173,6 +185,27 @@ class ArtifactShapeTests(unittest.TestCase):
                     if len(header) != len(nxt.strip("|").split("|")):
                         broken.append(f"{path.relative_to(REPO).as_posix()}:{index + 1}")
         self.assertEqual([], broken)
+
+    # Each entry is a field some contract or protocol names, and the template that must offer it.
+    REQUIRED_FIELDS = {
+        "devspec/foundation/_template/rules.md": ("Constitution principles",),
+        "devspec/foundation/_template/tech-stack.md": ("Supported versions",),
+        "devspec/foundation/_template/project-context.md": ("Evidence label",),
+        "devspec/foundation/_template/codebase-structure.md": ("Integration points", "Validation location"),
+        "devspec/architecture/_template/artifact-queue.md": ("Duplicate check",),
+        "devspec/work-items/_template/finalize.md": ("CP-###", "Scope revision:"),
+        "devspec/work-items/_template/tasks.md": ("Done condition", "Scope revision:"),
+        "devspec/work-items/_template/implement.md": ("Changed-work baseline:",),
+        "devspec/work-items/_template/review.md": ("Location", "implemented-as-decided", "Changed-work baseline:"),
+        "devspec/quickfixes/_template.md": ("last:", "resume:", "next:"),
+    }
+
+    def test_templates_carry_the_fields_contracts_require(self) -> None:
+        for template, fields in self.REQUIRED_FIELDS.items():
+            text = (REPO / template).read_text(encoding="utf-8")
+            for field in fields:
+                with self.subTest(template=template, field=field):
+                    self.assertIn(field, text)
 
     def test_contract_outputs_have_a_template(self) -> None:
         template_map = (REPO / "devspec/foundation/template-map.md").read_text(encoding="utf-8")
