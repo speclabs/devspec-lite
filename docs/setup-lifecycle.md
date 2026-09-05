@@ -6,21 +6,21 @@ Use this guide only after installing the Devspec Lite CLI through `uvx`, `pipx`,
 
 ![CLI installation and maintenance flow](assets/maintenance-flow.svg)
 
-The terminal CLI is `devspec-lite`. After initialization, the installed agent wrappers expose the `devspec.*` workflow commands. They are intentionally different interfaces.
+The terminal CLI is `devspec`. After initialization, the installed agent wrappers expose the `devspec.*` workflow commands. They are intentionally different interfaces.
 
 ## Command map
 
 | Goal | Use | Notes |
 |---|---|---|
 | Install the CLI | `uvx`, `pipx`, WinGet, or Homebrew | Choose one package-manager route below. |
-| Check version | `devspec-lite --version` | Confirms the installed CLI. |
-| Initialize | `devspec-lite init --target <path> --profile <profile> --repo-state <new\|existing>` | Copies canonical artifacts and selected wrappers. |
-| Validate | `devspec-lite doctor --target <path> --profile <profile>` | Read-only check of contracts, protocols, templates, and wrappers. |
-| Compare installed framework files | `devspec-lite diff --target <path>` | Read-only drift report. |
-| Synchronize canonical artifacts | `devspec-lite sync --target <path> --profile <profile> --dry-run` | Preview, then run without `--dry-run`; use `--force` only for reviewed framework-owned edits. |
+| Check version | `devspec --version` | Confirms the installed CLI. |
+| Initialize | `devspec init --target <path> --profile <profile> --repo-state <new\|existing>` | Copies canonical artifacts and selected wrappers. |
+| Validate | `devspec doctor --target <path> --profile <profile>` | Read-only check of contracts, protocols, templates, and wrappers. |
+| Compare installed framework files | `devspec diff --target <path>` | Read-only drift report. |
+| Synchronize canonical artifacts | `devspec sync --target <path> --profile <profile> --dry-run` | Preview, then run without `--dry-run`; use `--force` only for reviewed framework-owned edits. |
 | Run delivery work | Agent command such as `devspec.story` or `devspec.quickfix` | Use after initialization; see the [workflow guide](workflows.md). |
 
-`devspec-lite upgrade` is not a CLI command; upgrade the package with its package manager, then use `diff` and `sync` to update the installed framework files.
+`devspec upgrade` is not a CLI command; upgrade the package with its package manager, then use `diff` and `sync` to update the installed framework files.
 
 ## 1. Install Devspec Lite
 
@@ -28,7 +28,7 @@ Choose one supported CLI route:
 
 | Platform or preference | Example |
 |---|---|
-| One-off, any OS | `uvx devspec-lite --help` |
+| One-off, any OS | `uvx --from devspec-lite devspec --help` |
 | Persistent Python install | `pipx install devspec-lite` |
 | Windows package manager | `winget install --id SpecLabs.DevspecLite --exact` |
 | Homebrew tap | `brew tap speclabs/devspec-lite && brew install devspec-lite` |
@@ -40,15 +40,15 @@ For a no-installer setup, use [manual copy from `main`](manual-copy.md).
 Use `existing` when source code already exists:
 
 ```powershell
-devspec-lite init --target D:\Code\orders --profile all --repo-state existing
-devspec-lite doctor --target D:\Code\orders --profile all
+devspec init --target D:\Code\orders --profile all --repo-state existing
+devspec doctor --target D:\Code\orders --profile all
 ```
 
 Use `new` before the first foundation workflow in a blank repository:
 
 ```powershell
-devspec-lite init --target D:\Code\orders --profile copilot --repo-state new
-devspec-lite doctor --target D:\Code\orders --profile copilot
+devspec init --target D:\Code\orders --profile copilot --repo-state new
+devspec doctor --target D:\Code\orders --profile copilot
 ```
 
 `all` installs every supported wrapper. Use one of `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the repository uses only that agent.
@@ -58,7 +58,7 @@ devspec-lite doctor --target D:\Code\orders --profile copilot
 Run Doctor after CLI initialization, after an upgrade, and before reporting a CLI setup problem:
 
 ```powershell
-devspec-lite doctor --target D:\Code\orders --profile all
+devspec doctor --target D:\Code\orders --profile all
 ```
 
 Doctor checks that each canonical contract, XML protocol, and selected adapter wrapper exists and that wrappers point to their matching contract. It does not modify repository code.
@@ -69,7 +69,7 @@ Upgrade using the same installation method:
 
 ```powershell
 # uvx: use the latest package for the next command
-uvx devspec-lite@latest --help
+uvx --from devspec-lite@latest devspec --help
 
 # pipx
 pipx upgrade devspec-lite
@@ -88,10 +88,10 @@ After upgrading, synchronize and validate the target repository.
 Preview the exact upgrade first, then apply it:
 
 ```powershell
-devspec-lite diff --target D:\Code\orders
-devspec-lite sync --target D:\Code\orders --profile all --dry-run
-devspec-lite sync --target D:\Code\orders --profile all
-devspec-lite doctor --target D:\Code\orders --profile all
+devspec diff --target D:\Code\orders
+devspec sync --target D:\Code\orders --profile all --dry-run
+devspec sync --target D:\Code\orders --profile all
+devspec doctor --target D:\Code\orders --profile all
 ```
 
 `sync` adds missing files and replaces packaged files that have not been locally edited. It never overwrites a locally modified framework-owned file unless `--force` is supplied, never overwrites project-owned artifacts, and never deletes retained obsolete wrappers. Use `--force` only after reviewing `diff`.
@@ -101,15 +101,15 @@ devspec-lite doctor --target D:\Code\orders --profile all
 To add Codex to a repository that already has the Copilot profile:
 
 ```powershell
-devspec-lite init --target D:\Code\orders --profile codex --repo-state existing
-devspec-lite doctor --target D:\Code\orders --profile codex
+devspec init --target D:\Code\orders --profile codex --repo-state existing
+devspec doctor --target D:\Code\orders --profile codex
 ```
 
 To add every remaining wrapper, use `all`:
 
 ```powershell
-devspec-lite init --target D:\Code\orders --profile all --repo-state existing
-devspec-lite doctor --target D:\Code\orders --profile all
+devspec init --target D:\Code\orders --profile all --repo-state existing
+devspec doctor --target D:\Code\orders --profile all
 ```
 
 Changing to a narrower profile does not delete wrappers from other agents. Review and remove obsolete wrapper folders manually only after confirming no team member needs them.

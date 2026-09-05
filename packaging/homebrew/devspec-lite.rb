@@ -14,6 +14,6 @@ class DevspecLite < Formula
   end
 
   test do
-    assert_match version.to_s, shell_output("#{bin}/devspec-lite --version")
+    assert_match version.to_s, shell_output("#{bin}/devspec --version")
   end
 end

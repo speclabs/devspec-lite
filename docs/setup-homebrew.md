@@ -7,19 +7,19 @@ Use this route on macOS or Linux only after the Devspec Lite formula is publishe
 ```bash
 brew tap speclabs/devspec-lite
 brew install devspec-lite
-devspec-lite --version
+devspec --version
 ```
 
 ## Initialize a repository
 
 ```bash
 # Existing repository
-devspec-lite init --target . --profile all --repo-state existing
-devspec-lite doctor --target . --profile all
+devspec init --target . --profile all --repo-state existing
+devspec doctor --target . --profile all
 
 # New repository
-devspec-lite init --target . --profile all --repo-state new
-devspec-lite doctor --target . --profile all
+devspec init --target . --profile all --repo-state new
+devspec doctor --target . --profile all
 ```
 
 Use a single-agent profile when the repository does not need every adapter wrapper: `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity`.

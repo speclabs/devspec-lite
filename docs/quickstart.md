@@ -8,12 +8,12 @@ Choose the repository state that matches the target:
 
 ```powershell
 # New repository: no source code to inspect
-uvx devspec-lite init --target . --profile all --repo-state new
-uvx devspec-lite doctor --target . --profile all
+uvx --from devspec-lite devspec init --target . --profile all --repo-state new
+uvx --from devspec-lite devspec doctor --target . --profile all
 
 # Existing repository: source code is already present
-uvx devspec-lite init --target . --profile all --repo-state existing
-uvx devspec-lite doctor --target . --profile all
+uvx --from devspec-lite devspec init --target . --profile all --repo-state existing
+uvx --from devspec-lite devspec doctor --target . --profile all
 ```
 
 Use a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the target uses one agent host. `all` installs every supported wrapper.

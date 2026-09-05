@@ -18,7 +18,7 @@ from .framework import (
 
 
 def parser() -> argparse.ArgumentParser:
-    root = argparse.ArgumentParser(prog="devspec-lite")
+    root = argparse.ArgumentParser(prog="devspec")
     root.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     sub = root.add_subparsers(dest="command", required=True)
     for name in ("init", "doctor", "diff", "sync"):

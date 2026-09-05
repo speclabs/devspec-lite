@@ -6,19 +6,19 @@ Use this route on Windows only after the Devspec Lite package is published to Wi
 
 ```powershell
 winget install --id SpecLabs.DevspecLite --exact
-devspec-lite --version
+devspec --version
 ```
 
 ## Initialize a repository
 
 ```powershell
 # Existing repository
-devspec-lite init --target . --profile all --repo-state existing
-devspec-lite doctor --target . --profile all
+devspec init --target . --profile all --repo-state existing
+devspec doctor --target . --profile all
 
 # New repository
-devspec-lite init --target . --profile all --repo-state new
-devspec-lite doctor --target . --profile all
+devspec init --target . --profile all --repo-state new
+devspec doctor --target . --profile all
 ```
 
 Choose a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when only one agent is used.

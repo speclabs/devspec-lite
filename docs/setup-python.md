@@ -9,9 +9,9 @@ The commands below need a published package. Until the first `v*` release is tag
 Install [uv](https://docs.astral.sh/uv/) using your platform's supported method, then run Devspec Lite without a permanent installation:
 
 ```text
-uvx devspec-lite init --target . --profile all --repo-state existing
-uvx devspec-lite doctor --target . --profile all
-uvx devspec-lite --version
+uvx --from devspec-lite devspec init --target . --profile all --repo-state existing
+uvx --from devspec-lite devspec doctor --target . --profile all
+uvx --from devspec-lite devspec --version
 ```
 
 Use `--repo-state new` for a new repository.
@@ -36,12 +36,12 @@ Then, in a new terminal on any platform:
 
 ```text
 pipx install devspec-lite
-devspec-lite --version
-devspec-lite init --target . --profile all --repo-state existing
-devspec-lite doctor --target . --profile all
+devspec --version
+devspec init --target . --profile all --repo-state existing
+devspec doctor --target . --profile all
 ```
 
-Restart the terminal if `devspec-lite` is not found after `ensurepath`. Use `--repo-state new` for a new repository.
+Restart the terminal if `devspec` is not found after `ensurepath`. Use `--repo-state new` for a new repository.
 
 ## Next steps
 

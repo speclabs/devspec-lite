@@ -17,7 +17,7 @@ classifiers = [
 ]
 
 [project.scripts]
-devspec-lite = "devspec_lite.cli:main"
+devspec = "devspec_lite.cli:main"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

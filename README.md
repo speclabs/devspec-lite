@@ -22,15 +22,15 @@ After choosing a CLI route, initialize and validate the repository:
 
 ```powershell
 # Existing repository
-uvx devspec-lite init --target . --profile all --repo-state existing
-uvx devspec-lite doctor --target . --profile all
+uvx --from devspec-lite devspec init --target . --profile all --repo-state existing
+uvx --from devspec-lite devspec doctor --target . --profile all
 
 # New repository
-uvx devspec-lite init --target . --profile all --repo-state new
-uvx devspec-lite doctor --target . --profile all
+uvx --from devspec-lite devspec init --target . --profile all --repo-state new
+uvx --from devspec-lite devspec doctor --target . --profile all
 ```
 
-`init` copies canonical Markdown + XML contracts, concise templates, and the wrappers for the selected agent profile. It generates `devspec/foundation/repository-state.md` from `--repo-state` and seeds empty `devspec/architecture/overview.md` and `artifact-queue.md` from their templates. Those two, plus `devspec/constitution.md`, are project-owned: `init` and `sync` never overwrite them, even with `--force`. Use the `devspec.*` commands exposed by your agent host. Use `devspec-lite diff --target .` to inspect installed-framework drift and `devspec-lite sync --target . --profile all --dry-run` before applying a framework upgrade.
+`init` copies canonical Markdown + XML contracts, concise templates, and the wrappers for the selected agent profile. It generates `devspec/foundation/repository-state.md` from `--repo-state` and seeds empty `devspec/architecture/overview.md` and `artifact-queue.md` from their templates. Those two, plus `devspec/constitution.md`, are project-owned: `init` and `sync` never overwrite them, even with `--force`. Use the `devspec.*` commands exposed by your agent host. Use `devspec diff --target .` to inspect installed-framework drift and `devspec sync --target . --profile all --dry-run` before applying a framework upgrade.
 
 ## Choose a workflow route
 

@@ -43,7 +43,7 @@ class ReleaseMetadataTests(unittest.TestCase):
         self.assertIn("devspec-lite-python-package-checksums.txt", python_publish)
         self.assertIn("pypa/gh-action-pypi-publish", python_publish)
         self.assertIn("Get-FileHash", winget_publish)
-        self.assertIn("devspec-lite.exe.sha256", winget_publish)
+        self.assertIn("devspec.exe.sha256", winget_publish)
         self.assertIn("REPLACE_WITH_RELEASE_SHA256", winget_publish)
         self.assertIn("curl -fsSL", homebrew_publish)
         self.assertIn("REPLACE_WITH_RELEASE_SHA256", homebrew_publish)
