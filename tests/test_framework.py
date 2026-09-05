@@ -112,6 +112,7 @@ class FrameworkTests(unittest.TestCase):
             finalize_contract = (target / "devspec/contracts/devspec.finalize.md").read_text(encoding="utf-8")
             implement_contract = (target / "devspec/contracts/devspec.implement.md").read_text(encoding="utf-8")
             review_contract = (target / "devspec/contracts/devspec.review.md").read_text(encoding="utf-8")
+            security_protocol = (target / "devspec/protocols/security.xml").read_text(encoding="utf-8")
             self.assertEqual(1, rules.count("OWASP Top 10:2025 Baseline"))
             self.assertIn("A01:2025 Broken Access Control", rules)
             self.assertIn("A10:2025 Mishandling of Exceptional Conditions", rules)
@@ -121,18 +122,20 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("Developer confirmation", implementation_template)
             self.assertIn("Security Verification", review_template)
             self.assertIn("Reviewer confirmation", review_template)
-            self.assertIn("OWASP Top 10:2025", rules_contract)
+            # The security protocol owns the baseline, exception, and gate; the contracts load it.
+            self.assertIn("OWASP Top 10:2025", security_protocol)
+            self.assertIn("one material confirmation question", security_protocol)
+            self.assertIn("known unresolved vulnerability", security_protocol)
+            for contract in (rules_contract, extract_contract, finalize_contract, implement_contract, review_contract):
+                self.assertIn('<protocol ref="security" />', contract)
             self.assertIn("do not infer an internal-only", extract_contract)
             self.assertIn("foundation trace", finalize_contract)
-            self.assertIn("ask one material confirmation question", implement_contract)
-            self.assertIn("reviewer records confirmation", review_contract)
-            self.assertIn("known unresolved vulnerability", review_contract)
     def test_contract_xml_and_quickfix_routing_are_present(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
             main(["init", "--target", str(target), "--profile", "copilot", "--repo-state", "existing"])
             quickfix = (target / "devspec/contracts/devspec.quickfix.md").read_text(encoding="utf-8")
-            self.assertIn("route risky work", quickfix)
+            self.assertIn("Route public API contracts", quickfix)
             self.assertIn("database schema or migration", quickfix)
             self.assertIn("<rules>", quickfix)
             self.assertIn('<protocol ref="ask" />', quickfix)

@@ -9,8 +9,11 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="state" />
     <protocol ref="work" />
+    <protocol ref="repo-access" />
   </protocols>
+  <scope>Use only for one localized, low-risk change that needs no work item. Route public contracts, schema or migration work, security work, breaking changes, and unresolved risk to devspec.story instead.</scope>
   <input>One localized bug fix or small enhancement.</input>
   <rules>
     <rule>Select one primary scope: UI, internal API, function/job, library, configuration, tests, or a user-defined bounded scope.</rule>
@@ -25,10 +28,7 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
   <transitions>
     <transition outcome="complete" stage="complete" run="complete" next="none" />
     <transition outcome="material-blocker" stage="triage" run="blocked" next="devspec.clarify" />
-    <transition outcome="routed" stage="routed" run="complete" next="devspec.story" />
+    <transition outcome="routed" stage="routed" run="active" next="devspec.story" />
   </transitions>
   <closure>Record the selected route, validation evidence, and terminal next action. Direct implementation is allowed only for the declared low-risk scope.</closure>
-  <actions>Select one primary scope, route risky work, then implement and validate directly.</actions>
-  <artifact>devspec/quickfixes/QF-###-slug.md</artifact>
-  <handoff>none-or-devspec.clarify-or-devspec.story</handoff>
 </workflow>

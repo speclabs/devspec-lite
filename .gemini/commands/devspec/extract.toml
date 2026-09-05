@@ -1,2 +1,2 @@
-description = "Inspect the approved existing system end-to-end and produce its technical, business, workflow, rule, and diagram baseline without requiring separate foundation or diagram commands."
+description = "Inspect the approved existing system end-to-end, produce its technical, business, workflow, and rule baseline, and prepare an evidence-backed diagram candidate list for explicit generation approval."
 prompt = "Read and execute devspec/contracts/devspec.extract.md"

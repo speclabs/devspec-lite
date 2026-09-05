@@ -9,9 +9,12 @@ Invocation: `/devspec.story Add customer export`
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="state" />
     <protocol ref="current-work-item" />
+    <protocol ref="revision" />
     <protocol ref="work" />
   </protocols>
+  <scope>Use to open one new work item from a manual request or a provider reference. Use devspec.changerequest for related scope on an already-finalized work item, and devspec.quickfix for a localized low-risk change that needs no work item.</scope>
   <input>One manual feature, bug, security issue, or task, or one provider work-item URL or identifier resolvable through an available authenticated MCP tool.</input>
   <rules>
     <rule>Handle exactly one work item; ask a material selection question when input contains independent items.</rule>
@@ -22,6 +25,7 @@ Invocation: `/devspec.story Add customer export`
     <rule>Allow manual intake as an explicit fallback only when provider resolution is unavailable or the developer intentionally selects it. Record the confirmation result and concise redacted source summary in story.md; keep credentials, tokens, and unnecessary personal data out of all artifacts.</rule>
     <rule>If a provider reference is ambiguous, inaccessible, unavailable through MCP, or insufficient to create one work item, ask one material clarification or offer the structured manual fallback. Do not silently fall back to browser search, create an unverified work item, or fabricate provider content.</rule>
     <rule>Read only the coding standards, codebase structure, foundation rules, and workflow rules relevant to the requested behavior and code area; do not scan unrelated historical work-item decisions.</rule>
+    <rule>Resolve a provider reference against `devspec/foundation/provider-integrations.md`: use its accepted inputs, validation guardrails, and confirmation requirements, and record the resolution outcome there when a new provider, input form, or guardrail is confirmed.</rule>
     <rule>Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.</rule>
     <rule>Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
     <rule>Treat an explicit story request as new-work intent unless it is clearly related finalized scope, which routes to changerequest.</rule>
@@ -32,6 +36,7 @@ Invocation: `/devspec.story Add customer export`
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+    <artifact path="devspec/foundation/provider-integrations.md" />
   </outputs>
   <transitions>
     <transition outcome="grooming-required" stage="grooming" run="active" next="devspec.grooming" />
@@ -39,7 +44,4 @@ Invocation: `/devspec.story Add customer export`
     <transition outcome="provider-reference-blocked" stage="intake" run="blocked" next="devspec.clarify" />
   </transitions>
   <closure>Record the selected route and normalized provider source when used. Use grooming when code-area evidence, compatibility, risk, or acceptance criteria needs scoped analysis.</closure>
-  <actions>Resolve one provider reference read-only when available, require structured confirmation before creating the work item, or record an explicitly chosen manual request; preserve finalized baselines.</actions>
-  <artifact>devspec/work-items/&lt;id&gt;/story.md</artifact>
-  <handoff>devspec.grooming-or-devspec.finalize</handoff>
 </workflow>

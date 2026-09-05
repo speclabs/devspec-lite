@@ -1,6 +1,6 @@
 # How to use Devspec Lite
 
-This guide uses real developer situations to show which agent command to run, when to run it, and what happens next. Run `devspec-lite init` and `devspec-lite doctor` first; then invoke the listed `devspec.*` command from your configured agent host.
+This guide uses real developer situations to show which agent command to run, when to run it, and what happens next. Install the framework by either setup route, then invoke the listed `devspec.*` command from your configured agent host. The CLI is one route, not a prerequisite.
 
 Git-tracked `devspec/` artifacts are the project record. Do not skip a command because the answer is present in chat: record the evidence or decision in the matching artifact.
 
@@ -8,7 +8,7 @@ Git-tracked `devspec/` artifacts are the project record. Do not skip a command b
 
 ## Choose the scaffold and confirm source scope
 
-The `devspec/` scaffold may live in the code repository or in a separate Git repository that records a multi-repository change. The directory open in the agent host is the scaffold location, not automatic permission to inspect source. Before every `devspec.*` command, confirm single-repository or multi-repository scope in two steps when current evidence is absent: first ask for one repository name or local path in a free-form text input with examples; after that path is confirmed, ask one interactive named access-requirement question with examples, Custom Answer, and one least-privilege recommendation. Repeat the two questions for each repository, recording its role and access requirement. A new repository may explicitly confirm that no source exists yet. Current canonical evidence may replace a repeated confirmation only when it records the same facts.
+The `devspec/` scaffold may live in the code repository or in a separate Git repository that records a multi-repository change. The directory open in the agent host is the scaffold location, not automatic permission to inspect source. Before every `devspec.*` command, confirm single-repository or multi-repository scope when current evidence is absent. The agent collects each repository path, then asks one access-requirement question per repository, as `devspec/protocols/repo-access.xml` defines. A new repository may explicitly confirm that no source exists yet. Current canonical evidence may replace a repeated confirmation only when it records the same facts.
 
 Use the [beginner command examples](command-examples.md) to choose a scaffold layout, confirm one or more repository boundaries, and copy a safe first prompt for every command.
 
@@ -21,7 +21,7 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 | Existing codebase with no trusted Devspec baseline | `devspec.extract` | Start a story after the baseline is ready. |
 | Brand-new repository | `devspec.projectcontext` | Continue the new-foundation route. |
 | New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom when needed, then finalize, plan, implement, and review. |
-| One local, low-risk correction | `devspec.quickfix` | Complete directly or route to a story. |
+| One local, low-risk correction | `devspec.quickfix` | Complete directly, clarify a blocker, or route to a story. |
 | A recorded material decision blocks current work | `devspec.clarify` | Resume the exact saved command. |
 | A related requirement arrives after finalization | `devspec.changerequest` | Re-finalize the new scope revision. |
 | One evidence-backed architecture or workflow visual is needed | `devspec.diagram` | Return to the caller's workflow. |

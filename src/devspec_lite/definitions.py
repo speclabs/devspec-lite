@@ -52,3 +52,32 @@ def install_files() -> tuple[Path, ...]:
 
 COMMANDS = load_commands()
 PROTOCOLS = tuple(path.stem for path in sorted((canonical_root() / "protocols").glob("*.xml")))
+
+# Reading order for human-facing command lists. COMMANDS is sorted by filename, which would
+# open every listing with changerequest and hide the route the commands actually follow.
+LIFECYCLE_ORDER = (
+    "extract",
+    "projectcontext",
+    "techstack",
+    "codebase-structure",
+    "coding-standards",
+    "rules",
+    "story",
+    "grooming",
+    "clarify",
+    "changerequest",
+    "finalize",
+    "tasks",
+    "implement",
+    "review",
+    "diagram",
+    "quickfix",
+)
+
+
+def lifecycle_commands() -> tuple[Command, ...]:
+    remaining = {command.name: command for command in COMMANDS}
+    ordered = [remaining.pop(name) for name in LIFECYCLE_ORDER if name in remaining]
+    # A new contract that is not yet placed in the route still has to reach every listing.
+    ordered.extend(remaining[name] for name in sorted(remaining))
+    return tuple(ordered)

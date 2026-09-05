@@ -9,6 +9,7 @@ Invocation: `/devspec.codebase-structure`
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="state" />
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
@@ -23,13 +24,12 @@ Invocation: `/devspec.codebase-structure`
   <entry>Completed technology stack in the new foundation chain, or an explicit targeted update; reject an existing-system baseline request.</entry>
   <outputs>
     <artifact path="devspec/foundation/codebase-structure.md" />
+    <artifact path="devspec/foundation/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="foundation-updated" stage="foundation" run="active" next="devspec.coding-standards" />
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
+    <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
   </transitions>
   <closure>Record repository access boundaries, representative layout trees, and one registered next command; blocked evidence routes to devspec.clarify.</closure>
-  <actions>Map or customize owned areas, then record repository paths, roles, named access requirements, and layout origins before relying on them.</actions>
-  <artifact>devspec/foundation/codebase-structure.md</artifact>
-  <handoff>coding-standards</handoff>
 </workflow>

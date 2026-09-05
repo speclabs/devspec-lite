@@ -1,6 +1,6 @@
 # devspec.coding-standards
 
-Capture concise, reusable coding conventions, examples, and anti-patterns.
+Capture concise, reusable coding conventions, followable examples, and anti-patterns from source evidence or developer-defined standards.
 
 Invocation: `/devspec.coding-standards`
 
@@ -9,6 +9,7 @@ Invocation: `/devspec.coding-standards`
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="state" />
     <protocol ref="work" />
   </protocols>
   <scope>Use for new-repository foundation authoring or an explicitly requested targeted update. Use devspec.extract, not this command, to establish an existing-system baseline.</scope>
@@ -22,13 +23,12 @@ Invocation: `/devspec.coding-standards`
   <entry>Completed codebase structure in the new foundation chain, or an explicit targeted update; reject an existing-system baseline request.</entry>
   <outputs>
     <artifact path="devspec/foundation/coding-standards.md" />
+    <artifact path="devspec/foundation/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="foundation-updated" stage="foundation" run="active" next="devspec.rules" />
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
+    <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
   </transitions>
   <closure>Record each retained standard with its stable ID, origin, linked numbered examples, and an anti-pattern when applicable, then register one next command; blocked evidence routes to devspec.clarify.</closure>
-  <actions>Record only standards that change a developer action, preserving developer-defined numbered examples as reusable implementation guidance.</actions>
-  <artifact>devspec/foundation/coding-standards.md</artifact>
-  <handoff>rules</handoff>
 </workflow>

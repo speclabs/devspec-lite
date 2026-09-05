@@ -3,6 +3,7 @@ id: QF-###-slug
 type: bug
 stage: triage
 run: active
+last: none
 scope: []
 resume: none
 next: select scope
@@ -18,6 +19,7 @@ updated: <yyyy-mm-dd>
 - Outcome:
 
 - Route: complete | devspec.clarify | devspec.story
+
 ## Decisions
 
 | ID | Material question | Evidence | Impact | Choices | Recommended | Recommendation justification | Applicability | Canonical rule link | Answer or skip reason | Status |

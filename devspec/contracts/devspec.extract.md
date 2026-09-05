@@ -1,6 +1,6 @@
 # devspec.extract
 
-Build a complete evidence-backed baseline for one existing repository or an explicitly scoped multi-repository system.
+Inspect the approved existing system end-to-end, produce its technical, business, workflow, and rule baseline, and prepare an evidence-backed diagram candidate list for explicit generation approval.
 
 Invocation: `/devspec.extract`
 
@@ -9,9 +9,12 @@ Invocation: `/devspec.extract`
   <protocols>
     <protocol ref="ask" />
     <protocol ref="run" />
+    <protocol ref="state" />
     <protocol ref="work" />
     <protocol ref="repo-access" />
+    <protocol ref="security" />
   </protocols>
+  <scope>Use for the existing-system baseline of an approved source scope. This command completes the whole foundation chain in one run; do not also run the individual foundation commands for the same repository. It prepares diagram candidates and offers generation once; devspec.diagram owns every later diagram.</scope>
   <input>Explicitly confirmed source repository scope, or current canonical evidence that names each repository's role, local path, and allowed access.</input>
   <rules>
     <rule>Treat the agent's current workspace or scaffolding directory as a proposed source target, never proof. Before inspecting source, obtain either an explicit user confirmation that names every source repository, role, path, and read, edit, and validation permission, or current canonical evidence that records those facts. If neither exists, first collect one repository path at a time, then ask one access question after each confirmed path; record the accepted source scope in `devspec/foundation/codebase-structure.md` before reading source. Later commands may use that current record as scope evidence.</rule>
@@ -28,6 +31,7 @@ Invocation: `/devspec.extract`
     <rule>After all foundation extraction outputs are complete, show the user or developer the complete candidate list. When one or more candidates exist, ask exactly one interactive confirmation: "Do you want me generate all the possible diagrams?" Offer: `Yes — generate all listed diagrams`, `No — prepare the list only`, `Choose diagrams — enter the IDs or subjects to generate`, and `Custom Answer`. Recommend `No — prepare the list only` when no generation preference is already confirmed. Each choice must include a concise example.</rule>
     <rule>If the user or developer chooses `Yes`, generate every listed non-duplicate candidate, validate each SVG XML file, update its queue status, and index completed durable output in the overview. If they choose `No`, leave the evidence-backed candidate list prepared in the queue without generating diagrams. If they choose `Choose diagrams`, generate only the entered non-duplicate IDs or subjects and leave the remainder listed in the queue.</rule>
     <rule>Whenever the candidate list is shown, tell the user or developer that any listed diagram can be generated later with `/devspec.diagram &lt;DIA-ID-or-subject&gt;`; include one concrete example such as `/devspec.diagram DIA-002`.</rule>
+    <rule>Record every path deliberately left out of inspection in `devspec/foundation/discovery-exclusions.md` with its reason, so a later run does not re-explore it or mistake the gap for missing evidence.</rule>
     <rule>Keep one extraction coverage item active and write discovered facts to their destination artifact, not queue state. Reuse recorded discovery methods and do not repeat a failed method unless its condition changed.</rule>
   </rules>
   <entry>Existing system with confirmed source scope and no active incompatible extraction run; reject new-repository foundation authoring or an assumed workspace target.</entry>
@@ -50,10 +54,9 @@ Invocation: `/devspec.extract`
     <artifact path="devspec/foundation/extraction-state.md" />
     <artifact path="devspec/foundation/exploration-state.md" />
     <artifact path="devspec/foundation/extraction-coverage.md" />
+    <artifact path="devspec/foundation/discovery-exclusions.md" />
     <artifact path="devspec/architecture/artifact-queue.md" />
     <artifact path="devspec/architecture/overview.md" />
+    <artifact path="devspec/foundation/decisions.md" />
   </outputs>
-  <actions>Confirm and record source scope before inspection, then complete the existing-system baseline, prepare and present the applicable diagram list, obtain the one diagram-generation confirmation, and record remaining gaps or blocked evidence.</actions>
-  <artifact>devspec/foundation/extraction-coverage.md</artifact>
-  <handoff>devspec.story-or-devspec.clarify</handoff>
 </workflow>

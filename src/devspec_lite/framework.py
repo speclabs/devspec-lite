@@ -10,7 +10,7 @@ from pathlib import Path
 from xml.etree import ElementTree
 
 from . import __version__
-from .definitions import COMMANDS, PROTOCOLS, canonical_root, install_files
+from .definitions import COMMANDS, PROTOCOLS, canonical_root, install_files, lifecycle_commands
 
 PROFILES = ("all", "copilot", "codex", "claude", "cursor", "gemini", "antigravity")
 ADAPTERS = PROFILES[1:]
@@ -69,7 +69,7 @@ def doctor(root: Path, profile: str) -> list[str]:
     if (root / "devspec/work-items/current.md").exists():
         issues.append("tracked current-story artifact is not allowed: devspec/work-items/current.md")
     valid_stages = {"foundation", "intake", "grooming", "finalization", "tasks", "implementation", "review", "complete", "triage", "routed", "caller", "origin"}
-    valid_runs = {"active", "blocked", "complete"}
+    valid_runs = {"active", "paused", "blocked", "stopped", "complete"}
     valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
     lifecycle_templates = {
         "devspec/work-items/_template/meta.md": ("scope_revision:", "finalized_revision:", "planned_revision:", "implemented_revision:", "reviewed_revision:"),
@@ -77,7 +77,11 @@ def doctor(root: Path, profile: str) -> list[str]:
     }
     current_context_commands = {"story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"}
     protocol_text_requirements = {
-        "run": {"preflight": ("Before every command", "single-repository or multi-repository scope", "current workspace as proposed", "free-form text input", "After each path is confirmed", "interactive named access-requirement question", "Do not inspect or change source")},
+        "run": {"preflight": ("Before every command", "single-repository or multi-repository scope", "current workspace as proposed", "repo-access protocol", "Do not inspect or change source")},
+        "repo-access": {
+            "collect": ("free-form text input", "Confirm the path before asking about access"),
+            "validate": ("After each path is confirmed", "Custom Answer", "least-privilege"),
+        },
         "current-work-item": {
             "location": ("git rev-parse --git-path devspec/current-work-item.json", "Never create or commit"),
             "record": ("work-item ID", "current branch", "selection source", "timestamp", "never committed or pushed"),
@@ -101,7 +105,8 @@ def doctor(root: Path, profile: str) -> list[str]:
                     "work": ("scope", "evidence", "change", "artifacts"),
                     "repo-access": ("when", "validate", "respect"),
                     "current-work-item": ("when", "location", "record", "selection", "validation", "recovery", "continuation", "update", "clear"),
-                }[name]
+                    "state": ("when", "run-states", "stages", "task-statuses", "evidence-labels", "resume"),
+                }.get(name, ())
                 present = {child.tag for child in ElementTree.fromstring(path.read_text(encoding="utf-8"))}
                 missing = sorted(set(required) - present)
                 if missing:
@@ -111,7 +116,7 @@ def doctor(root: Path, profile: str) -> list[str]:
                     value = protocol.findtext(tag, default="")
                     for phrase in phrases:
                         if phrase not in value:
-                            issues.append(f"missing current-story resolver requirement: {path}: {tag}: {phrase}")
+                            issues.append(f"missing protocol requirement: {path}: {tag}: {phrase}")
     for command in COMMANDS:
         path = root / f"devspec/contracts/devspec.{command.name}.md"
         if path.is_file():
@@ -120,7 +125,7 @@ def doctor(root: Path, profile: str) -> list[str]:
                 workflow = ElementTree.fromstring(xml_block(text))
                 if workflow.tag != "workflow" or workflow.attrib.get("command") != f"devspec.{command.name}":
                     issues.append(f"invalid contract identity: {path}")
-                required = {"purpose", "protocols", "input", "rules", "entry", "outputs", "transitions", "closure", "actions", "artifact", "handoff"}
+                required = {"purpose", "protocols", "scope", "input", "rules", "entry", "outputs", "transitions", "closure"}
                 present = {child.tag for child in workflow}
                 missing = sorted(required - present)
                 if missing:
@@ -153,6 +158,8 @@ def doctor(root: Path, profile: str) -> list[str]:
                         issues.append(f"blocked transition must clarify: {path}")
                     if next_command == "none" and run != "complete":
                         issues.append(f"terminal transition must be complete: {path}")
+                    if run == "complete" and next_command != "none":
+                        issues.append(f"complete transition must be terminal: {path}")
     registry = root / "devspec/command-registry.md"
     registry_text = registry.read_text(encoding="utf-8") if registry.is_file() else ""
     for command in COMMANDS:
@@ -200,7 +207,8 @@ def doctor(root: Path, profile: str) -> list[str]:
 # Upgrade lifecycle. These definitions intentionally follow the compact installer
 # above so existing callers retain their public import locations.
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    # Hash normalized text so a CRLF checkout does not read as local drift.
+    return hashlib.sha256(path.read_text(encoding="utf-8").encode("utf-8")).hexdigest()
 
 
 def _state_from_target(root: Path) -> str:
@@ -212,10 +220,15 @@ def _state_from_target(root: Path) -> str:
     return "existing"
 
 
+# Live project state seeded once from a template, then never overwritten by sync.
+SEEDED_FROM_TEMPLATE = (
+    (Path("devspec/architecture/overview.md"), "architecture/_template/overview.md"),
+    (Path("devspec/architecture/artifact-queue.md"), "architecture/_template/artifact-queue.md"),
+)
+
+
 def _ownership(relative: Path) -> str:
     if relative == Path("constitution.md"):
-        return PROJECT_OWNED
-    if relative in {Path("architecture/overview.md"), Path("architecture/artifact-queue.md")}:
         return PROJECT_OWNED
     if relative == Path("foundation/repository-state.md"):
         return PROJECT_OWNED
@@ -230,13 +243,17 @@ def managed_payload(profile: str, repo_state: str) -> tuple[ManagedFile, ...]:
         files.append(ManagedFile(Path("devspec") / relative, source.read_text(encoding="utf-8"), _ownership(relative)))
     route = "devspec.extract" if repo_state == "existing" else "devspec.projectcontext"
     files.append(ManagedFile(Path("devspec/foundation/repository-state.md"), f"# Repository State\n\n- State: {repo_state}\n- Start with: `{route}`\n", PROJECT_OWNED))
+    # Seed the live architecture records from their templates. Installing the canonical copies
+    # would hand every target repository devspec-lite's own diagram rows.
+    for target, template in SEEDED_FROM_TEMPLATE:
+        files.append(ManagedFile(target, (source_root / template).read_text(encoding="utf-8"), PROJECT_OWNED))
     adapters = ADAPTERS if profile == "all" else (profile,)
     for adapter in adapters:
         if adapter == "codex":
-            command_lines = "\n".join(f"- `devspec.{c.name}`: read `devspec/contracts/devspec.{c.name}.md`." for c in COMMANDS)
+            command_lines = "\n".join(f"- `devspec.{c.name}`: read `devspec/contracts/devspec.{c.name}.md`." for c in lifecycle_commands())
             files.append(ManagedFile(Path("AGENTS.md"), "# Devspec Lite\n\nUse Git-tracked `devspec/` artifacts as canonical state. For a clear work-item continuation, resolve the per-worktree current context and run only its saved next action; ask before switching among multiple stories.\n\n" + command_lines + "\n", FRAMEWORK_OWNED))
         elif adapter == "cursor":
-            commands = ", ".join(f"`devspec.{c.name}`" for c in COMMANDS)
+            commands = ", ".join(f"`devspec.{c.name}`" for c in lifecycle_commands())
             files.append(ManagedFile(Path(".cursor/rules/devspec-workflow.mdc"), f"---\ndescription: Devspec Lite workflow\nalwaysApply: false\n---\nFor {commands}, read the matching `devspec/contracts/` file and listed protocols. For a clear continuation, resolve per-worktree current context and run only the saved next action; ask before switching stories.\n", FRAMEWORK_OWNED))
         elif adapter == "copilot":
             for command in COMMANDS:

@@ -15,6 +15,8 @@
 | Architecture or diagram reference | Expected implementation or validation impact | Evidence | Status | Finding or action |
 |---|---|---|---|---|
 
+Use `implemented-as-decided`, `intentionally-superseded` with a recorded replacement, or `not-verified`. Treat an unrecorded contradiction as rework-required.
+
 ## Security Verification
 
 | Finding ID | OWASP category | Disposition | Developer confirmation | Rationale and enforceable evidence | Reviewer confirmation | Revalidate when | Status or action |
@@ -24,5 +26,5 @@ Use `remediated`, `confirmed-not-applicable`, `confirmed-false-positive`, or `un
 
 ## Findings
 
-| Finding | Severity | Evidence | Required action |
-|---|---|---|---|
+| Finding | Location | Severity | Evidence | Required action |
+|---|---|---|---|---|

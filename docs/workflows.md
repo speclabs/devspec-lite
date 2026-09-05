@@ -9,7 +9,7 @@ Use the smallest route that preserves a durable, reviewable record. Git-tracked 
 - New repository: start with `devspec.projectcontext`.
 - Before every command, confirm the single-repository or multi-repository scope, including the scaffold location and each source repository's role, path, and permissions, unless current canonical evidence records it. The current workspace alone is not proof of scope.
 - Existing repository: run `devspec.extract` once with confirmed scope. It completes the evidence-backed technical, workflow, and rule baseline, prepares the applicable diagram list, and asks whether to generate all, selected, or no diagrams. A prepared item can later be generated with `/devspec.diagram DIA-###`; do not rerun individual foundation commands afterward.
-- New repository: use `projectcontext`, `techstack`, `codebase-structure`, `coding-standards`, `rules`, and `diagram` as input-driven authoring commands.
+- New repository: run `projectcontext`, `techstack`, `codebase-structure`, `coding-standards`, and `rules` in order as input-driven authoring commands. `diagram` is not part of the chain; call it separately and it returns to its caller.
 
 ## 2. Deliver a change
 

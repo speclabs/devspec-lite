@@ -13,5 +13,3 @@ work-items/_template/*.md
 quickfixes/README.md
 quickfixes/_template.md
 architecture/_template/*
-architecture/overview.md
-architecture/artifact-queue.md
