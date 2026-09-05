@@ -24,10 +24,11 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="related-change-accepted" stage="finalization" run="active" next="devspec.finalize" />
     <transition outcome="classification-blocked" stage="finalization" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Append the CR, increment scope_revision, mark downstream records superseded, and preserve their historical evidence.</closure>
+  <closure>Append the CR and record the classification that justified it.</closure>
 </workflow>

@@ -52,14 +52,19 @@ def table_rows(text: str, header_starts: str) -> list[list[str]]:
 
 class RepositoryIsCurrentTests(unittest.TestCase):
     def test_checked_in_wrappers_match_the_contracts(self) -> None:
-        drift = []
+        drift, checked = [], 0
         for item in managed_payload("all", "existing"):
             if item.ownership != FRAMEWORK_OWNED:
                 continue
             target = REPO / item.path
-            if target.is_file() and target.read_text(encoding="utf-8") != item.content:
+            if not target.is_file():
+                drift.append(f"{item.path.as_posix()} (missing)")
+            elif target.read_text(encoding="utf-8") != item.content:
                 drift.append(item.path.as_posix())
+            else:
+                checked += 1
         self.assertEqual([], drift, "run the installer to regenerate these from devspec/contracts")
+        self.assertGreater(checked, len(COMMANDS), "expected at least one wrapper per command")
 
     def test_doctor_passes_against_this_repository(self) -> None:
         self.assertEqual([], doctor(REPO, "all"))
@@ -85,11 +90,13 @@ class ContractSchemaTests(unittest.TestCase):
     def test_heading_summary_matches_purpose(self) -> None:
         for command in COMMANDS:
             with self.subTest(command.name):
-                summary = contract_text(command.name).split("\n")[2].strip()
+                body = contract_text(command.name)
+                summary = body[body.index("\n\n") + 2:body.index("\n\nInvocation:")].strip()
                 self.assertEqual(command.purpose, summary)
 
     def test_derivable_elements_are_not_restated(self) -> None:
-        # <artifact> restated <outputs>, <handoff> restated <transitions>, <actions> restated <rules>.
+        # A workflow-level <artifact> restated <outputs>, <handoff> restated <transitions>, and
+        # <actions> restated <rules>. The <artifact> child inside <outputs> is unaffected.
         for command in COMMANDS:
             with self.subTest(command.name):
                 present = {child.tag for child in workflow(command.name)}
@@ -103,7 +110,9 @@ class ContractSchemaTests(unittest.TestCase):
 
     def test_protocol_refs_resolve(self) -> None:
         for command in COMMANDS:
-            for ref in workflow(command.name).find("protocols"):
+            refs = list(workflow(command.name).find("protocols"))
+            self.assertTrue(refs, f"{command.name} loads no protocol")
+            for ref in refs:
                 with self.subTest(command=command.name, ref=ref.attrib.get("ref")):
                     self.assertIn(ref.attrib.get("ref"), PROTOCOLS)
 
@@ -146,6 +155,25 @@ class RouteGraphTests(unittest.TestCase):
                     with self.subTest(command=command.name, stage=stage):
                         self.assertIn(nxt, documented[stage], f"lifecycle.md does not allow {stage} -> {nxt}")
 
+    def test_a_command_declares_the_records_it_writes(self) -> None:
+        # ask.xml routes a blocker to a decision record; run.xml checkpoints the state record.
+        for command in COMMANDS:
+            outputs = [a.attrib["path"] for a in workflow(command.name).find("outputs")]
+            stages = {t["stage"] for t in self.transitions(command.name)}
+            runs = {t["run"] for t in self.transitions(command.name)}
+            work_item = any(p.startswith("devspec/work-items/") for p in outputs)
+            with self.subTest(command.name):
+                if "blocked" in runs:
+                    self.assertTrue(
+                        any("decisions.md" in p for p in outputs) or any("QF-###" in p for p in outputs),
+                        f"{command.name} can block but declares no decision record",
+                    )
+                if work_item and stages - {"caller", "origin"}:
+                    self.assertTrue(
+                        any(p.endswith("meta.md") for p in outputs),
+                        f"{command.name} moves a work item but declares no meta.md",
+                    )
+
     def test_registry_restates_the_contracts_exactly(self) -> None:
         text = (REPO / "devspec/command-registry.md").read_text(encoding="utf-8")
         rows = table_rows(text, "Command")
@@ -169,22 +197,26 @@ class DocumentationTests(unittest.TestCase):
             text = (REPO / "docs" / doc).read_text(encoding="utf-8")
             for command in COMMANDS:
                 with self.subTest(doc=doc, command=command.name):
-                    self.assertIn(command.name, text)
+                    self.assertIn(f"devspec.{command.name}", text)
 
 
 class ArtifactShapeTests(unittest.TestCase):
     def test_markdown_tables_are_well_formed(self) -> None:
         separator = re.compile(r"\|(\s*:?-+:?\s*\|)+$")
-        broken = []
-        for path in sorted((REPO / "devspec").rglob("*.md")):
+        broken, seen = [], 0
+        roots = sorted((REPO / "devspec").rglob("*.md")) + sorted((REPO / "docs").rglob("*.md"))
+        roots += [REPO / "README.md", REPO / "AGENTS.md"]
+        for path in roots:
             lines = path.read_text(encoding="utf-8").split("\n")
             for index, line in enumerate(lines[:-1]):
                 nxt = lines[index + 1].strip()
                 if line.strip().startswith("|") and separator.fullmatch(nxt):
+                    seen += 1
                     header = line.strip().strip("|").split("|")
                     if len(header) != len(nxt.strip("|").split("|")):
                         broken.append(f"{path.relative_to(REPO).as_posix()}:{index + 1}")
         self.assertEqual([], broken)
+        self.assertGreater(seen, 30, "table scan found almost nothing; the walk is probably wrong")
 
     # Each entry is a field some contract or protocol names, and the template that must offer it.
     REQUIRED_FIELDS = {
@@ -211,7 +243,9 @@ class ArtifactShapeTests(unittest.TestCase):
         template_map = (REPO / "devspec/foundation/template-map.md").read_text(encoding="utf-8")
         work_item_templates = {p.name for p in (REPO / "devspec/work-items/_template").glob("*.md")}
         for command in COMMANDS:
-            for artifact in workflow(command.name).find("outputs"):
+            artifacts = list(workflow(command.name).find("outputs"))
+            self.assertTrue(artifacts, f"{command.name} declares no output")
+            for artifact in artifacts:
                 path = artifact.attrib["path"]
                 with self.subTest(command=command.name, path=path):
                     name = path.rsplit("/", 1)[-1]

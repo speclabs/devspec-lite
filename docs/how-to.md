@@ -31,8 +31,6 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 
 Say `continue` or run the next work-item command without an ID. Devspec resolves private per-worktree context, reads the selected `meta.md` next action, and resumes only that action. If context is missing or multiple active stories exist, it asks you to select one; use an ID only to switch stories explicitly.
 
-
-
 ## 1. Map an existing service before changing it
 
 **Scenario.** You inherit an orders API and need to add an export, but its integrations, conventions, and security controls are not documented.
@@ -47,7 +45,7 @@ uvx devspec-lite doctor --target . --profile all
 2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all standard access choices and recommend `edit-and-test`; that grants normal delivery capability, while the active command still prevents unnecessary source changes. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
 3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, read/edit/validate).`
 4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and prepares a list of applicable diagrams.
-5. At extraction closure, it shows the list and asks: **“Do you want me generate all the possible diagrams?”** Choose **Yes** to generate every listed diagram, **No** to leave the list prepared, or enter selected IDs or subjects. For example, enter `DIA-001, DIA-004` to generate only those two.
+5. At extraction closure, it shows the list and asks: **“Do you want me to generate all the possible diagrams?”** Choose **Yes** to generate every listed diagram, **No** to leave the list prepared, or enter selected IDs or subjects. For example, enter `DIA-001, DIA-004` to generate only those two.
 6. Any prepared diagram can be generated later with `/devspec.diagram <DIA-ID-or-subject>`, for example `/devspec.diagram DIA-002`. Static SVG is the default. Use `/devspec.diagram DIA-002 motion=explain` only when the confirmed sequence, flow, or state transition benefits from explanatory motion.
 7. If material evidence or source scope is unavailable, answer the recorded question through `/devspec.clarify`. Otherwise, begin the requested change with `/devspec.story Add customer export`.
 
@@ -149,7 +147,6 @@ uvx devspec-lite doctor --target . --profile all
 ### Resolve a material question without guessing
 
 **Scenario.** Finalization is blocked because the required data-retention period is unknown.
-
 
 1. Run `/devspec.clarify` and answer the one recorded decision.
 

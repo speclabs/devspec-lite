@@ -14,6 +14,7 @@ Invocation: `/devspec.tasks [work-item-id]`
     <protocol ref="revision" />
     <protocol ref="work" />
     <protocol ref="repo-access" />
+    <protocol ref="security" />
   </protocols>
   <scope>Use to turn a ready finalization into an ordered, independently verifiable plan. This command plans only; devspec.implement makes the changes.</scope>
   <input>An optional work-item ID with a ready current finalization brief.</input>
@@ -22,10 +23,11 @@ Invocation: `/devspec.tasks [work-item-id]`
     <rule>Each task names scope, dependency, source justification, applicable decision or canonical rule IDs, validation, and done condition. Cite the finalization foundation and architecture traces for coding standards, codebase boundaries, diagrams, and OWASP controls instead of duplicating them per task.</rule>
     <rule>Order dependencies before dependents and split only work too broad to validate safely.</rule>
   </rules>
-  <entry>Active work item at tasks with a ready finalization matching the current scope revision; reject blocked, stale, or superseded readiness evidence.</entry>
+  <entry>Active work item at tasks with a ready finalization matching the current scope revision; reject blocked readiness evidence.</entry>
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/tasks.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="tasks-planned" stage="implementation" run="active" next="devspec.implement" />

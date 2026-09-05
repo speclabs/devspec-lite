@@ -19,9 +19,9 @@ A process flow makes the one routing decision, its two outcomes, and the durable
 
 ## Queue row
 
-| ID | Scope | Type | Subject | Output | Evidence | Status | Next |
-|---|---|---|---|---|---|---|---|
-| DIA-001 | workflow | process flow | customer-request-routing | images/dia-001-customer-request-routing.svg | contracts above | complete | index in overview |
+| ID | Scope | Type | Subject | Output | Evidence | Duplicate check | Status | Next |
+|---|---|---|---|---|---|---|---|---|
+| DIA-001 | workflow | Process flow | customer-request-routing | `devspec/architecture/diagrams/dia-001-customer-request-routing.svg` | contracts above | no existing diagram covers this subject | complete | index in overview |
 
 ## Completion
 

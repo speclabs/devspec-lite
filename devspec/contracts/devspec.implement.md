@@ -30,10 +30,12 @@ Invocation: `/devspec.implement [work-item-id]`
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/implement.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/tasks.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="implementation-complete" stage="review" run="active" next="devspec.review" />
     <transition outcome="material-blocker" stage="implementation" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Record the changed-work baseline and mark a task complete only after its recorded validation passes; preserve superseded revisions.</closure>
+  <closure>Record the changed-work baseline and mark a task complete only after its recorded validation passes.</closure>
 </workflow>

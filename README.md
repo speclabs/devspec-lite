@@ -12,7 +12,7 @@ Devspec Lite is a compact, resumable spec-driven workflow for AI coding agents. 
 | macOS/Linux package-manager installation | [Homebrew](docs/setup-homebrew.md) |
 | Already installed the CLI; need init, upgrade, or profile changes | [CLI lifecycle](docs/setup-lifecycle.md) |
 
-Manual copying and CLI installation produce the same canonical `devspec/` content and agent wrappers. In either route, set the target repository's `repository-state.md` to `new` or `existing`. Choose one setup route; the CLI is optional.
+Manual copying and CLI installation produce the same canonical `devspec/` content and agent wrappers, once the manual route resets the project records listed in its guide. In either route, set the target repository's `repository-state.md` to `new` or `existing`. Choose one setup route; the CLI is optional.
 
 ## CLI quick start
 

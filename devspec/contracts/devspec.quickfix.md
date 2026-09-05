@@ -13,7 +13,7 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
-  <scope>Use only for one localized, low-risk change that needs no work item. Route public contracts, schema or migration work, security work, breaking changes, and unresolved risk to devspec.story instead.</scope>
+  <scope>Use only for one localized, low-risk change that needs no work item. Route anything outside that boundary to devspec.story before editing code.</scope>
   <input>One localized bug fix or small enhancement.</input>
   <rules>
     <rule>Select one primary scope: UI, internal API, function/job, library, configuration, tests, or a user-defined bounded scope.</rule>
@@ -21,7 +21,7 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
     <rule>Create a QF record, implement, and run focused validation in the same command.</rule>
     <rule>Route public API contracts, database schema or migration, authentication or security work, breaking changes, unrelated concerns, and unresolved risk to story and suggested grooming without editing code.</rule>
   </rules>
-  <entry>One documented localized low-risk request at triage with one primary scope; reject contracts, migrations, security work, breaking changes, unrelated concerns, and unresolved risk.</entry>
+  <entry>One documented localized low-risk request at triage with one primary scope; reject any request this command must route.</entry>
   <outputs>
     <artifact path="devspec/quickfixes/QF-###-slug.md" />
   </outputs>

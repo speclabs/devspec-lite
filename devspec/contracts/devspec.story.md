@@ -13,6 +13,7 @@ Invocation: `/devspec.story Add customer export`
     <protocol ref="current-work-item" />
     <protocol ref="revision" />
     <protocol ref="work" />
+    <protocol ref="repo-access" />
   </protocols>
   <scope>Use to open one new work item from a manual request or a provider reference. Use devspec.changerequest for related scope on an already-finalized work item, and devspec.quickfix for a localized low-risk change that needs no work item.</scope>
   <input>One manual feature, bug, security issue, or task, or one provider work-item URL or identifier resolvable through an available authenticated MCP tool.</input>
@@ -27,8 +28,7 @@ Invocation: `/devspec.story Add customer export`
     <rule>Read only the coding standards, codebase structure, foundation rules, and workflow rules relevant to the requested behavior and code area; do not scan unrelated historical work-item decisions.</rule>
     <rule>Resolve a provider reference against `devspec/foundation/provider-integrations.md`: use its accepted inputs, validation guardrails, and confirmation requirements, and record the resolution outcome there when a new provider, input form, or guardrail is confirmed.</rule>
     <rule>Create folders as optional-provider-prefix plus numeric ID plus kebab-case title; do not rename legacy folders automatically.</rule>
-    <rule>Before finalization, update the baseline; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
-    <rule>Treat an explicit story request as new-work intent unless it is clearly related finalized scope, which routes to changerequest.</rule>
+    <rule>Treat an explicit story request as new-work intent. Before finalization, update the baseline in place; after finalization, route related scope to changerequest and unrelated scope to a linked item.</rule>
     <rule>When creating a story or accepting a validated explicit ID, set current-work-item context for the current branch; preserve meta.md as the canonical state record.</rule>
     <rule>For an ordinary request with current context, resume clearly related pre-finalization work; ask one classification question before switching stories or accepting independent scope.</rule>
   </rules>
@@ -37,6 +37,7 @@ Invocation: `/devspec.story Add customer export`
     <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
     <artifact path="devspec/foundation/provider-integrations.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="grooming-required" stage="grooming" run="active" next="devspec.grooming" />

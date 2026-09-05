@@ -67,7 +67,7 @@ class FrameworkTests(unittest.TestCase):
             run = ElementTree.fromstring((target / "devspec/protocols/run.xml").read_text(encoding="utf-8"))
             self.assertEqual("devspec/foundation/decisions.md", run.findtext("state-records/foundation"))
             repo_access = ElementTree.fromstring((target / "devspec/protocols/repo-access.xml").read_text(encoding="utf-8"))
-            self.assertIn("Validate a validation-only repository only", repo_access.findtext("respect"))
+            self.assertIn("Never validate a reference-only, edit, release-coordination, or unavailable repository", repo_access.findtext("respect"))
             self.assertTrue((target / "devspec/foundation/template-map.md").is_file())
             self.assertTrue((target / "devspec/foundation/_template/decisions.md").is_file())
             self.assertTrue((target / "AGENTS.md").is_file())
@@ -128,7 +128,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("known unresolved vulnerability", security_protocol)
             for contract in (rules_contract, extract_contract, finalize_contract, implement_contract, review_contract):
                 self.assertIn('<protocol ref="security" />', contract)
-            self.assertIn("do not infer an internal-only", extract_contract)
+            self.assertIn("internal-only", security_protocol)
             self.assertIn("foundation trace", finalize_contract)
     def test_contract_xml_and_quickfix_routing_are_present(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -172,7 +172,7 @@ class FrameworkTests(unittest.TestCase):
             extract = (target / "devspec/contracts/devspec.extract.md").read_text(encoding="utf-8")
             diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
             how_to = (Path(__file__).resolve().parents[1] / "docs/how-to.md").read_text(encoding="utf-8")
-            self.assertIn("Do you want me generate all the possible diagrams?", extract)
+            self.assertIn("Do you want me to generate all the possible diagrams?", extract)
             self.assertIn("Yes — generate all listed diagrams", extract)
             self.assertIn("No — prepare the list only", extract)
             self.assertIn("Choose diagrams — enter the IDs or subjects to generate", extract)
@@ -396,11 +396,14 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("Continue current work without an ID", how_to)
             self.assertIn("selected `meta.md` next action", how_to)
             self.assertIn("post-finalization route", how_to)
-            tracked_context = target / "devspec/work-items/current.md"
-            tracked_context.parent.mkdir(parents=True, exist_ok=True)
-            tracked_context.write_text("current: STORY-001\n", encoding="utf-8")
-            issues = doctor(target, "all")
-            self.assertTrue(any("tracked current-story artifact" in issue for issue in issues))
+            # Both the legacy path and the path a real violation takes today.
+            for forbidden in ("devspec/work-items/current.md", "devspec/current-work-item.json"):
+                tracked_context = target / forbidden
+                tracked_context.parent.mkdir(parents=True, exist_ok=True)
+                tracked_context.write_text("current: STORY-001\n", encoding="utf-8")
+                issues = doctor(target, "all")
+                self.assertTrue(any(f"tracked current-work-item artifact is not allowed: {forbidden}" in issue for issue in issues))
+                tracked_context.unlink()
 
 if __name__ == "__main__":
     unittest.main()

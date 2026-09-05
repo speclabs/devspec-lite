@@ -19,7 +19,7 @@ Invocation: `/devspec.codebase-structure`
     <rule>Map owned source roots, boundaries, integration points, and validation locations.</rule>
     <rule>For each repository, maintain a readable `text` layout tree rooted at its recorded local path. Include solution or manifest files, owned roots, meaningful modules, configuration, and integration or migration locations; keep it representative rather than exhaustive and exclude dependencies, caches, generated output, and secrets.</rule>
     <rule>For an explicit targeted update, accept a developer-provided layout tree or structure change without rerunning extraction. Mark developer-defined additions or changes as such, retain observed evidence where it remains accurate, and reconcile the repository table, layout tree, and area map.</rule>
-    <rule>Use repo-access whenever scope or access evidence is missing and when work crosses repositories. Record one named least-privilege access requirement per repository; never infer access from its path.</rule>
+    <rule>Reconcile the repository table with the access requirements repo-access recorded; never infer access from a repository path.</rule>
   </rules>
   <entry>Completed technology stack in the new foundation chain, or an explicit targeted update; reject an existing-system baseline request.</entry>
   <outputs>
@@ -31,5 +31,5 @@ Invocation: `/devspec.codebase-structure`
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
     <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Record repository access boundaries, representative layout trees, and one registered next command; blocked evidence routes to devspec.clarify.</closure>
+  <closure>Record repository access boundaries, representative layout trees, and one registered next command.</closure>
 </workflow>

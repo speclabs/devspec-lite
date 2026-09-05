@@ -27,6 +27,7 @@ Invocation: `/devspec.clarify [work-item-id]`
     <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/clarify.md" />
     <artifact path="devspec/quickfixes/QF-###-slug.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
   </outputs>
   <transitions>
     <transition outcome="decision-resolved" stage="origin" run="active" next="resume-origin" />

@@ -28,5 +28,5 @@ Invocation: `/devspec.projectcontext`
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
     <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Record the foundation state and one registered next command; blocked evidence routes to devspec.clarify.</closure>
+  <closure>Record the foundation state and one registered next command.</closure>
 </workflow>

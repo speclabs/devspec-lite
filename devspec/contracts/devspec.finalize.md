@@ -29,6 +29,7 @@ Invocation: `/devspec.finalize [work-item-id]`
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/finalize.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="ready" stage="tasks" run="active" next="devspec.tasks" />

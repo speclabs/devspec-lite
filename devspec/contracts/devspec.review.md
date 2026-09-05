@@ -33,6 +33,7 @@ Invocation: `/devspec.review [work-item-id]`
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/review.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="accepted" stage="complete" run="complete" next="none" />

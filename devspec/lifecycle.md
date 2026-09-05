@@ -7,7 +7,7 @@ Canonical contracts in `devspec/contracts/` own command behavior. This document 
 - A foundation command records its command, stage, run state, last action, resume reference, next action, and update date in `devspec/foundation/decisions.md`.
 - A work item records the same state in `meta.md`, together with its scope revision.
 - A quickfix records its state in front matter. A diagram records queue status and returns to its invoking workflow without changing that workflow's state.
-- The selected current work item is private convenience state, not workflow evidence. Store it only at the per-worktree path returned by `git rev-parse --git-path devspec/current-work-item.json`. Never commit a current-story file. `devspec/protocols/current-work-item.xml` owns its selection, validation, and recovery rules.
+- The selected current work item is private convenience state, never workflow evidence and never committed. `devspec/protocols/current-work-item.xml` owns where it is stored and how it is selected, validated, and cleared.
 
 ## Work-item stages
 
@@ -28,5 +28,5 @@ Every non-terminal stage may route to `devspec.clarify`, and only to `devspec.cl
 - Existing repository: `devspec.extract → devspec.story`.
 - New repository: `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules → devspec.story`. A targeted foundation update returns to its caller after completing its declared artifact.
 - Work item: `devspec.story → devspec.grooming|devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. Review results are `accepted → complete`, `rework-required → devspec.implement`, or `blocked → devspec.clarify`.
-- Work-item IDs are optional selectors for switching or resolving ambiguity. After a story is selected, normal commands and `continue` use its per-worktree context and never skip the recorded `next` command.
-- `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` is `complete`, `blocked`, or `routed → devspec.story`. `devspec.diagram` returns to its caller.
+- Work-item IDs are optional selectors for switching or resolving ambiguity. Without one, the current-work-item protocol resolves which work item a command acts on.
+- `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` ends complete, blocks to `devspec.clarify`, or routes to `devspec.story`. `devspec.diagram` returns to its caller.

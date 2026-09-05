@@ -13,6 +13,7 @@ Invocation: `/devspec.grooming [work-item-id]`
     <protocol ref="current-work-item" />
     <protocol ref="revision" />
     <protocol ref="work" />
+    <protocol ref="repo-access" />
   </protocols>
   <scope>Use only when a draft story needs scoped analysis before it can be built. Skip it and run devspec.finalize directly when behavior, acceptance criteria, and the affected code area are already clear.</scope>
   <input>An optional work-item ID or clear current draft.</input>
@@ -25,6 +26,7 @@ Invocation: `/devspec.grooming [work-item-id]`
   <outputs>
     <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
   </outputs>
   <transitions>
     <transition outcome="ready-for-finalization" stage="finalization" run="active" next="devspec.finalize" />

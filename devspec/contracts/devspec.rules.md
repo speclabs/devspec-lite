@@ -29,5 +29,5 @@ Invocation: `/devspec.rules`
     <transition outcome="targeted-update-complete" stage="foundation" run="active" next="return-to-caller" />
     <transition outcome="evidence-blocked" stage="foundation" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Record enforceable rules and one registered next command; blocked evidence routes to devspec.clarify.</closure>
+  <closure>Record enforceable rules and one registered next command.</closure>
 </workflow>

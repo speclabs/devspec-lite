@@ -10,7 +10,7 @@ from pathlib import Path
 from xml.etree import ElementTree
 
 from . import __version__
-from .definitions import COMMANDS, PROTOCOLS, canonical_root, install_files, lifecycle_commands
+from .definitions import COMMANDS, PROTOCOLS, canonical_root, install_files, lifecycle_commands, workflow_block
 
 PROFILES = ("all", "copilot", "codex", "claude", "cursor", "gemini", "antigravity")
 ADAPTERS = PROFILES[1:]
@@ -53,10 +53,8 @@ def wrapper_text(adapter: str, command) -> tuple[str, str]:
     raise ValueError(adapter)
 
 
-def xml_block(text: str) -> str:
-    start = text.index("<workflow")
-    end = text.index("</workflow>") + len("</workflow>")
-    return text[start:end]
+# Re-exported so existing callers keep importing it from here.
+xml_block = workflow_block
 
 
 def expected_paths(profile: str) -> list[Path]:
@@ -65,10 +63,15 @@ def expected_paths(profile: str) -> list[Path]:
 
 
 def doctor(root: Path, profile: str) -> list[str]:
-    issues = [f"missing: {path}" for path in expected_paths(profile) if not (root / path).is_file()]
-    if (root / "devspec/work-items/current.md").exists():
-        issues.append("tracked current-story artifact is not allowed: devspec/work-items/current.md")
-    valid_stages = {"foundation", "intake", "grooming", "finalization", "tasks", "implementation", "review", "complete", "triage", "routed", "caller", "origin"}
+    try:
+        expected = expected_paths(profile)
+    except OSError as exc:
+        return [f"cannot read the canonical framework: {exc}"]
+    issues = [f"missing: {path}" for path in expected if not (root / path).is_file()]
+    for forbidden in ("devspec/work-items/current.md", "devspec/current-work-item.json"):
+        if (root / forbidden).exists():
+            issues.append(f"tracked current-work-item artifact is not allowed: {forbidden}")
+    valid_stages = {"foundation", "intake", "grooming", "finalization", "tasks", "implementation", "review", "complete", "triage", "validation", "routed", "caller", "origin"}
     valid_runs = {"active", "paused", "blocked", "stopped", "complete"}
     valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
     lifecycle_templates = {
@@ -80,12 +83,13 @@ def doctor(root: Path, profile: str) -> list[str]:
         "run": {"preflight": ("Before every command", "single-repository or multi-repository scope", "current workspace as proposed", "repo-access protocol", "Do not inspect or change source")},
         "repo-access": {
             "collect": ("free-form text input", "Confirm the path before asking about access"),
-            "validate": ("After each path is confirmed", "Custom Answer", "least-privilege"),
+            "question": ("After each path is confirmed", "Custom Answer"),
+            "recommend": ("exactly one choice recommended", "least-privilege"),
         },
         "current-work-item": {
             "location": ("git rev-parse --git-path devspec/current-work-item.json", "Never create or commit"),
             "record": ("work-item ID", "current branch", "selection source", "timestamp", "never committed or pushed"),
-            "selection": ("validated explicit ID", "exactly one eligible non-terminal"),
+            "selection": ("validated explicit ID", "exactly one non-terminal work item on the current branch"),
             "validation": ("branch changed", "stage and next action"),
             "continuation": ("saved meta.md next action", "devspec.clarify", "terminal item is not resumed"),
             "clear": ("accepted review",),
@@ -95,23 +99,22 @@ def doctor(root: Path, profile: str) -> list[str]:
         path = root / f"devspec/protocols/{name}.xml"
         if path.is_file():
             try:
-                ElementTree.fromstring(path.read_text(encoding="utf-8"))
-            except ElementTree.ParseError as exc:
+                protocol = ElementTree.fromstring(path.read_text(encoding="utf-8"))
+            except (ElementTree.ParseError, OSError, UnicodeDecodeError) as exc:
                 issues.append(f"invalid XML: {path}: {exc}")
             else:
                 required = {
                     "ask": ("trigger", "checkpoint", "interaction", "resolution"),
                     "run": ("preflight", "checkpoint", "context", "resume", "blocked", "closure"),
                     "work": ("scope", "evidence", "change", "artifacts"),
-                    "repo-access": ("when", "validate", "respect"),
+                    "repo-access": ("when", "collect", "question", "recommend", "record", "respect"),
                     "current-work-item": ("when", "location", "record", "selection", "validation", "recovery", "continuation", "update", "clear"),
                     "state": ("when", "run-states", "stages", "task-statuses", "evidence-labels", "resume"),
                 }.get(name, ())
-                present = {child.tag for child in ElementTree.fromstring(path.read_text(encoding="utf-8"))}
+                present = {child.tag for child in protocol}
                 missing = sorted(set(required) - present)
                 if missing:
                     issues.append(f"missing protocol tags: {path}: {', '.join(missing)}")
-                protocol = ElementTree.fromstring(path.read_text(encoding="utf-8"))
                 for tag, phrases in protocol_text_requirements.get(name, {}).items():
                     value = protocol.findtext(tag, default="")
                     for phrase in phrases:
@@ -120,8 +123,8 @@ def doctor(root: Path, profile: str) -> list[str]:
     for command in COMMANDS:
         path = root / f"devspec/contracts/devspec.{command.name}.md"
         if path.is_file():
-            text = path.read_text(encoding="utf-8")
             try:
+                text = path.read_text(encoding="utf-8")
                 workflow = ElementTree.fromstring(xml_block(text))
                 if workflow.tag != "workflow" or workflow.attrib.get("command") != f"devspec.{command.name}":
                     issues.append(f"invalid contract identity: {path}")
@@ -136,9 +139,7 @@ def doctor(root: Path, profile: str) -> list[str]:
                     issues.append(f"missing current-story protocol: {path}")
                 if command.name != "story" and command.name in current_context_commands and "[work-item-id]" not in text:
                     issues.append(f"work-item ID is not optional: {path}")
-                if command.name == "story" and "current-work-item" not in protocol_refs:
-                    issues.append(f"missing current-story classification protocol: {path}")
-            except (ValueError, ElementTree.ParseError) as exc:
+            except (ValueError, ElementTree.ParseError, OSError, UnicodeDecodeError) as exc:
                 issues.append(f"invalid contract XML: {path}: {exc}")
                 continue
             outputs = workflow.find("outputs")
@@ -147,7 +148,7 @@ def doctor(root: Path, profile: str) -> list[str]:
             transitions = workflow.find("transitions")
             if transitions is None or not list(transitions):
                 issues.append(f"missing contract transitions: {path}")
-            elif transitions is not None:
+            else:
                 for transition in transitions:
                     stage = transition.attrib.get("stage")
                     run = transition.attrib.get("run")

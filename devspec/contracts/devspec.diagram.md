@@ -17,11 +17,11 @@ Invocation: `/devspec.diagram runtime architecture format=svg motion=none|explai
   <input>Diagram queue ID, subject, work item, explicit process-flow batch request, format request, or optional `motion=none|explain` in the current repository or an explicitly scoped multi-repository system.</input>
   <rules>
     <rule>Read only the evidence the requested subject needs, the one diagram-type pattern selected, and its matching family template. Do not load unrelated templates or explore beyond the subject's confirmed boundary.</rule>
-    <rule>Select the diagram type from devspec/architecture/_template/diagram-types.md; load only the needed pattern.</rule>
+    <rule>Select the diagram type from devspec/architecture/_template/diagram-types.md.</rule>
     <rule>Start each SVG from the matching family-specific template: `architecture-diagram.svg` for system architecture, application landscape, and infrastructure topology; `process-flow-diagram.svg` for process flows; `sequence-diagram.svg` for interactions; `state-lifecycle-diagram.svg` for state behavior; `domain-model-diagram.svg` for domain models; `journey-map-diagram.svg` for journeys; `timeline-plan-diagram.svg` for timelines; `quadrant-analysis-diagram.svg` for quadrants; and `mindmap-diagram.svg` for mind maps.</rule>
     <rule>Create only evidence-backed, non-duplicate diagrams and persist queue or overview state for recovery.</rule>
-    <rule>For a multi-repository diagram, use repo-access before reading or validating another repository.</rule>
-    <rule>Accept a stable queued `DIA-###` ID or diagram subject, record subject, type, evidence, format, status, and next in the queue, and index completed output in the overview. On an explicit process-flow batch request, generate every queued non-duplicate process-flow candidate, validate each output, update each queue row independently, and leave the caller lifecycle state unchanged.</rule>
+    <rule>Record an evidence blocker in the caller's decision record, never in the queue, and leave the caller's saved stage and next action unchanged.</rule>
+    <rule>Accept a stable queued `DIA-###` ID or diagram subject, record subject, type, evidence, output format, duplicate-check result, status, and next action in the queue, and index completed output in the overview. On an explicit process-flow batch request, generate every queued non-duplicate process-flow candidate, validate each output, update each queue row independently, and leave the caller lifecycle state unchanged.</rule>
     <rule>Default to SVG with title and description and validate its XML. Write Mermaid or HTML only when explicitly requested, and when you do, record it from `devspec/architecture/_template/diagram.md` or `diagram.html` so its evidence, assumptions, and maintenance notes stay with the output.</rule>
     <rule>Default to `motion=none`. Treat an explicit request for an animated diagram without a motion value as `motion=explain`; reject unsupported motion values.</rule>
     <rule>For `motion=explain`, animate only an evidence-backed sequence, flow, or state transition and follow the opt-in motion guidance in diagram-types.md. Keep the complete meaning visible in the static final frame, provide a reduced-motion result with no information loss, and do not add decorative motion or imply unsupported behavior.</rule>
@@ -34,6 +34,8 @@ Invocation: `/devspec.diagram runtime architecture format=svg motion=none|explai
   <outputs>
     <artifact path="devspec/architecture/artifact-queue.md" />
     <artifact path="devspec/architecture/overview.md" />
+    <artifact path="devspec/foundation/decisions.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
   </outputs>
   <transitions>
     <transition outcome="diagram-complete" stage="caller" run="active" next="return-to-caller" />
