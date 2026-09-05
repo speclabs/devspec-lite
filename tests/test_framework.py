@@ -67,7 +67,7 @@ class FrameworkTests(unittest.TestCase):
             run = ElementTree.fromstring((target / "devspec/protocols/run.xml").read_text(encoding="utf-8"))
             self.assertEqual("devspec/foundation/decisions.md", run.findtext("state-records/foundation"))
             repo_access = ElementTree.fromstring((target / "devspec/protocols/repo-access.xml").read_text(encoding="utf-8"))
-            self.assertIn("Validate a validation-only repository only", repo_access.findtext("respect"))
+            self.assertIn("Never validate a reference-only, edit, release-coordination, or unavailable repository", repo_access.findtext("respect"))
             self.assertTrue((target / "devspec/foundation/template-map.md").is_file())
             self.assertTrue((target / "devspec/foundation/_template/decisions.md").is_file())
             self.assertTrue((target / "AGENTS.md").is_file())
@@ -112,6 +112,7 @@ class FrameworkTests(unittest.TestCase):
             finalize_contract = (target / "devspec/contracts/devspec.finalize.md").read_text(encoding="utf-8")
             implement_contract = (target / "devspec/contracts/devspec.implement.md").read_text(encoding="utf-8")
             review_contract = (target / "devspec/contracts/devspec.review.md").read_text(encoding="utf-8")
+            security_protocol = (target / "devspec/protocols/security.xml").read_text(encoding="utf-8")
             self.assertEqual(1, rules.count("OWASP Top 10:2025 Baseline"))
             self.assertIn("A01:2025 Broken Access Control", rules)
             self.assertIn("A10:2025 Mishandling of Exceptional Conditions", rules)
@@ -121,18 +122,20 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("Developer confirmation", implementation_template)
             self.assertIn("Security Verification", review_template)
             self.assertIn("Reviewer confirmation", review_template)
-            self.assertIn("OWASP Top 10:2025", rules_contract)
-            self.assertIn("do not infer an internal-only", extract_contract)
+            # The security protocol owns the baseline, exception, and gate; the contracts load it.
+            self.assertIn("OWASP Top 10:2025", security_protocol)
+            self.assertIn("one material confirmation question", security_protocol)
+            self.assertIn("known unresolved vulnerability", security_protocol)
+            for contract in (rules_contract, extract_contract, finalize_contract, implement_contract, review_contract):
+                self.assertIn('<protocol ref="security" />', contract)
+            self.assertIn("internal-only", security_protocol)
             self.assertIn("foundation trace", finalize_contract)
-            self.assertIn("ask one material confirmation question", implement_contract)
-            self.assertIn("reviewer records confirmation", review_contract)
-            self.assertIn("known unresolved vulnerability", review_contract)
     def test_contract_xml_and_quickfix_routing_are_present(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
             main(["init", "--target", str(target), "--profile", "copilot", "--repo-state", "existing"])
             quickfix = (target / "devspec/contracts/devspec.quickfix.md").read_text(encoding="utf-8")
-            self.assertIn("route risky work", quickfix)
+            self.assertIn("Route public API contracts", quickfix)
             self.assertIn("database schema or migration", quickfix)
             self.assertIn("<rules>", quickfix)
             self.assertIn('<protocol ref="ask" />', quickfix)
@@ -169,7 +172,7 @@ class FrameworkTests(unittest.TestCase):
             extract = (target / "devspec/contracts/devspec.extract.md").read_text(encoding="utf-8")
             diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
             how_to = (Path(__file__).resolve().parents[1] / "docs/how-to.md").read_text(encoding="utf-8")
-            self.assertIn("Do you want me generate all the possible diagrams?", extract)
+            self.assertIn("Do you want me to generate all the possible diagrams?", extract)
             self.assertIn("Yes — generate all listed diagrams", extract)
             self.assertIn("No — prepare the list only", extract)
             self.assertIn("Choose diagrams — enter the IDs or subjects to generate", extract)
@@ -299,6 +302,8 @@ class FrameworkTests(unittest.TestCase):
             template_root = target / "devspec/architecture/_template"
             expected = (
                 "architecture-diagram.svg",
+                "application-landscape-diagram.svg",
+                "infrastructure-topology-diagram.svg",
                 "process-flow-diagram.svg",
                 "sequence-diagram.svg",
                 "state-lifecycle-diagram.svg",
@@ -317,6 +322,34 @@ class FrameworkTests(unittest.TestCase):
             diagram = (target / "devspec/contracts/devspec.diagram.md").read_text(encoding="utf-8")
             self.assertIn("Start each SVG from the matching family-specific template", diagram)
             self.assertIn("connectors behind cards", diagram)
+            self.assertIn("Anchor every connector to a shape edge at both ends", diagram)
+            types = (target / "devspec/architecture/_template/diagram-types.md").read_text(encoding="utf-8")
+            for name in expected:
+                with self.subTest(mapped=name):
+                    self.assertIn(f"`{name}`", types)
+
+    def test_diagram_templates_have_no_dangling_marker_references(self) -> None:
+        """A marker-end pointing at a missing id renders a connector with no arrowhead."""
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "all", "--repo-state", "existing"])
+            namespace = "{http://www.w3.org/2000/svg}"
+            for path in sorted((target / "devspec/architecture/_template").glob("*.svg")):
+                with self.subTest(template=path.name):
+                    root = ElementTree.parse(path).getroot()
+                    defined = {marker.attrib.get("id") for marker in root.iter(f"{namespace}marker")}
+                    referenced = set()
+                    for element in root.iter():
+                        for attribute in ("marker-end", "marker-start", "filter", "fill", "stroke"):
+                            value = element.attrib.get(attribute, "")
+                            if value.startswith("url(#"):
+                                referenced.add(value[5:-1])
+                    self.assertTrue(referenced <= defined | {node.attrib.get("id") for node in root.iter()},
+                                    f"{path.name} references an undefined id")
+                    serialized = ElementTree.tostring(root, encoding="unicode")
+                    self.assertNotIn("<script", serialized)
+                    self.assertNotIn("foreignObject", serialized)
+                    self.assertNotIn("<iframe", serialized)
 
     def test_init_refuses_changed_managed_file(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -393,11 +426,14 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("Continue current work without an ID", how_to)
             self.assertIn("selected `meta.md` next action", how_to)
             self.assertIn("post-finalization route", how_to)
-            tracked_context = target / "devspec/work-items/current.md"
-            tracked_context.parent.mkdir(parents=True, exist_ok=True)
-            tracked_context.write_text("current: STORY-001\n", encoding="utf-8")
-            issues = doctor(target, "all")
-            self.assertTrue(any("tracked current-story artifact" in issue for issue in issues))
+            # Both the legacy path and the path a real violation takes today.
+            for forbidden in ("devspec/work-items/current.md", "devspec/current-work-item.json"):
+                tracked_context = target / forbidden
+                tracked_context.parent.mkdir(parents=True, exist_ok=True)
+                tracked_context.write_text("current: STORY-001\n", encoding="utf-8")
+                issues = doctor(target, "all")
+                self.assertTrue(any(f"tracked current-work-item artifact is not allowed: {forbidden}" in issue for issue in issues))
+                tracked_context.unlink()
 
 if __name__ == "__main__":
     unittest.main()

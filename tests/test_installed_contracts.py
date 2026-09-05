@@ -7,7 +7,7 @@ from pathlib import Path
 from devspec_lite.framework import doctor, install_framework
 
 
-class ParityContractTests(unittest.TestCase):
+class InstalledContractTests(unittest.TestCase):
     def test_constitution_clarification_architecture_and_batch_contracts_are_installed(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)

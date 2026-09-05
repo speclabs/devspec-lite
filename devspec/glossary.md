@@ -1,13 +1,15 @@
 # Glossary
 
-- Work-item stages: intake, grooming, finalization, tasks, implementation, review, complete.
-- Quickfix stages: triage, implementation, validation, complete, routed.
-- Run states: active (eligible to continue), paused (user-paused), blocked (one active material decision), stopped (requires new direction), complete (terminal with `next: none`).
-- Task statuses: pending, in-progress, blocked, complete, superseded.
-- Scope revision: a monotonic work-item number. Finalization, tasks, implementation, and review operate only on the current revision; older records are retained as superseded history.
+Run states, work-item and quickfix stages, task statuses, evidence labels, the changed-work baseline, and resume semantics are defined once in `devspec/protocols/state.xml`. `devspec/lifecycle.md` owns the route graph. This file covers the remaining terms.
+
+- Scope revision: a monotonic work-item number identifying which generation of approved scope a record belongs to. `devspec/protocols/revision.xml` owns its rules.
 - Current work-item context: a private, per-worktree Git-metadata selection used to resolve an omitted work-item ID. It is never a Git-tracked artifact and never replaces `meta.md` as canonical state.
-- Evidence: confirmed, observed, inferred, blocked.
-- OWASP exception: a reviewer-confirmed false-positive or not-applicable finding supported by enforceable evidence; it is distinct from an unresolved vulnerability.
+- Material question: a question whose answer can change implementation, validation, or scope. Only material questions enter the ask queue; anything else is decided without asking.
+- Material decision: the recorded answer to a material question, held in the command's decision record.
+- Material blocker: a material question that must be answered before the command can continue. It sets run state `blocked` and makes `devspec.clarify` the next command. Exactly one may be active at a time.
+- Developer: the person the agent asks. Every interactive question in this framework is addressed to the developer; the agent never answers its own material question.
+- Registered next action: the single next command recorded in the state record. A command reports exactly one, and `none` is a valid registered next action for terminal work.
+- OWASP exception: a reviewer-confirmed false-positive or not-applicable finding supported by enforceable evidence; it is distinct from an unresolved vulnerability. `devspec/protocols/security.xml` owns its confirmation rules.
 
 ## Repository access requirements
 
@@ -20,4 +22,4 @@
 | `release-coordination` | Coordinate release information only; do not inspect, edit, or validate repository contents. |
 | `unavailable` | The repository cannot currently be accessed; record the impact as a blocker. |
 
-Use these values in `foundation/codebase-structure.md`. Select the least privilege that satisfies the current command; the repository location alone never grants access.
+These lowercase values are the recorded form. `devspec/protocols/repo-access.xml` owns how they are collected, recommended, recorded, and enforced.

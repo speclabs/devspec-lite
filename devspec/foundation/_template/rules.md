@@ -2,8 +2,8 @@
 
 ## Project Rules
 
-| Rule ID | Rule | Why | Enforcement | Source decision |
-|---|---|---|---|---|
+| Rule ID | Rule | Why | Enforcement | Constitution principles | Source decision |
+|---|---|---|---|---|---|
 
 ## OWASP Top 10:2025 Baseline
 

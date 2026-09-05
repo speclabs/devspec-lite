@@ -1,6 +1,8 @@
 # Python and uvx setup
 
-Use this route on Windows, macOS, or Linux when Python 3.10 or newer is available. Choose `uvx` for one-off use, or `pipx` for a persistent CLI installation. To avoid installing Python or any CLI, use [manual copy from `main`](manual-copy.md).
+Use this route on Windows, macOS, or Linux when Python 3.10 or newer is available. Choose `uvx` for one-off use, or `pipx` for a persistent CLI installation.
+
+The commands below need a published package. Until the first `v*` release is tagged, no CLI route resolves; use [manual copy from `main`](manual-copy.md), which never requires Python or a package manager.
 
 ## One-off use with uvx
 

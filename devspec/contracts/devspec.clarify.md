@@ -8,9 +8,13 @@ Invocation: `/devspec.clarify [work-item-id]`
   <purpose>Resolve one active blocker and resume its originating stage.</purpose>
   <protocols>
     <protocol ref="ask" />
-    <protocol ref="current-work-item" />
     <protocol ref="run" />
+    <protocol ref="state" />
+    <protocol ref="current-work-item" />
+    <protocol ref="revision" />
+    <protocol ref="work" />
   </protocols>
+  <scope>Use only to resolve one recorded material blocker and resume the command that recorded it. This command never advances a stage, changes scope, or answers a question its originating command has not recorded.</scope>
   <input>An optional work-item ID, or one foundation or quickfix record, with one active material blocker question.</input>
   <rules>
     <rule>Resolve the one highest-priority material decision in its active queue and append its answer to decisions.md. For a work item, append the origin command, question, resolution, evidence, and exact resume command to clarify.md.</rule>
@@ -23,12 +27,10 @@ Invocation: `/devspec.clarify [work-item-id]`
     <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/clarify.md" />
     <artifact path="devspec/quickfixes/QF-###-slug.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
   </outputs>
   <transitions>
     <transition outcome="decision-resolved" stage="origin" run="active" next="resume-origin" />
   </transitions>
   <closure>Append the resolution, restore the exact saved stage and next command, and do not change scope while resolving a blocker.</closure>
-  <actions>Ask the recorded high-priority material question, append the resolution, and return to the saved next action.</actions>
-  <artifact>devspec/work-items/&lt;id&gt;/decisions.md</artifact>
-  <handoff>resume-origin</handoff>
 </workflow>

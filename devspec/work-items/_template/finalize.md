@@ -7,7 +7,7 @@
 
 ## Foundation Traceability
 
-| Foundation artifact | Relevant convention, area, boundary, or rule | Applicability or boundary | Evidence |
+| Foundation artifact or `CP-###` principle | Relevant convention, area, boundary, or rule | Applicability or boundary | Evidence |
 |---|---|---|---|
 
 ## Architecture and Diagram Trace

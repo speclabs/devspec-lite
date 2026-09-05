@@ -1,5 +1,5 @@
 ---
 name: devspec-coding-standards
-description: Capture reusable observed or developer-defined coding standards with numbered examples.
+description: Capture concise, reusable coding conventions, followable examples, and anti-patterns from source evidence or developer-defined standards.
 ---
 Read and execute `devspec/contracts/devspec.coding-standards.md`.

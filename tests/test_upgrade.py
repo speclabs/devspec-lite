@@ -11,6 +11,26 @@ from devspec_lite.framework import MANIFEST_PATH, diff_framework, read_install_m
 
 
 class UpgradeLifecycleTests(unittest.TestCase):
+    def test_adding_a_profile_preserves_project_work(self) -> None:
+        # Re-running init to add a profile must not fail on, or overwrite, the developer's own
+        # constitution, architecture queue, or overview. The only escape used to be --force,
+        # which would have destroyed exactly those files.
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "existing"])
+            owned = {
+                "devspec/constitution.md": "# Constitution\n\n| CP-001 | keep me |\n",
+                "devspec/architecture/artifact-queue.md": "# Architecture Artifact Queue\n\n| DIA-001 | keep me |\n",
+                "devspec/architecture/overview.md": "# Architecture Overview\n\nkeep me\n",
+            }
+            for path, content in owned.items():
+                (target / path).write_text(content, encoding="utf-8")
+            self.assertEqual(0, main(["init", "--target", str(target), "--profile", "claude", "--repo-state", "existing"]))
+            for path, content in owned.items():
+                self.assertEqual(content, (target / path).read_text(encoding="utf-8"), path)
+            self.assertTrue((target / ".claude/skills/devspec-story/SKILL.md").is_file())
+            self.assertTrue((target / "AGENTS.md").is_file())
+
     def run_cli(self, arguments: list[str]) -> tuple[int, str]:
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
@@ -51,8 +71,11 @@ class UpgradeLifecycleTests(unittest.TestCase):
             self.assertIn("AGENTS.md", diff_framework(target, "codex")["missing"])
             constitution = target / "devspec/constitution.md"
             constitution.write_text("# Constitution\n\nCP-001: protected\n", encoding="utf-8")
-            self.assertEqual(2, main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "new", "--force"]))
+            # init now restores the missing wrapper instead of failing, and --force still
+            # cannot reach a project-owned file.
+            self.assertEqual(0, main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "new", "--force"]))
             self.assertIn("CP-001: protected", constitution.read_text(encoding="utf-8"))
+            self.assertTrue((target / "AGENTS.md").is_file())
 
     def test_sync_preserves_project_owned_constitution(self) -> None:
         with tempfile.TemporaryDirectory() as raw:

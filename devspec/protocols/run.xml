@@ -1,6 +1,7 @@
 <protocol id="run">
-  <preflight>Before every command, confirm single-repository or multi-repository scope from either explicit developer confirmation or current canonical evidence. Treat the current workspace as proposed, never proof. When repository evidence is absent, collect one repository name or local path at a time through a free-form text input with two path examples and a custom typed value; do not present access choices until that path is confirmed. After each path is confirmed, ask exactly one interactive named access-requirement question with two to five exclusive choices, an example for each, Custom Answer, and exactly one recommended least-privilege choice with justification. Record that repository's role and named access requirement; repeat path collection then access confirmation for each additional repository. A new repository may explicitly confirm that no source exists yet. Do not inspect or change source until this sequence is complete. Then validate required input, target artifact, stage, and access before output.</preflight>
-  <checkpoint>Before material questions, edits, validation, retries, or handoff, save stage, run state, last action, resume reference, and exactly one next action in the command's state record.</checkpoint>
+  <when>Load with every command. It governs preflight, checkpoints, resumption, and closing report.</when>
+  <preflight>Before every command, confirm single-repository or multi-repository scope from either explicit developer confirmation or current canonical evidence. Treat the current workspace as proposed, never proof. When repository evidence is absent, complete the repo-access protocol before reading, editing, or validating source; a new repository may explicitly confirm that no source exists yet. Do not inspect or change source until that sequence is complete. Then validate required input, target artifact, stage, and access before output.</preflight>
+  <checkpoint>Before material questions, edits, validation, retries, or handoff, save stage, run state, last action, resume reference, and exactly one next action in the command's state record. For foundation work the state record and the decision record are the same file, holding both a Run State row and a Decisions row.</checkpoint>
   <state-records>
     <work-item>devspec/work-items/&lt;id&gt;/meta.md</work-item>
     <foundation>devspec/foundation/decisions.md</foundation>
@@ -8,6 +9,6 @@
   </state-records>
   <context>For a work-item continuation, use current-work-item before validating stage. Dispatch only the saved next action; do not skip a stage.</context>
   <resume>Resume paused work when prerequisites hold. Clear or recover stale local context, and ask one interactive selection question when multiple work items or a stopped state make continuation ambiguous.</resume>
-  <blocked>Record the material blocker and continuation condition; retry only when that condition changes or the user directs it.</blocked>
+  <blocked>Record the material blocker and continuation condition; retry only when that condition changes or the developer directs it.</blocked>
   <closure>Report artifact, outcome, blocker if any, and exactly one registered next action.</closure>
 </protocol>

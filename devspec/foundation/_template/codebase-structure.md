@@ -1,7 +1,7 @@
 # Codebase Structure
 
-| Area | Ownership | Boundary | Evidence |
-|---|---|---|---|
+| Area | Ownership | Boundary | Integration points | Validation location | Evidence |
+|---|---|---|---|---|---|
 
 ## Repositories
 

@@ -4,6 +4,7 @@ type: bug
 stage: triage
 run: active
 scope: []
+last: none
 resume: none
 next: select scope
 updated: <yyyy-mm-dd>
@@ -17,8 +18,11 @@ updated: <yyyy-mm-dd>
 - Validation:
 - Outcome:
 
-- Route: complete | devspec.clarify | devspec.story
+- Route: complete | blocked (`devspec.clarify`) | routed (`devspec.story`)
+
 ## Decisions
+
+One row per material question, in the shape `devspec/protocols/ask.xml` requires.
 
 | ID | Material question | Evidence | Impact | Choices | Recommended | Recommendation justification | Applicability | Canonical rule link | Answer or skip reason | Status |
 |---|---|---|---|---|---|---|---|---|---|---|

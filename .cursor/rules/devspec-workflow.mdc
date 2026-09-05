@@ -2,4 +2,4 @@
 description: Devspec Lite workflow
 alwaysApply: false
 ---
-For `devspec.changerequest`, `devspec.clarify`, `devspec.codebase-structure`, `devspec.coding-standards`, `devspec.diagram`, `devspec.extract`, `devspec.finalize`, `devspec.grooming`, `devspec.implement`, `devspec.projectcontext`, `devspec.quickfix`, `devspec.review`, `devspec.rules`, `devspec.story`, `devspec.tasks`, `devspec.techstack`, read the matching `devspec/contracts/` file and listed protocols. For a clear continuation, resolve per-worktree current context and run only the saved next action; ask before switching stories.
+For `devspec.extract`, `devspec.projectcontext`, `devspec.techstack`, `devspec.codebase-structure`, `devspec.coding-standards`, `devspec.rules`, `devspec.story`, `devspec.grooming`, `devspec.clarify`, `devspec.changerequest`, `devspec.finalize`, `devspec.tasks`, `devspec.implement`, `devspec.review`, `devspec.diagram`, `devspec.quickfix`, read the matching `devspec/contracts/` file and listed protocols. For a clear continuation, resolve per-worktree current context and run only the saved next action; ask before switching stories.

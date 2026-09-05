@@ -14,11 +14,11 @@ The `main` checkout supplies the canonical `devspec/` directory and prebuilt age
 
 ## 2. Copy one profile
 
-Copy `devspec/` and the folder or file for the agent host into the target repository.
+Copy `devspec/` and the folder or file for the agent host into the target repository. Copy only the listed paths. In particular do not copy `.github/workflows/` — those are Devspec Lite's own release pipelines, and one of them requests publishing credentials.
 
 | Profile | Copy from the `main` checkout | Copy into the target repository |
 |---|---|---|
-| Copilot | `devspec/`, `.github/` | `devspec/`, `.github/` |
+| Copilot | `devspec/`, `.github/prompts/`, `.github/agents/` | `devspec/`, `.github/prompts/`, `.github/agents/` |
 | Codex | `devspec/`, `AGENTS.md` | `devspec/`, `AGENTS.md` |
 | Claude | `devspec/`, `.claude/` | `devspec/`, `.claude/` |
 | Cursor | `devspec/`, `.cursor/` | `devspec/`, `.cursor/` |
@@ -26,6 +26,15 @@ Copy `devspec/` and the folder or file for the agent host into the target reposi
 | Antigravity | `devspec/`, `.agents/` | `devspec/`, `.agents/` |
 
 Do not pre-copy individual foundation or work-item templates. When an agent needs a missing target artifact, the shared `work` protocol creates it from the matching `_template`; creating a work item initializes every file in `devspec/work-items/_template`, including `meta.md`.
+
+The `main` checkout also carries Devspec Lite's own project records, which the CLI never installs. After copying, reset these in the target so it starts empty:
+
+| Path | Action in the target repository |
+|---|---|
+| `devspec/architecture/artifact-queue.md` | Replace with `devspec/architecture/_template/artifact-queue.md` |
+| `devspec/architecture/overview.md` | Replace with `devspec/architecture/_template/overview.md` |
+| `devspec/quickfixes/QF-*.md` | Delete; keep `README.md` and `_template.md` |
+| `devspec/foundation/repository-state.md` | Replace as described in step 3 |
 
 ## 3. Set the target repository state
 
@@ -51,7 +60,7 @@ Use this exact Markdown structure:
 
 ## 4. Verify and commit
 
-Verify that every path listed in `devspec/install-manifest.txt` exists, that the selected agent wrapper is present, and that `devspec/foundation/repository-state.md` has the target's intended state and start command. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
+Verify that every glob pattern in `devspec/install-manifest.txt` resolves to at least one copied file, that the selected agent wrapper is present, that `devspec/foundation/repository-state.md` has the target's intended state and start command, and that every row in step 2's reset table has been applied. Compare any same-named target wrapper before replacing it, then commit the copied files with the target repository.
 
 ## 5. Update manually
 

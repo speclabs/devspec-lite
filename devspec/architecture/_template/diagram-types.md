@@ -30,7 +30,9 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 
 | Diagram type | SVG template |
 |---|---|
-| System architecture, application landscape, infrastructure topology | `architecture-diagram.svg` |
+| System architecture | `architecture-diagram.svg` |
+| Application landscape | `application-landscape-diagram.svg` |
+| Infrastructure topology | `infrastructure-topology-diagram.svg` |
 | Process flow | `process-flow-diagram.svg` |
 | Sequence | `sequence-diagram.svg` |
 | State lifecycle | `state-lifecycle-diagram.svg` |
@@ -43,6 +45,10 @@ Use the smallest diagram that makes a confirmed relationship easier to understan
 ## Guardrails
 
 Do not infer entities, callers, timelines, ownership, user sentiment, or priorities. Record uncertain information in the work item or decisions file, not as a factual diagram label. Keep a flowchart to one primary concern; split a diagram that cannot remain readable instead of shrinking text or crossing unrelated flows.
+
+The journey template ships a signal row. Keep it only when a measured or user-confirmed signal supports every point; delete the row and its legend entry otherwise, because an unmeasured curve is inferred sentiment.
+
+Every connector must start on one shape edge and end on another. A line that begins or ends in open space, or whose arrowhead is hidden behind the shape it points at, states a relationship the diagram does not actually show. Keep label backgrounds clear of boundary strokes and other labels, and keep every colour that appears on a shape present in the legend.
 
 ## Opt-in motion
 

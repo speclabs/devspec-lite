@@ -1,4 +1,4 @@
 # Technology Stack
 
-| Area | Confirmed stack | Evidence | Constraint |
-|---|---|---|---|
+| Area | Confirmed stack | Supported versions | Evidence | Constraint |
+|---|---|---|---|---|
