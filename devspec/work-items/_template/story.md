@@ -10,6 +10,8 @@
 | Canonical URL | |
 | Retrieved at (UTC) | |
 | MCP resolution method | |
+| Retrieval consent | granted, declined, not applicable |
+| Type basis | mapped, inferred |
 | Fields used | |
 | Resolved summary shown | |
 | Confirmation basis | `devspec/foundation/provider-integrations.md` |
