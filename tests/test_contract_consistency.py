@@ -214,11 +214,14 @@ class DocumentationTests(unittest.TestCase):
         # Two guides kept calling grooming optional after the contracts made it the default.
         contract = contract_text("grooming")
         self.assertIn("this is the default route out of intake", contract)
-        for doc in self.COVERING_DOCS:
-            text = (REPO / "docs" / doc).read_text(encoding="utf-8").lower()
-            with self.subTest(doc=doc):
-                self.assertNotIn("grooming is optional", text)
-                self.assertNotIn("groom when needed", text)
+        pages = [REPO / "docs" / doc for doc in self.COVERING_DOCS]
+        pages += [REPO / "README.md", REPO / "devspec/README.md"]
+        for page in pages:
+            text = page.read_text(encoding="utf-8").lower()
+            with self.subTest(page=page.name):
+                for claim in ("grooming is optional", "groom when needed", "grooming` when needed",
+                              "grooming when needed", "optional grooming", "grooming, if needed"):
+                    self.assertNotIn(claim, text, "grooming is the default route out of intake")
 
     def test_every_command_appears_in_the_command_guides(self) -> None:
         for doc in self.COVERING_DOCS:

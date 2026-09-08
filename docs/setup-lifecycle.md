@@ -51,7 +51,7 @@ devspec init --target D:\Code\orders --profile copilot --repo-state new
 devspec doctor --target D:\Code\orders --profile copilot
 ```
 
-`all` installs every supported wrapper. Use one of `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the repository uses only that agent.
+`all` installs every supported wrapper. Use `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the repository uses only that agent host.
 
 ## 3. Validate the CLI installation
 

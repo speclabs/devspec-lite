@@ -16,21 +16,16 @@ Manual copying and CLI installation produce the same canonical `devspec/` conten
 
 ## CLI quick start
 
-The [CLI quick start](docs/quickstart.md) walks through initializing, validating, and choosing the first command.
-
-After choosing a CLI route, initialize and validate the repository:
-
 ```powershell
-# Existing repository
 uvx devspec init --target . --profile all --repo-state existing
-uvx devspec doctor --target . --profile all
-
-# New repository
-uvx devspec init --target . --profile all --repo-state new
 uvx devspec doctor --target . --profile all
 ```
 
-`init` copies canonical Markdown + XML contracts, concise templates, and the wrappers for the selected agent profile. It generates `devspec/foundation/repository-state.md` from `--repo-state` and seeds empty `devspec/architecture/overview.md` and `artifact-queue.md` from their templates. Those two, plus `devspec/constitution.md`, are project-owned: `init` and `sync` never overwrite them, even with `--force`. Use the `devspec.*` commands exposed by your agent host. Use `devspec diff --target .` to inspect installed-framework drift and `devspec sync --target . --profile all --dry-run` before applying a framework upgrade.
+Use `--repo-state new` for a repository with no source yet. The [CLI quick start](docs/quickstart.md) covers both routes and the first command to run.
+
+`init` copies the canonical contracts, protocols, and templates plus the wrappers for the selected agent profile, generates `devspec/foundation/repository-state.md` from `--repo-state`, and seeds empty `devspec/architecture/overview.md` and `artifact-queue.md`. Those two and `devspec/constitution.md` are project-owned: `init` and `sync` never overwrite them, even with `--force`.
+
+Before a framework upgrade, inspect drift with `devspec diff --target .` and preview it with `devspec sync --target . --profile all --dry-run`.
 
 ## Choose a workflow route
 
@@ -42,5 +37,6 @@ Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, gro
 
 ## How to
 
-Follow the scenario-based [how-to guide](docs/how-to.md) to choose the right command, establish an existing or new repository baseline, start and deliver a story, work across multiple repositories, or route a small fix safely.
-Before every `devspec.*` command, confirm the single-repository or multi-repository scope, unless current canonical evidence records it. After starting a story, use the normal work-item commands or `continue` without repeating its ID; private per-worktree context resumes only the recorded next action. See the [beginner command examples](docs/command-examples.md) for scaffold layouts, source-scope confirmation, multi-repository boundaries, and a first prompt for every command.
+Follow the scenario-based [how-to guide](docs/how-to.md) to choose the right command, establish a baseline, deliver a story, work across repositories, or route a small fix safely. The [beginner command examples](docs/command-examples.md) give a first prompt for every command.
+
+Two rules apply throughout. Confirm single-repository or multi-repository scope before every `devspec.*` command, unless current canonical evidence already records it. After starting a story, run the work-item commands or `continue` without repeating its ID: private per-worktree context resumes only the recorded next action.

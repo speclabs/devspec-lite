@@ -33,7 +33,11 @@ Name a primary repository that owns the change record, then list every dependent
 
 Use the same `/devspec.story` command for GitHub Issues, Azure DevOps work items, Jira issues, GitLab issues, or another provider. A provider connector is optional: manual text intake continues to work without one. When a connector is available and authenticated, Devspec resolves exactly one named URL or identifier with an approved read method, normalizes its reference, and stores a concise redacted snapshot in `story.md`.
 
-The intake command is read-only. It never changes state, fields, assignees, labels, comments, links, or provider records. On success, it shows the provider, identifier, title, type and status when available, canonical link, and short summary, then asks one confirmation question. The choices are Confirm and continue, Reject and retry input, Switch to manual intake, Cancel, and Custom Answer; each includes an example, and exactly one recommended choice with its justification. After confirmation it asks one last question for the work-item number, offering the date-based value, the resolved provider identifier, and the next value above the highest existing number, each shown as the full proposed folder name. Only then is the work-item folder created. Intake asks nothing else: it records what the source supplies, lists the remaining requirement gaps in `story.md`, and leaves those questions to `/devspec.grooming`. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content. Provider writes require a separate explicit request and an approved integration workflow.
+The intake command is read-only. It never changes state, fields, assignees, labels, comments, links, or provider records, and a provider write requires a separate explicit request and an approved integration workflow.
+
+On success it shows the provider, identifier, title, type and status when available, canonical link, and short summary, then asks one confirmation question: Confirm and continue, Reject and retry input, Switch to manual intake, Cancel, or Custom Answer — each with an example, and exactly one recommended choice with its justification. After confirmation it asks for the work-item number, offering the date-based value, the resolved provider identifier, and the next value above the highest existing number, each shown as the full proposed folder name. Only then is the folder created.
+
+Intake asks nothing else: it records what the source supplies, lists the remaining requirement gaps in `story.md`, and leaves those questions to `/devspec.grooming`. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content.
 
 ```text
 /devspec.story https://github.com/acme/orders/issues/42
@@ -44,6 +48,7 @@ The intake command is read-only. It never changes state, fields, assignees, labe
 ```
 
 Before enabling an organization connector, record its approved read and write boundaries in `foundation/provider-integrations.md`; never put credentials or tokens in Devspec artifacts.
+
 ## Command examples
 
 | Command | Use it when | Beginner example |

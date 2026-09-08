@@ -16,16 +16,16 @@ uvx devspec init --target . --profile all --repo-state existing
 uvx devspec doctor --target . --profile all
 ```
 
-Use a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the target uses one agent host. `all` installs every supported wrapper.
+`all` installs every supported wrapper. Use `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when the repository uses only that agent host.
 
 ## 2. Start the right workflow
 
 Every `devspec.*` command begins by confirming repository scope: it asks for each repository path, then one named access requirement per repository. Answer those before the command inspects any source. The route itself comes from `devspec/foundation/repository-state.md`, which `init` writes from `--repo-state`.
 
 - New repository: author the foundation intentionally with `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules`.
-- Existing repository: run `devspec.extract` once. It creates the evidence-backed technical, business, workflow, and rule baseline, prepares the possible-diagram list, then asks one question with four answers: generate all, prepare the list only, choose specific diagrams, or a custom answer. Choosing to prepare the list only keeps the candidates without generating them; later generate a static SVG with `/devspec.diagram DIA-002`, or request an evidence-backed animated explanation with `/devspec.diagram DIA-002 motion=explain`.
+- Existing repository: run `devspec.extract` once. It creates the evidence-backed technical, business, workflow, and rule baseline, then asks whether to generate all the candidate diagrams, none, or a chosen subset. Any candidate left in the queue can be generated later with `/devspec.diagram DIA-002`, or `/devspec.diagram DIA-002 motion=explain` for an evidence-backed animated sequence.
 
-Work route: `devspec.story → devspec.grooming` when needed `→ devspec.finalize → devspec.tasks → devspec.implement → devspec.review`.
+Work route: `devspec.story → devspec.grooming → devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. Grooming is the default step after intake; skip it only when the intake source itself carried explicit acceptance criteria and the story lists no open gap.
 
 When a command reports a blocker, run `devspec.clarify`: it resolves the one recorded decision and resumes the exact saved command. When a related requirement arrives after finalization, run `devspec.changerequest` to append it and re-finalize the new scope revision.
 

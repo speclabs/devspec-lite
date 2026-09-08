@@ -9,20 +9,6 @@ winget install --id SpecLabs.Devspec --exact
 devspec --version
 ```
 
-## Initialize a repository
-
-```powershell
-# Existing repository
-devspec init --target . --profile all --repo-state existing
-devspec doctor --target . --profile all
-
-# New repository
-devspec init --target . --profile all --repo-state new
-devspec doctor --target . --profile all
-```
-
-Choose a narrower profile such as `copilot`, `codex`, `claude`, `cursor`, `gemini`, or `antigravity` when only one agent is used.
-
 ## Next steps
 
-For upgrades, safe synchronization, profile changes, and workflow routing, see the [CLI lifecycle guide](setup-lifecycle.md).
+Initialize and validate the repository with the [CLI quick start](quickstart.md). For upgrades, synchronization, and profile changes, see the [CLI lifecycle guide](setup-lifecycle.md).

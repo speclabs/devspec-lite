@@ -20,7 +20,9 @@ Use `devspec.quickfix` only when the request is one localized enhancement or bug
 Use the work-item route for public contracts, data migrations, authentication/security work, breaking changes, unresolved risk, or multiple concerns. Grooming is the default step after intake; skip it only when the intake source itself carried explicit acceptance criteria and the story lists no open requirement gap. `clarify` asks one interactive material blocker question, records the decision, and resumes the originating stage.
 
 Every command validates its declared entry state and records one explicit transition in the canonical artifact. Work items use a monotonic `scope_revision`; a related change request increments it, retains older finalization, task, implementation, and review evidence as superseded history, and requires a new finalization. Review accepts only a matching revision and changed-work baseline; accepted work is terminal, rework reopens only the tasks a finding names, and blocked work routes through `clarify`.
+
 After `devspec.story` selects a work item, continue with `devspec.grooming`, `devspec.finalize`, `devspec.tasks`, `devspec.implement`, `devspec.review`, `devspec.clarify`, or `devspec.changerequest` without an ID. The private per-worktree selection resolves the current story only when it matches the branch and `meta.md`; `continue` dispatches only its recorded `next` action. Provide an ID to switch stories. If several active stories are eligible, Devspec asks you to choose rather than inferring.
+
 A material decision is work-item-local unless it applies beyond that story. At finalization, promote a reusable business or validation decision to `foundation/workflow-rules.md` with a stable rule ID; promote a reusable engineering constraint to `foundation/rules.md`. New stories read only relevant foundation rules and the affected code area, not every historic decision file. Code and tests are the primary enforcement; add a developer comment only for non-obvious rationale and cite the canonical rule ID.
 
 Every project maintains one OWASP Top 10:2025 baseline in `foundation/rules.md`. Finalization cites only the relevant coding standards, codebase boundaries, and OWASP controls; implementation records targeted tests and available project-native security evidence. A developer may propose a false-positive or not-applicable finding, but it is accepted only after the reviewer confirms the developer's rationale and enforceable evidence. “Internal-only”, authenticated-only, or limited access is not enough by itself; a configuration, network, deployment, or access-control proof is required. Revalidate any confirmed exception after a material change to its code, access, deployment, integration, or exposure.
@@ -33,21 +35,7 @@ Every project maintains one OWASP Top 10:2025 baseline in `foundation/rules.md`.
 
 ![Diagram route](assets/diagram-route.svg)
 
-For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md), then start the SVG from the family template that guide selects. Each diagram type has its own template in `devspec/architecture/_template/`:
-
-| Diagram type | SVG template |
-|---|---|
-| System architecture | [`architecture-diagram.svg`](../devspec/architecture/_template/architecture-diagram.svg) |
-| Application landscape | [`application-landscape-diagram.svg`](../devspec/architecture/_template/application-landscape-diagram.svg) |
-| Infrastructure topology | [`infrastructure-topology-diagram.svg`](../devspec/architecture/_template/infrastructure-topology-diagram.svg) |
-| Process flow | [`process-flow-diagram.svg`](../devspec/architecture/_template/process-flow-diagram.svg) |
-| Sequence | [`sequence-diagram.svg`](../devspec/architecture/_template/sequence-diagram.svg) |
-| State lifecycle | [`state-lifecycle-diagram.svg`](../devspec/architecture/_template/state-lifecycle-diagram.svg) |
-| Domain model | [`domain-model-diagram.svg`](../devspec/architecture/_template/domain-model-diagram.svg) |
-| Journey map | [`journey-map-diagram.svg`](../devspec/architecture/_template/journey-map-diagram.svg) |
-| Timeline | [`timeline-plan-diagram.svg`](../devspec/architecture/_template/timeline-plan-diagram.svg) |
-| Quadrant | [`quadrant-analysis-diagram.svg`](../devspec/architecture/_template/quadrant-analysis-diagram.svg) |
-| Mind map | [`mindmap-diagram.svg`](../devspec/architecture/_template/mindmap-diagram.svg) |
+For an evidence-backed architecture or workflow visual, choose a pattern from the [diagram type guide](../devspec/architecture/_template/diagram-types.md). That guide maps each of the eleven diagram types to its own SVG family template in `devspec/architecture/_template/`; start the SVG from the template it names.
 
 For the record that accompanies a diagram, use the compact [diagram record sample](../devspec/architecture/_template/diagram-sample.md) and its worked [SVG sample](../devspec/architecture/_template/diagram-sample.svg). The opt-in [motion sample](../devspec/architecture/_template/diagram-motion-sample.svg) shows the animation pattern, and the [HTML presentation sample](../devspec/architecture/_template/diagram-sample.html) shows the optional presentation shell.
 
