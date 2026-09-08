@@ -1,12 +1,11 @@
 # Devspec Lifecycle
 
-Canonical contracts in `devspec/contracts/` own command behavior. This document owns the state-record locations and the legal route graph those contracts use. The shared state vocabulary — run states, stages, task statuses, evidence labels, the changed-work baseline, and resume semantics — lives in `devspec/protocols/state.xml`.
+Canonical contracts in `devspec/contracts/` own command behavior. This document owns the legal route graph those contracts use. The shared state vocabulary — run states, stages, task statuses, evidence labels, the changed-work baseline, and resume semantics — lives in `devspec/protocols/state.xml`, and `devspec/protocols/run.xml` owns where each state record lives and which fields it holds.
 
 ## State records
 
-- A foundation command records its command, stage, run state, last action, resume reference, next action, and update date in `devspec/foundation/decisions.md`.
-- A work item records the same state in `meta.md`, together with its scope revision.
-- A quickfix records its state in front matter. A diagram records queue status and returns to its invoking workflow without changing that workflow's state.
+- `devspec/protocols/run.xml` owns each state-record location and the fields it holds; do not restate them here.
+- A diagram records queue status and returns to its invoking workflow without changing that workflow's state.
 - The selected current work item is private convenience state, never workflow evidence and never committed. `devspec/protocols/current-work-item.xml` owns where it is stored and how it is selected, validated, and cleared.
 
 ## Work-item stages

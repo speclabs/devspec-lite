@@ -19,11 +19,12 @@ Invocation: `/devspec.quickfix Fix Orders empty-state text`
     <rule>Select one primary scope: UI, internal API, function/job, library, configuration, tests, or a user-defined bounded scope.</rule>
     <rule>A user-defined scope is allowed only when it is documented as localized and low risk; otherwise route it to story before editing code.</rule>
     <rule>Create a QF record, implement, and run focused validation in the same command.</rule>
+    <rule>Name the record `QF-&lt;number&gt;-&lt;slug&gt;.md`, matching `^QF-[0-9]{1,12}-[a-z0-9]+(-[a-z0-9]+)*$`. Never assign the number automatically: use a number the developer supplied explicitly in an unambiguous marked form such as `id:4471`, and otherwise ask one material question offering the date-based `YYMMDD` plus a two-digit sequence taken as the next value free in `devspec/quickfixes/` for that date as the recommended choice, alongside the next value above the highest existing quickfix number, with Custom Answer additional. Never infer a number from unmarked digits in prose, and reject a number an existing quickfix already uses.</rule>
     <rule>Route public API contracts, database schema or migration, authentication or security work, breaking changes, unrelated concerns, and unresolved risk to story and suggested grooming without editing code.</rule>
   </rules>
   <entry>One documented localized low-risk request at triage with one primary scope; reject any request this command must route.</entry>
   <outputs>
-    <artifact path="devspec/quickfixes/QF-###-slug.md" />
+    <artifact path="devspec/quickfixes/QF-&lt;number&gt;-&lt;slug&gt;.md" />
   </outputs>
   <transitions>
     <transition outcome="complete" stage="complete" run="complete" next="none" />

@@ -26,7 +26,7 @@ Invocation: `/devspec.clarify [work-item-id]`
     <artifact path="devspec/foundation/decisions.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/clarify.md" />
-    <artifact path="devspec/quickfixes/QF-###-slug.md" />
+    <artifact path="devspec/quickfixes/QF-&lt;number&gt;-&lt;slug&gt;.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
   </outputs>
   <transitions>

@@ -1,5 +1,5 @@
 ---
-id: QF-###-slug
+id: QF-<number>-<slug>
 type: bug
 stage: triage
 run: active
