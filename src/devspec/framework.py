@@ -72,7 +72,7 @@ def doctor(root: Path, profile: str) -> list[str]:
         if (root / forbidden).exists():
             issues.append(f"tracked current-work-item artifact is not allowed: {forbidden}")
     valid_stages = {"foundation", "intake", "grooming", "finalization", "tasks", "implementation", "review", "complete", "triage", "validation", "routed", "caller", "origin"}
-    valid_runs = {"active", "paused", "blocked", "stopped", "complete"}
+    valid_runs = {"active", "blocked", "complete"}
     valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
     lifecycle_templates = {
         "devspec/work-items/_template/meta.md": ("scope_revision:", "finalized_revision:", "planned_revision:", "implemented_revision:", "reviewed_revision:"),
@@ -104,7 +104,7 @@ def doctor(root: Path, profile: str) -> list[str]:
                 issues.append(f"invalid XML: {path}: {exc}")
             else:
                 required = {
-                    "ask": ("trigger", "checkpoint", "interaction", "resolution"),
+                    "ask": ("when", "discovery", "sequence", "completion", "checkpoint", "interaction", "resolution"),
                     "run": ("preflight", "checkpoint", "context", "resume", "blocked", "closure"),
                     "work": ("scope", "evidence", "change", "artifacts"),
                     "repo-access": ("when", "collect", "question", "recommend", "record", "respect"),

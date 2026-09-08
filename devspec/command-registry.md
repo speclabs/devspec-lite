@@ -18,7 +18,7 @@ Purpose and next route are the contract's own `<purpose>` and `<transition next>
 | `devspec.tasks` | Create ordered, independently verifiable implementation tasks. | `devspec.implement`, `devspec.clarify` |
 | `devspec.implement` | Implement pending ready tasks with focused checkpoints and validation. | `devspec.review`, `devspec.clarify` |
 | `devspec.review` | Review changed work against readiness, tasks, and validation evidence. | `none`, `devspec.implement`, `devspec.clarify` |
-| `devspec.diagram` | Create one evidence-backed diagram with duplicate checks and durable queue state. | `return-to-caller`, `devspec.clarify` |
+| `devspec.diagram` | Create one evidence-backed diagram with duplicate checks and durable queue state. | `return-to-caller`, `devspec.clarify`, `none` |
 | `devspec.quickfix` | Implement and validate one localized, low-risk enhancement or bug fix. | `none`, `devspec.clarify`, `devspec.story` |
 
 Work-item IDs are optional for `grooming`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`. Without an ID, resolve the private per-worktree current context and run only the work item's recorded `next` action. Use an explicit ID to switch stories; when several eligible work items exist, ask the developer to choose.

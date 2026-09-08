@@ -18,6 +18,7 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
   <input>An optional work-item ID and one related missing requirement.</input>
   <rules>
     <rule>Append the next CR-### entry and CR-scoped criteria; never rewrite baseline evidence.</rule>
+    <rule>Mark the earlier finalization, task, implementation, and review sections superseded when the revision increments, preserving their recorded evidence unchanged.</rule>
     <rule>Ask one material classification question when it is unclear whether the request is related or a new linked work item.</rule>
   </rules>
   <entry>Related requirement for a finalized-or-later work item with an active current scope revision; reject independent, blocked, or pre-finalization requests.</entry>
@@ -25,6 +26,10 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
     <artifact path="devspec/work-items/&lt;id&gt;/story.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/meta.md" />
     <artifact path="devspec/work-items/&lt;id&gt;/decisions.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/finalize.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/tasks.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/implement.md" />
+    <artifact path="devspec/work-items/&lt;id&gt;/review.md" />
   </outputs>
   <transitions>
     <transition outcome="related-change-accepted" stage="finalization" run="active" next="devspec.finalize" />

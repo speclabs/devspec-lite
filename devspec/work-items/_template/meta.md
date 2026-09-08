@@ -8,9 +8,8 @@ finalized_revision: none
 planned_revision: none
 implemented_revision: none
 reviewed_revision: none
-scope: []
 last: none
 resume: none
-next: complete intake
+next: devspec.story
 updated: <yyyy-mm-dd>
 ---

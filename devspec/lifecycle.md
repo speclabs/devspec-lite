@@ -4,7 +4,6 @@ Canonical contracts in `devspec/contracts/` own command behavior. This document 
 
 ## State records
 
-- `devspec/protocols/run.xml` owns each state-record location and the fields it holds; do not restate them here.
 - A diagram records queue status and returns to its invoking workflow without changing that workflow's state.
 - The selected current work item is private convenience state, never workflow evidence and never committed. `devspec/protocols/current-work-item.xml` owns where it is stored and how it is selected, validated, and cleared.
 
@@ -28,4 +27,4 @@ A work-item stage that records a material blocker routes to `devspec.clarify` an
 - New repository: `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules → devspec.story`. A targeted foundation update returns to its caller after completing its declared artifact.
 - Work item: `devspec.story → devspec.grooming|devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. From `tasks`, `devspec.finalize` may re-run once to correct its own brief at the same scope revision while no task is in-progress or complete; it resets `planned_revision` so `devspec.tasks` re-plans. A new or widened requirement is not a correction and goes to `devspec.changerequest`. Review results are `accepted → complete`, `rework-required → devspec.implement`, or `blocked → devspec.clarify`.
 - Work-item IDs are optional selectors for switching or resolving ambiguity. Without one, the current-work-item protocol resolves which work item a command acts on.
-- `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` ends complete, blocks to `devspec.clarify`, or routes to `devspec.story`. `devspec.diagram` returns to its caller, or blocks to `devspec.clarify`.
+- `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` ends complete, blocks to `devspec.clarify`, or routes to `devspec.story`. `devspec.diagram` returns to its caller, ends terminal when it was requested directly, or blocks to `devspec.clarify`.

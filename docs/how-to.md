@@ -20,7 +20,7 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 |---|---|---|
 | `devspec/foundation/repository-state.md` says `existing` | `devspec.extract` | Start a work item after the baseline is ready. |
 | `devspec/foundation/repository-state.md` says `new` | `devspec.projectcontext` | Continue the new-foundation route. |
-| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom when needed, then finalize, plan, implement, and review. |
+| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom by default, then finalize, plan, implement, and review. |
 | One local, low-risk correction | `devspec.quickfix` | Complete directly, clarify a blocker, or route to a story. |
 | A recorded material decision blocks current work | `devspec.clarify` | Resume the exact saved command. |
 | A related requirement arrives after finalization | `devspec.changerequest` | Re-finalize the new scope revision. |
@@ -88,7 +88,7 @@ uvx devspec doctor --target . --profile all
 **Scenario.** Product asks for a customer-export API with authorization, audit evidence, and automated validation.
 
 1. Start one work item: `/devspec.story Add customer export API with authorization`.
-2. Run `/devspec.grooming` when the code area, compatibility, risk, or acceptance criteria needs scoped analysis. Otherwise move directly to `/devspec.finalize`.
+2. Run `/devspec.grooming`. It is the default step after intake: intake records only what the source supplied and lists the rest as open requirement gaps. Skip it and run `/devspec.finalize` directly only when the intake source itself carried explicit acceptance criteria and `story.md` lists no open gap.
 3. After finalization reports `ready`, run the delivery route:
 
 ```text
@@ -100,7 +100,7 @@ uvx devspec doctor --target . --profile all
 4. Follow the review outcome exactly:
 
    - `accepted`: the work item is complete; no next command is required.
-   - `rework-required`: run `/devspec.implement` for the affected tasks.
+   - `rework-required`: run `/devspec.implement`. Review has already set the tasks its findings name back to `rework`; the rest stay complete.
    - `blocked`: run `/devspec.clarify`, then resume the saved command.
 
 **What to expect.** Finalization, tasks, implementation, and review are stamped with the same scope revision. Review checks the recorded changed-work baseline and the validation evidence, not just the code diff.
