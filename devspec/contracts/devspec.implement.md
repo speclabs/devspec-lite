@@ -22,6 +22,7 @@ Invocation: `/devspec.implement [work-item-id]`
     <rule>Read only the tasks being implemented, the finalization traces they cite, and the code area and direct dependencies each task names. Do not scan unrelated work items, unrelated code areas, or historical decision records.</rule>
     <rule>Confirm every task is in finalized scope, unblocked, and ordered before editing code.</rule>
     <rule>Checkpoint before edits and focused validation; stop for a material ambiguity instead of expanding scope.</rule>
+    <rule>Scope this command's material-question queue to one recorded material blocker; it does not run an interactive question sweep. Implementation choices inside an approved task are made under the work protocol, not asked. A material ambiguity becomes one recorded blocker routed to devspec.clarify; never ask a requirement question mid-edit.</rule>
     <rule>Before editing, apply the relevant finalization foundation trace: coding standards and their follow examples, owned code areas and boundaries, canonical rules, and applicable OWASP controls.</rule>
     <rule>Record changed areas, applied decision or canonical rule IDs, and validation evidence after each meaningful task.</rule>
     <rule>Express a business or validation decision through named code and tests. Add a developer comment only when its rationale is not evident from the code or test; reference the canonical rule ID, never an old work-item decision as the sole authority.</rule>

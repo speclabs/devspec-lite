@@ -1,7 +1,7 @@
 # Finalization
 
 - Scope revision: <n>
-- Status: ready | blocked | superseded
+- Status: ready | blocked | revised | superseded
 
 ## Readiness
 
@@ -22,6 +22,29 @@
 
 ## Implementation Brief
 
+### Approach
+
+### Affected Components
+
+| Component, module, or boundary | Change | Owned area or boundary evidence |
+|---|---|---|
+
+### Interfaces and Data
+
+| Interface, contract, schema, or migration | Change | Compatibility impact |
+|---|---|---|
+
+### Error and Edge Handling
+
+### Rollout and Compatibility
+
 ## Validation Plan
+
+## Assumptions and Open Items
+
+Gaps judged immaterial are recorded here rather than discarded, so a developer reviewing the brief can see what was assumed and challenge it.
+
+| ID | Assumption or open item | Basis | Impact if wrong | Status |
+|---|---|---|---|---|
 
 ## Blockers

@@ -10,6 +10,7 @@ Invocation: `/devspec.diagram runtime architecture format=svg motion=none|explai
     <protocol ref="ask" />
     <protocol ref="run" />
     <protocol ref="state" />
+    <protocol ref="revision" />
     <protocol ref="work" />
     <protocol ref="repo-access" />
   </protocols>
@@ -20,7 +21,9 @@ Invocation: `/devspec.diagram runtime architecture format=svg motion=none|explai
     <rule>Select the diagram type from devspec/architecture/_template/diagram-types.md.</rule>
     <rule>Start each SVG from the matching family-specific template: `architecture-diagram.svg` for system architecture; `application-landscape-diagram.svg` for application landscapes; `infrastructure-topology-diagram.svg` for infrastructure topology; `process-flow-diagram.svg` for process flows; `sequence-diagram.svg` for interactions; `state-lifecycle-diagram.svg` for state behavior; `domain-model-diagram.svg` for domain models; `journey-map-diagram.svg` for journeys; `timeline-plan-diagram.svg` for timelines; `quadrant-analysis-diagram.svg` for quadrants; and `mindmap-diagram.svg` for mind maps.</rule>
     <rule>Create only evidence-backed, non-duplicate diagrams and persist queue or overview state for recovery.</rule>
-    <rule>Record an evidence blocker in the caller's decision record, never in the queue, and leave the caller's saved stage and next action unchanged.</rule>
+    <rule>Scope this command's material-question queue to one recorded evidence blocker; it does not run an interactive question sweep. Diagram type, family template, and layout are selected from the evidence and the type catalogue, not asked.</rule>
+    <rule>Record an evidence blocker in the caller's decision record, never in the queue, and leave the caller's saved stage unchanged. Blocking sets the caller's run state to blocked and its next action to devspec.clarify, which resumes this diagram request through the caller's saved resume reference; the caller's stage and its own pending next action survive unchanged behind that pointer.</rule>
+    <rule>When the blocker is recorded in a work-item decision record, stamp it with that work item's current scope revision so a later change request supersedes it with the rest of that revision's evidence.</rule>
     <rule>Accept a stable queued `DIA-###` ID or diagram subject, record subject, type, evidence, output format, duplicate-check result, status, and next action in the queue, and index completed output in the overview. On an explicit process-flow batch request, generate every queued non-duplicate process-flow candidate, validate each output, update each queue row independently, and leave the caller lifecycle state unchanged.</rule>
     <rule>Default to SVG with title and description and validate its XML. Write Mermaid or HTML only when explicitly requested, and when you do, record it from `devspec/architecture/_template/diagram.md` or `diagram.html` so its evidence, assumptions, and maintenance notes stay with the output.</rule>
     <rule>Default to `motion=none`. Treat an explicit request for an animated diagram without a motion value as `motion=explain`; reject unsupported motion values.</rule>

@@ -25,7 +25,8 @@ Invocation: `/devspec.review [work-item-id]`
     <rule>Check changed source against the shared work protocol for duplicated capabilities, unjustified dependencies, speculative abstractions, and unused configuration. Evaluate the choices against approved requirements, project conventions, and any recorded justification.</rule>
     <rule>Record actionable complexity findings in the existing Findings table with the location, supporting evidence, and a suitable simpler alternative or removal that preserves required behavior and safeguards.</rule>
     <rule>Require rework for demonstrated violations of approved scope or the shared implementation rule. Do not block acceptance solely because a different stylistic implementation is shorter.</rule>
-    <rule>Record each decision or rule verification as implemented-as-decided, intentionally-superseded with a recorded replacement, or not-verified. Treat an unrecorded contradiction as rework-required.</rule>
+    <rule>Record each decision or rule verification as implemented-as-decided, intentionally-superseded with a recorded replacement, or not-verified. Treat an unrecorded contradiction as rework-required. A not-verified entry blocks acceptance: record it as a finding with what evidence is missing, and return rework-required, or blocked when the missing evidence needs a developer decision.</rule>
+    <rule>Scope this command's material-question queue to one recorded material blocker; it does not run an interactive question sweep. A judgment this command cannot make from the recorded evidence becomes a finding or one blocker, never an interactive question to the developer.</rule>
     <rule>Write findings only; do not silently edit implementation code.</rule>
     <rule>Record exactly one outcome: accepted, rework-required, or blocked; record exactly one next action.</rule>
   </rules>

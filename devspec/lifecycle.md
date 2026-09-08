@@ -15,7 +15,7 @@ Canonical contracts in `devspec/contracts/` own command behavior. This document 
 | `intake` | `devspec.story` or `devspec.clarify` |
 | `grooming` | `devspec.grooming` or `devspec.clarify` |
 | `finalization` | `devspec.finalize` or `devspec.clarify` |
-| `tasks` | `devspec.tasks` or `devspec.clarify` |
+| `tasks` | `devspec.tasks`, `devspec.clarify`, or `devspec.finalize` to correct the current-revision brief before implementation begins |
 | `implementation` | `devspec.implement` or `devspec.clarify` |
 | `review` | `devspec.review` or `devspec.clarify` |
 | `complete` | terminal (`next: none`) |
@@ -26,6 +26,6 @@ A work-item stage that records a material blocker routes to `devspec.clarify` an
 
 - Existing repository: `devspec.extract → devspec.story`.
 - New repository: `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules → devspec.story`. A targeted foundation update returns to its caller after completing its declared artifact.
-- Work item: `devspec.story → devspec.grooming|devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. Review results are `accepted → complete`, `rework-required → devspec.implement`, or `blocked → devspec.clarify`.
+- Work item: `devspec.story → devspec.grooming|devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. From `tasks`, `devspec.finalize` may re-run once to correct its own brief at the same scope revision while no task is in-progress or complete; it resets `planned_revision` so `devspec.tasks` re-plans. A new or widened requirement is not a correction and goes to `devspec.changerequest`. Review results are `accepted → complete`, `rework-required → devspec.implement`, or `blocked → devspec.clarify`.
 - Work-item IDs are optional selectors for switching or resolving ambiguity. Without one, the current-work-item protocol resolves which work item a command acts on.
 - `devspec.clarify` resolves one decision and resumes its saved originating command. `devspec.changerequest` is allowed only after finalization and always returns to `devspec.finalize` with a new revision. `devspec.quickfix` ends complete, blocks to `devspec.clarify`, or routes to `devspec.story`. `devspec.diagram` returns to its caller, or blocks to `devspec.clarify`.
