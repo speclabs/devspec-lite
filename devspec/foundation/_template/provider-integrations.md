@@ -36,11 +36,12 @@ Use this policy to resolve external work items during `/devspec.story`. Keep pro
 
 ## Work-Item Folder Naming
 
-Work-item folders use `<number>-<kebab-title>` and match `^[0-9]{8}-[a-z0-9]+(-[a-z0-9]+)*$`. The folder name is the work-item ID, so it stays generic and stable: it carries no provider, type, or other fact that is recorded elsewhere or can change.
+Work-item folders use `<number>-<kebab-title>` and match `^[0-9]{1,12}-[a-z0-9]+(-[a-z0-9]+)*$`. The folder name is the work-item ID, so it stays generic and stable: it carries no provider, type, or other fact that is recorded elsewhere or can change.
 
 | Area | Requirement |
 |---|---|
-| Number | Always `YYMMDD` plus a two-digit sequence, chosen as the next value free in `devspec/work-items/` for that date. Never derive it from a provider identifier or from digits in the request. |
+| Number | Never assigned automatically. Honour an explicitly marked number such as `id:4471`, otherwise ask, offering the date-based `YYMMDD` plus two-digit sequence as the recommended choice alongside the resolved provider identifier and the next value above the highest existing number. Never infer a number from unmarked digits in prose. |
+| Number uniqueness | A number no existing work-item folder already uses. Reject a collision and ask again. |
 | Title | Kebab-case, lowercase alphanumeric words separated by single hyphens, at or under 48 characters. |
 | Provider facts | Provider, immutable provider ID, and canonical URL belong in story.md only, never in the folder name. |
 | Work-item type | Belongs in `meta.md` `type` only. Because it is not encoded in the folder name it stays correctable in place, with no rename and no change request. |
