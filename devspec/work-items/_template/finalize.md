@@ -42,7 +42,7 @@
 
 ## Assumptions and Open Items
 
-Gaps judged immaterial are recorded here rather than discarded, so a developer reviewing the brief can see what was assumed and challenge it.
+Gaps judged immaterial are recorded here rather than discarded, so a developer reviewing the brief can see what was assumed and challenge it. Reference a gap refinement skipped by its story.md gap ID in Basis rather than restating it.
 
 | ID | Assumption or open item | Basis | Impact if wrong | Status |
 |---|---|---|---|---|

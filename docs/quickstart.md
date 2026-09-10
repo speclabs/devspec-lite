@@ -25,9 +25,9 @@ Every `devspec.*` command begins by confirming repository scope: it asks for eac
 - New repository: author the foundation intentionally with `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules`.
 - Existing repository: run `devspec.extract` once. It creates the evidence-backed technical, business, workflow, and rule baseline, then asks whether to generate all the candidate diagrams, none, or a chosen subset. Any candidate left in the queue can be generated later with `/devspec.diagram DIA-002`, or `/devspec.diagram DIA-002 motion=explain` for an evidence-backed animated sequence.
 
-Work route: `devspec.story → devspec.refine → devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. Refinement is the default step after intake; skip it only when the intake source itself carried explicit acceptance criteria and the story lists no open gap.
+Work route: `devspec.story → devspec.refine → devspec.finalize → devspec.tasks → devspec.implement → devspec.review`. Every work item goes through refinement after intake, even when the source carried acceptance criteria.
 
-When a command reports a blocker, run `devspec.clarify`: it resolves the one recorded decision and resumes the exact saved command. When a related requirement arrives after finalization, run `devspec.changerequest` to append it and re-finalize the new scope revision.
+When a command reports a blocker, run `devspec.clarify`: it resolves the one recorded decision and resumes the exact saved command. When a related requirement arrives after finalization, run `devspec.changerequest` to append it, then refine and re-finalize the new scope revision.
 
 Use `devspec.quickfix` only for one localized, low-risk change. It routes API contracts, migrations, authentication/security, and breaking changes to the full route.
 

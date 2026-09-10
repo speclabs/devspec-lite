@@ -18,6 +18,7 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
   <input>An optional work-item ID and one related missing requirement.</input>
   <rules>
     <rule>Append the next CR-### entry and CR-scoped criteria; never rewrite baseline evidence.</rule>
+    <rule>List every requirement gap the change leaves open in story.md's Open Requirement Gaps table, raised by its CR-### ID, and ask none of them; devspec.refine owns those questions.</rule>
     <rule>Mark the earlier finalization, task, implementation, and review sections superseded when the revision increments, preserving their recorded evidence unchanged.</rule>
     <rule>Ask one material classification question when it is unclear whether the request is related or a new linked work item.</rule>
   </rules>
@@ -32,7 +33,7 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
     <artifact path="devspec/work-items/&lt;id&gt;/review.md" />
   </outputs>
   <transitions>
-    <transition outcome="related-change-accepted" stage="finalization" run="active" next="devspec.finalize" />
+    <transition outcome="related-change-accepted" stage="refinement" run="active" next="devspec.refine" />
     <transition outcome="classification-blocked" stage="finalization" run="blocked" next="devspec.clarify" />
   </transitions>
   <closure>Append the CR and record the classification that justified it.</closure>

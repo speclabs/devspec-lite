@@ -41,8 +41,7 @@ Invocation: `/devspec.story Add customer export`
   </outputs>
   <transitions>
     <transition outcome="refinement-required" stage="refinement" run="active" next="devspec.refine" />
-    <transition outcome="source-carries-criteria" stage="finalization" run="active" next="devspec.finalize" />
     <transition outcome="provider-reference-blocked" stage="intake" run="blocked" next="devspec.clarify" />
   </transitions>
-  <closure>Record the selected route and normalized provider source when used. Route to refinement by default. Route straight to finalization only when the intake source itself carried explicit acceptance criteria recorded as confirmed evidence and story.md lists no open requirement gap; intake never judges code-area, compatibility, or risk clarity because it does not read them.</closure>
+  <closure>Record the normalized provider source when used. Always route to refinement: intake never judges code-area, compatibility, or risk clarity because it does not read them, so a source that carried explicit acceptance criteria still goes through devspec.refine.</closure>
 </workflow>

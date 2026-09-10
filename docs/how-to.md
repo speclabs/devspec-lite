@@ -20,10 +20,10 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 |---|---|---|
 | `devspec/foundation/repository-state.md` says `existing` | `devspec.extract` | Start a work item after the baseline is ready. |
 | `devspec/foundation/repository-state.md` says `new` | `devspec.projectcontext` | Continue the new-foundation route. |
-| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Refine by default, then finalize, plan, implement, and review. |
+| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Refine, then finalize, plan, implement, and review. |
 | One local, low-risk correction | `devspec.quickfix` | Complete directly, clarify a blocker, or route to a story. |
 | A recorded material decision blocks current work | `devspec.clarify` | Resume the exact saved command. |
-| A related requirement arrives after finalization | `devspec.changerequest` | Re-finalize the new scope revision. |
+| A related requirement arrives after finalization | `devspec.changerequest` | Refine and re-finalize the new scope revision. |
 | One evidence-backed architecture or workflow visual is needed | `devspec.diagram` | Return to the caller's workflow, or clarify an evidence blocker. |
 | A known foundation artifact needs a narrow update | Its matching foundation command | Return to the caller, or clarify an evidence blocker. |
 
@@ -88,8 +88,8 @@ uvx devspec doctor --target . --profile all
 **Scenario.** Product asks for a customer-export API with authorization, audit evidence, and automated validation.
 
 1. Start one work item: `/devspec.story Add customer export API with authorization`.
-2. Run `/devspec.refine`. It is the default step after intake: intake records only what the source supplied and lists the rest as open requirement gaps. Skip it and run `/devspec.finalize` directly only when the intake source itself carried explicit acceptance criteria and `story.md` lists no open gap.
-3. After finalization reports `ready`, run the delivery route:
+2. Run `/devspec.refine`. Every work item goes through it after intake: intake records only what the source supplied, lists the rest as open requirement gaps, and never reads the code. When the source was already complete, refinement records the affected areas and closes without questions.
+3. Run `/devspec.finalize`. It asks its own security, compliance, and delivery questions in the same run. If it finds an open or new requirement gap, it returns the work item to `/devspec.refine` without recording a blocker; run `/devspec.refine` again. After finalization reports `ready`, run the delivery route:
 
 ```text
 /devspec.tasks
@@ -140,13 +140,13 @@ uvx devspec doctor --target . --profile all
 **Scenario.** After export implementation begins, product asks for a new JSON format in the same feature.
 
 1. Run `/devspec.changerequest Add JSON export`.
-2. Follow the route back through `/devspec.finalize`, `/devspec.tasks`, implementation, and review.
+2. Follow the route back through `/devspec.refine`, `/devspec.finalize`, `/devspec.tasks`, implementation, and review.
 
 **What to expect.** This is the post-finalization route: the command increments `scope_revision`, retains previous records as superseded history, and prevents implementation against stale tasks.
 
 ### Resolve a material question without guessing
 
-**Scenario.** Finalization is blocked because the required data-retention period is unknown.
+**Scenario.** Finalization asked for the required data-retention period, and no one can confirm it yet, so the work item is blocked.
 
 1. Run `/devspec.clarify` and answer the one recorded decision.
 
