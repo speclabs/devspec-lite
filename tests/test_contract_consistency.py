@@ -24,7 +24,7 @@ CONTRACTS = REPO / "devspec/contracts"
 UNINSTALLED = ("foundation/repository-state.md", "architecture/overview.md", "architecture/artifact-queue.md")
 # The stages lifecycle.md tables. A transition into one of these moves a work item; caller,
 # origin, foundation, triage and routed do not.
-WORK_ITEM_STAGES = {"intake", "grooming", "finalization", "tasks", "implementation", "review", "complete"}
+WORK_ITEM_STAGES = {"intake", "refinement", "finalization", "tasks", "implementation", "review", "complete"}
 
 
 def contract_text(name: str) -> str:
@@ -210,18 +210,18 @@ class DocumentationTests(unittest.TestCase):
     # A command a guide never names is a command a reader never finds.
     COVERING_DOCS = ("how-to.md", "command-examples.md", "quickstart.md", "workflows.md")
 
-    def test_guides_do_not_contradict_the_grooming_route(self) -> None:
-        # Two guides kept calling grooming optional after the contracts made it the default.
-        contract = contract_text("grooming")
+    def test_guides_do_not_contradict_the_refinement_route(self) -> None:
+        # Two guides kept calling refinement optional after the contracts made it the default.
+        contract = contract_text("refine")
         self.assertIn("this is the default route out of intake", contract)
         pages = [REPO / "docs" / doc for doc in self.COVERING_DOCS]
         pages += [REPO / "README.md", REPO / "devspec/README.md"]
         for page in pages:
             text = page.read_text(encoding="utf-8").lower()
             with self.subTest(page=page.name):
-                for claim in ("grooming is optional", "groom when needed", "grooming` when needed",
-                              "grooming when needed", "optional grooming", "grooming, if needed"):
-                    self.assertNotIn(claim, text, "grooming is the default route out of intake")
+                for claim in ("refinement is optional", "refine when needed", "refine` when needed",
+                              "refinement when needed", "optional refinement", "refinement, if needed"):
+                    self.assertNotIn(claim, text, "refinement is the default route out of intake")
 
     def test_every_command_appears_in_the_command_guides(self) -> None:
         for doc in self.COVERING_DOCS:

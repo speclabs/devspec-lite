@@ -63,7 +63,7 @@ LIFECYCLE_ORDER = (
     "coding-standards",
     "rules",
     "story",
-    "grooming",
+    "refine",
     "clarify",
     "changerequest",
     "finalize",

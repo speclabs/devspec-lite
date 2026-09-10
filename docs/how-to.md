@@ -20,7 +20,7 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 |---|---|---|
 | `devspec/foundation/repository-state.md` says `existing` | `devspec.extract` | Start a work item after the baseline is ready. |
 | `devspec/foundation/repository-state.md` says `new` | `devspec.projectcontext` | Continue the new-foundation route. |
-| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom by default, then finalize, plan, implement, and review. |
+| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Refine by default, then finalize, plan, implement, and review. |
 | One local, low-risk correction | `devspec.quickfix` | Complete directly, clarify a blocker, or route to a story. |
 | A recorded material decision blocks current work | `devspec.clarify` | Resume the exact saved command. |
 | A related requirement arrives after finalization | `devspec.changerequest` | Re-finalize the new scope revision. |
@@ -88,7 +88,7 @@ uvx devspec doctor --target . --profile all
 **Scenario.** Product asks for a customer-export API with authorization, audit evidence, and automated validation.
 
 1. Start one work item: `/devspec.story Add customer export API with authorization`.
-2. Run `/devspec.grooming`. It is the default step after intake: intake records only what the source supplied and lists the rest as open requirement gaps. Skip it and run `/devspec.finalize` directly only when the intake source itself carried explicit acceptance criteria and `story.md` lists no open gap.
+2. Run `/devspec.refine`. It is the default step after intake: intake records only what the source supplied and lists the rest as open requirement gaps. Skip it and run `/devspec.finalize` directly only when the intake source itself carried explicit acceptance criteria and `story.md` lists no open gap.
 3. After finalization reports `ready`, run the delivery route:
 
 ```text

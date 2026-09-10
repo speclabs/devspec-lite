@@ -25,7 +25,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertEqual(0, main(["doctor", "--target", str(target), "--profile", "all"]))
             self.assertEqual(len(COMMANDS), len(list((target / "devspec/contracts").glob("*.md"))))
             self.assertTrue((target / ".github/agents/devspec.quickfix.agent.md").is_file())
-            self.assertTrue((target / ".claude/skills/devspec-grooming/SKILL.md").is_file())
+            self.assertTrue((target / ".claude/skills/devspec-refine/SKILL.md").is_file())
             self.assertIn("devspec.extract", (target / "devspec/foundation/repository-state.md").read_text(encoding="utf-8"))
 
     def test_init_and_doctor_every_profile(self) -> None:
@@ -414,7 +414,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("selection source", protocol.findtext("record"))
             self.assertIn("devspec.clarify", protocol.findtext("continuation"))
             self.assertFalse((target / "devspec/work-items/current.md").exists())
-            for command in ("story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"):
+            for command in ("story", "refine", "finalize", "tasks", "implement", "review", "clarify", "changerequest"):
                 with self.subTest(command=command):
                     contract = (target / f"devspec/contracts/devspec.{command}.md").read_text(encoding="utf-8")
                     workflow = ElementTree.fromstring(xml_block(contract))

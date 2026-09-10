@@ -17,11 +17,11 @@ Use the smallest route that preserves a durable, reviewable record. Git-tracked 
 
 Use `devspec.quickfix` only when the request is one localized enhancement or bug fix with one primary scope. Examples: a UI copy correction, focused test adjustment, or local configuration fix.
 
-Use the work-item route for public contracts, data migrations, authentication/security work, breaking changes, unresolved risk, or multiple concerns. Grooming is the default step after intake; skip it only when the intake source itself carried explicit acceptance criteria and the story lists no open requirement gap. `clarify` asks one interactive material blocker question, records the decision, and resumes the originating stage.
+Use the work-item route for public contracts, data migrations, authentication/security work, breaking changes, unresolved risk, or multiple concerns. Refinement is the default step after intake; skip it only when the intake source itself carried explicit acceptance criteria and the story lists no open requirement gap. `clarify` asks one interactive material blocker question, records the decision, and resumes the originating stage.
 
 Every command validates its declared entry state and records one explicit transition in the canonical artifact. Work items use a monotonic `scope_revision`; a related change request increments it, retains older finalization, task, implementation, and review evidence as superseded history, and requires a new finalization. Review accepts only a matching revision and changed-work baseline; accepted work is terminal, rework reopens only the tasks a finding names, and blocked work routes through `clarify`.
 
-After `devspec.story` selects a work item, continue with `devspec.grooming`, `devspec.finalize`, `devspec.tasks`, `devspec.implement`, `devspec.review`, `devspec.clarify`, or `devspec.changerequest` without an ID. The private per-worktree selection resolves the current story only when it matches the branch and `meta.md`; `continue` dispatches only its recorded `next` action. Provide an ID to switch stories. If several active stories are eligible, Devspec asks you to choose rather than inferring.
+After `devspec.story` selects a work item, continue with `devspec.refine`, `devspec.finalize`, `devspec.tasks`, `devspec.implement`, `devspec.review`, `devspec.clarify`, or `devspec.changerequest` without an ID. The private per-worktree selection resolves the current story only when it matches the branch and `meta.md`; `continue` dispatches only its recorded `next` action. Provide an ID to switch stories. If several active stories are eligible, Devspec asks you to choose rather than inferring.
 
 A material decision is work-item-local unless it applies beyond that story. At finalization, promote a reusable business or validation decision to `foundation/workflow-rules.md` with a stable rule ID; promote a reusable engineering constraint to `foundation/rules.md`. New stories read only relevant foundation rules and the affected code area, not every historic decision file. Code and tests are the primary enforcement; add a developer comment only for non-obvious rationale and cite the canonical rule ID.
 
@@ -52,6 +52,6 @@ Diagram output defaults to static SVG with `motion=none`. Use `/devspec.diagram 
 | New service repository | `devspec.projectcontext → devspec.techstack → devspec.codebase-structure → devspec.coding-standards → devspec.rules` |
 | Existing service with unknown conventions | `devspec.extract` — complete baseline extraction |
 | Correct a known empty-state label | `devspec.quickfix` with `UI` scope |
-| Add a customer-export API and authorization | `devspec.story → devspec.grooming → devspec.finalize → devspec.tasks → devspec.implement → devspec.review` |
+| Add a customer-export API and authorization | `devspec.story → devspec.refine → devspec.finalize → devspec.tasks → devspec.implement → devspec.review` |
 | A requirement is blocked by a data-retention decision | `devspec.clarify`, then resume the saved stage |
 | Add a related requirement after finalization | `devspec.changerequest → devspec.finalize → devspec.tasks → devspec.implement → devspec.review` |

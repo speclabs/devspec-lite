@@ -9,7 +9,7 @@ Use Git-tracked `devspec/` artifacts as canonical state. For a clear work-item c
 - `devspec.coding-standards`: read `devspec/contracts/devspec.coding-standards.md`.
 - `devspec.rules`: read `devspec/contracts/devspec.rules.md`.
 - `devspec.story`: read `devspec/contracts/devspec.story.md`.
-- `devspec.grooming`: read `devspec/contracts/devspec.grooming.md`.
+- `devspec.refine`: read `devspec/contracts/devspec.refine.md`.
 - `devspec.clarify`: read `devspec/contracts/devspec.clarify.md`.
 - `devspec.changerequest`: read `devspec/contracts/devspec.changerequest.md`.
 - `devspec.finalize`: read `devspec/contracts/devspec.finalize.md`.
