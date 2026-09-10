@@ -94,7 +94,7 @@ devspec sync --target D:\Code\orders --profile all
 devspec doctor --target D:\Code\orders --profile all
 ```
 
-`sync` adds missing files and replaces packaged files that have not been locally edited. It never overwrites a locally modified framework-owned file unless `--force` is supplied, never overwrites project-owned artifacts, and never deletes retained obsolete wrappers. Use `--force` only after reviewing `diff`.
+`sync` adds missing files and replaces packaged files that have not been locally edited. It never overwrites a locally modified framework-owned file unless `--force` is supplied, never overwrites project-owned artifacts, and never deletes retained obsolete wrappers. It also updates work-item `meta.md` stage and next values that a renamed command left behind; `doctor` reports any that remain. Use `--force` only after reviewing `diff`.
 
 ## 6. Change or add a profile
 

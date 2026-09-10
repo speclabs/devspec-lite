@@ -37,7 +37,7 @@ The intake command is read-only. It never changes state, fields, assignees, labe
 
 On success it shows the provider, identifier, title, type and status when available, canonical link, and short summary, then asks one confirmation question: Confirm and continue, Reject and retry input, Switch to manual intake, Cancel, or Custom Answer — each with an example, and exactly one recommended choice with its justification. After confirmation it asks for the work-item number, offering the date-based value, the resolved provider identifier, and the next value above the highest existing number, each shown as the full proposed folder name. Only then is the folder created.
 
-Intake asks nothing else: it records what the source supplies, lists the remaining requirement gaps in `story.md`, and leaves those questions to `/devspec.grooming`. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content.
+Intake asks nothing else: it records what the source supplies, lists the remaining requirement gaps in `story.md`, and leaves those questions to `/devspec.refine`. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content.
 
 ```text
 /devspec.story https://github.com/acme/orders/issues/42
@@ -60,7 +60,7 @@ Before enabling an organization connector, record its approved read and write bo
 | `devspec.coding-standards` | The structure is known and implementation conventions or a numbered example need recording. | `/devspec.coding-standards Add developer-defined CS-018 with EX-007: validate command inputs at the boundary; source: user directive, 2026-09-03; show `ArgumentNullException.ThrowIfNull(input)` before accessing input members.` |
 | `devspec.rules` | The new foundation needs enforceable engineering and security rules. | `/devspec.rules Require pull-request review, secret scanning, and OWASP controls with test evidence.` |
 | `devspec.story` | One feature, bug, migration, security request, or accessible provider work item needs intake. | `/devspec.story https://github.com/acme/warehouse/issues/42` or `/devspec.story Add CSV export for warehouse stock with manager authorization.` |
-| `devspec.grooming` | The default next step after intake: the draft needs its behavior, acceptance-criteria, code-area, compatibility, and risk questions asked and answered. | `/devspec.grooming Analyze export limits, authorization behavior, and CSV compatibility.` |
+| `devspec.refine` | The next step after intake or a change request: the draft needs its behavior, acceptance-criteria, code-area, compatibility, and risk questions asked and answered. | `/devspec.refine Analyze export limits, authorization behavior, and CSV compatibility.` |
 | `devspec.finalize` | The active story is complete enough for a readiness and validation plan, or its brief needs correcting before implementation begins. | `/devspec.finalize` |
 | `devspec.tasks` | Finalization is ready and implementation work needs ordered tasks. | `/devspec.tasks` |
 | `devspec.implement` | Current-revision tasks are ready to change code. | `/devspec.implement` |
@@ -70,6 +70,6 @@ Before enabling an organization connector, record its approved read and write bo
 | `devspec.diagram` | A specific architecture or workflow visual needs evidence, including one previously prepared candidate. | `/devspec.diagram DIA-002` for static SVG, or `/devspec.diagram DIA-002 motion=explain` for an evidence-backed animated sequence. |
 | `devspec.quickfix` | One localized, low-risk correction has one primary scope. | `/devspec.quickfix Fix the misspelled Orders empty-state label; scope: UI.` |
 
-For `grooming`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`, omit an ID only when the current per-worktree context selects the right active work item. Give an explicit ID to switch stories; when several eligible stories exist, select one instead of guessing.
+For `refine`, `finalize`, `tasks`, `implement`, `review`, `clarify`, and `changerequest`, omit an ID only when the current per-worktree context selects the right active work item. Give an explicit ID to switch stories; when several eligible stories exist, select one instead of guessing.
 
 Diagram motion accepts `motion=none|explain` and defaults to `none`. A plain request for an animated diagram maps to `motion=explain`. Animated output remains SVG, is recorded as `svg; motion=explain` in the queue, and must retain complete static and reduced-motion meaning. Add `format=html` separately when a presentation shell is required.

@@ -10,5 +10,5 @@
     Record a brief justification for a new dependency or material abstraction in the existing decision record. Routine implementation choices need no additional report.
     If the necessary fix exceeds approved scope, stop before out-of-scope edits and use the command's existing clarification or routing behavior.
   </change>
-  <artifacts>Update targeted sections only, link instead of duplicate, and preserve user-authored useful content.</artifacts>
+  <artifacts>Update targeted sections only, link instead of duplicate, and preserve user-authored useful content. When an existing artifact lacks a section or column its template now defines, add it before writing there and keep existing entries.</artifacts>
 </protocol>

@@ -25,7 +25,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertEqual(0, main(["doctor", "--target", str(target), "--profile", "all"]))
             self.assertEqual(len(COMMANDS), len(list((target / "devspec/contracts").glob("*.md"))))
             self.assertTrue((target / ".github/agents/devspec.quickfix.agent.md").is_file())
-            self.assertTrue((target / ".claude/skills/devspec-grooming/SKILL.md").is_file())
+            self.assertTrue((target / ".claude/skills/devspec-refine/SKILL.md").is_file())
             self.assertIn("devspec.extract", (target / "devspec/foundation/repository-state.md").read_text(encoding="utf-8"))
 
     def test_init_and_doctor_every_profile(self) -> None:
@@ -378,6 +378,22 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue(any("duplicates workflow logic" in issue for issue in issues))
 
 
+    def test_sync_renames_work_item_values_a_command_rename_left_behind(self) -> None:
+        # Work items created before devspec.grooming became devspec.refine still name the old command.
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "new"])
+            meta = target / "devspec/work-items/260101-01-export/meta.md"
+            meta.parent.mkdir(parents=True)
+            legacy = "---\nstage: grooming\nrun: active\nresume: none\nnext: devspec.grooming\n---\n"
+            meta.write_text(legacy, encoding="utf-8")
+            self.assertTrue(any("stage: grooming -> refinement" in issue for issue in doctor(target, "codex")))
+            self.assertEqual(0, main(["sync", "--target", str(target), "--profile", "codex", "--dry-run"]))
+            self.assertEqual(legacy, meta.read_text(encoding="utf-8"))
+            self.assertEqual(0, main(["sync", "--target", str(target), "--profile", "codex"]))
+            self.assertEqual(legacy.replace("stage: grooming", "stage: refinement").replace("devspec.grooming", "devspec.refine"), meta.read_text(encoding="utf-8"))
+            self.assertEqual([], doctor(target, "codex"))
+
     def test_lifecycle_contracts_are_complete_and_routable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)
@@ -414,7 +430,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("selection source", protocol.findtext("record"))
             self.assertIn("devspec.clarify", protocol.findtext("continuation"))
             self.assertFalse((target / "devspec/work-items/current.md").exists())
-            for command in ("story", "grooming", "finalize", "tasks", "implement", "review", "clarify", "changerequest"):
+            for command in ("story", "refine", "finalize", "tasks", "implement", "review", "clarify", "changerequest"):
                 with self.subTest(command=command):
                     contract = (target / f"devspec/contracts/devspec.{command}.md").read_text(encoding="utf-8")
                     workflow = ElementTree.fromstring(xml_block(contract))

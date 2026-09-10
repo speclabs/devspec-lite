@@ -24,7 +24,7 @@ CONTRACTS = REPO / "devspec/contracts"
 UNINSTALLED = ("foundation/repository-state.md", "architecture/overview.md", "architecture/artifact-queue.md")
 # The stages lifecycle.md tables. A transition into one of these moves a work item; caller,
 # origin, foundation, triage and routed do not.
-WORK_ITEM_STAGES = {"intake", "grooming", "finalization", "tasks", "implementation", "review", "complete"}
+WORK_ITEM_STAGES = {"intake", "refinement", "finalization", "tasks", "implementation", "review", "complete"}
 
 
 def contract_text(name: str) -> str:
@@ -146,6 +146,32 @@ class RouteGraphTests(unittest.TestCase):
                     if attrib["next"] == "none":
                         self.assertEqual("complete", attrib["run"])
 
+    def test_finalize_returns_open_requirement_gaps_to_refine(self) -> None:
+        # finalize once routed open gaps "through devspec.clarify to refinement", a route clarify
+        # cannot take: it only resumes the command that recorded the blocker.
+        returns = [t for t in self.transitions("finalize") if t["next"] == "devspec.refine"]
+        self.assertEqual([("refinement", "active")], [(t["stage"], t["run"]) for t in returns])
+        for command in COMMANDS:
+            with self.subTest(command.name):
+                self.assertNotIn("through devspec.clarify to", contract_text(command.name))
+
+    def test_intake_and_change_requests_reach_finalize_only_through_refine(self) -> None:
+        # Neither story nor changerequest reads the code, so neither may judge a story ready to finalize.
+        for name in ("story", "changerequest"):
+            with self.subTest(name):
+                active = {t["next"] for t in self.transitions(name) if t["run"] == "active"}
+                self.assertEqual({"devspec.refine"}, active)
+        # An unclassified request is not yet part of the work item, so it must not move the item's stage.
+        self.assertEqual({"active"}, {t["run"] for t in self.transitions("changerequest")})
+
+    def test_finalize_asks_its_own_topics_and_hands_requirement_gaps_to_refine(self) -> None:
+        # finalize owns security, compliance, and delivery questions, so it needs a full question
+        # queue; requirement gaps it exposes go into story.md for refine, so it must write there.
+        ask = next(p for p in workflow("finalize").find("protocols") if p.attrib["ref"] == "ask")
+        self.assertNotIn("queue", ask.attrib)
+        outputs = {a.attrib["path"] for a in workflow("finalize").find("outputs")}
+        self.assertIn("devspec/work-items/<id>/story.md", outputs)
+
     def test_work_item_stages_match_the_lifecycle_table(self) -> None:
         text = (REPO / "devspec/lifecycle.md").read_text(encoding="utf-8")
         documented = {row[0].strip("`"): row[1] for row in table_rows(text, "Stage")}
@@ -210,18 +236,20 @@ class DocumentationTests(unittest.TestCase):
     # A command a guide never names is a command a reader never finds.
     COVERING_DOCS = ("how-to.md", "command-examples.md", "quickstart.md", "workflows.md")
 
-    def test_guides_do_not_contradict_the_grooming_route(self) -> None:
-        # Two guides kept calling grooming optional after the contracts made it the default.
-        contract = contract_text("grooming")
-        self.assertIn("this is the default route out of intake", contract)
+    def test_guides_do_not_contradict_the_refinement_route(self) -> None:
+        # Guides kept offering a skip straight to finalize after the contracts made refinement the
+        # only route out of intake.
+        contract = contract_text("refine")
+        self.assertIn("this is the only route out of intake", contract)
         pages = [REPO / "docs" / doc for doc in self.COVERING_DOCS]
-        pages += [REPO / "README.md", REPO / "devspec/README.md"]
+        pages += [REPO / "README.md", REPO / "devspec/README.md", REPO / "docs/assets/delivery-routes.svg"]
         for page in pages:
             text = page.read_text(encoding="utf-8").lower()
             with self.subTest(page=page.name):
-                for claim in ("grooming is optional", "groom when needed", "grooming` when needed",
-                              "grooming when needed", "optional grooming", "grooming, if needed"):
-                    self.assertNotIn(claim, text, "grooming is the default route out of intake")
+                for claim in ("refinement is optional", "refine when needed", "refine` when needed",
+                              "refinement when needed", "optional refinement", "refinement, if needed",
+                              "skip it only when", "skip it and run", "default step after intake"):
+                    self.assertNotIn(claim, text, "refinement is the only route out of intake")
 
     def test_every_command_appears_in_the_command_guides(self) -> None:
         for doc in self.COVERING_DOCS:
@@ -256,6 +284,7 @@ class ArtifactShapeTests(unittest.TestCase):
         "devspec/foundation/_template/project-context.md": ("Evidence label",),
         "devspec/foundation/_template/codebase-structure.md": ("Integration points", "Validation location"),
         "devspec/architecture/_template/artifact-queue.md": ("Duplicate check",),
+        "devspec/work-items/_template/story.md": ("Raised by", "Affected Areas"),
         "devspec/work-items/_template/finalize.md": ("CP-###", "Scope revision:"),
         "devspec/work-items/_template/tasks.md": ("Done condition", "Scope revision:"),
         "devspec/work-items/_template/implement.md": ("Changed-work baseline:",),

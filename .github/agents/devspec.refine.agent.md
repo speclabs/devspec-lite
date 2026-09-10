@@ -1,6 +1,6 @@
 ---
-name: devspec.grooming
+name: devspec.refine
 description: Make one draft story buildable through scoped review and material questions.
 user-invocable: true
 ---
-Execute `devspec/contracts/devspec.grooming.md`.
+Execute `devspec/contracts/devspec.refine.md`.

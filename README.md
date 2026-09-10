@@ -33,7 +33,7 @@ Before a framework upgrade, inspect drift with `devspec diff --target .` and pre
 
 ![Delivery route for quickfix and work items](docs/assets/delivery-routes.svg)
 
-Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, grooming, clarification, and change-request examples.
+Use the [developer workflow guide](docs/workflows.md) for concrete quickfix, refinement, clarification, and change-request examples.
 
 ## How to
 
