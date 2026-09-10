@@ -10,6 +10,8 @@
 | Canonical URL | |
 | Retrieved at (UTC) | |
 | MCP resolution method | |
+| Retrieval consent | granted, declined, not applicable |
+| Type basis | mapped, inferred |
 | Fields used | |
 | Resolved summary shown | |
 | Confirmation basis | `devspec/foundation/provider-integrations.md` |
@@ -26,6 +28,13 @@ Record a concise, redacted summary of the provider title, description, acceptanc
 
 | ID | Observable outcome | Scope |
 |---|---|---|
+
+## Open Requirement Gaps
+
+Intake records what the source supplies and lists every remaining requirement gap here. devspec.grooming queues each one as a material question and clears it.
+
+| ID | Gap | Dimension | Status |
+|---|---|---|---|
 
 ## Risks and Blockers
 

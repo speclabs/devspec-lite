@@ -13,5 +13,5 @@ updated: 2026-08-28
 # Quickfix
 
 - Request: Include a version check example in setup guidance.
-- Validation: `devspec-lite --version` exits successfully and prints the package version.
+- Validation: `devspec --version` exits successfully and prints the package version.
 - Outcome: Complete.

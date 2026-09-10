@@ -1,9 +1,8 @@
 ---
-id: QF-###-slug
+id: QF-<number>-<slug>
 type: bug
 stage: triage
 run: active
-scope: []
 last: none
 resume: none
 next: select scope
@@ -19,6 +18,7 @@ updated: <yyyy-mm-dd>
 - Outcome:
 
 - Route: complete | blocked (`devspec.clarify`) | routed (`devspec.story`)
+- Routed to work item: <id or none>
 
 ## Decisions
 

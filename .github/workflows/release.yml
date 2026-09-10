@@ -38,8 +38,8 @@ jobs:
           python -m venv .smoke
           . .smoke/bin/activate
           python -m pip install dist/*.whl
-          devspec-lite --version
-          devspec-lite init --target "$(mktemp -d)" --profile all --repo-state existing
+          devspec --version
+          devspec init --target "$(mktemp -d)" --profile all --repo-state existing
       - name: Smoke test wheel on Windows
         if: runner.os == 'Windows'
         shell: pwsh
@@ -47,7 +47,7 @@ jobs:
           python -m venv .smoke
           $wheel = Get-ChildItem dist -Filter '*.whl' | Select-Object -First 1
           & .\.smoke\Scripts\python.exe -m pip install $wheel.FullName
-          $target = Join-Path $env:RUNNER_TEMP 'devspec-lite-wheel-smoke'
+          $target = Join-Path $env:RUNNER_TEMP 'devspec-wheel-smoke'
           New-Item -ItemType Directory -Force -Path $target | Out-Null
-          .\.smoke\Scripts\devspec-lite.exe --version
-          .\.smoke\Scripts\devspec-lite.exe init --target $target --profile all --repo-state existing
+          .\.smoke\Scripts\devspec.exe --version
+          .\.smoke\Scripts\devspec.exe init --target $target --profile all --repo-state existing

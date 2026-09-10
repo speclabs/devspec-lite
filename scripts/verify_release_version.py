@@ -9,7 +9,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-VERSION_FILE = ROOT / "src" / "devspec_lite" / "__init__.py"
+VERSION_FILE = ROOT / "src" / "devspec" / "__init__.py"
 VERSION_PATTERN = re.compile(r'^__version__\s*=\s*["\'](?P<version>[^"\']+)["\']\s*$', re.MULTILINE)
 SEMVER_PATTERN = re.compile(r"^\d+\.\d+\.\d+(?:[.-][0-9A-Za-z.-]+)?$")
 

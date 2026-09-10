@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
-PackageIdentifier: SpecLabs.DevspecLite
+PackageIdentifier: SpecLabs.Devspec
 PackageVersion: REPLACE_WITH_VERSION
 InstallerType: portable
 Commands:
-  - devspec-lite
+  - devspec
 Installers:
   - Architecture: x64
     InstallerUrl: REPLACE_WITH_RELEASE_URL

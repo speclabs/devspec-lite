@@ -33,7 +33,11 @@ Name a primary repository that owns the change record, then list every dependent
 
 Use the same `/devspec.story` command for GitHub Issues, Azure DevOps work items, Jira issues, GitLab issues, or another provider. A provider connector is optional: manual text intake continues to work without one. When a connector is available and authenticated, Devspec resolves exactly one named URL or identifier with an approved read method, normalizes its reference, and stores a concise redacted snapshot in `story.md`.
 
-The intake command is read-only. It never changes state, fields, assignees, labels, comments, links, or provider records. On success, it shows the provider, identifier, title, type and status when available, canonical link, and short summary, then asks one confirmation question before creating the work-item folder. The choices are Confirm and continue, Reject and retry input, Switch to manual intake, Cancel, and Custom Answer; each includes an example, and exactly one recommended choice with its justification. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content. Provider writes require a separate explicit request and an approved integration workflow.
+The intake command is read-only. It never changes state, fields, assignees, labels, comments, links, or provider records, and a provider write requires a separate explicit request and an approved integration workflow.
+
+On success it shows the provider, identifier, title, type and status when available, canonical link, and short summary, then asks one confirmation question: Confirm and continue, Reject and retry input, Switch to manual intake, Cancel, or Custom Answer — each with an example, and exactly one recommended choice with its justification. After confirmation it asks for the work-item number, offering the date-based value, the resolved provider identifier, and the next value above the highest existing number, each shown as the full proposed folder name. Only then is the folder created.
+
+Intake asks nothing else: it records what the source supplies, lists the remaining requirement gaps in `story.md`, and leaves those questions to `/devspec.grooming`. If the reference is ambiguous or unavailable, it asks one clarification or offers explicit manual intake instead of searching broadly or inventing content.
 
 ```text
 /devspec.story https://github.com/acme/orders/issues/42
@@ -44,6 +48,7 @@ The intake command is read-only. It never changes state, fields, assignees, labe
 ```
 
 Before enabling an organization connector, record its approved read and write boundaries in `foundation/provider-integrations.md`; never put credentials or tokens in Devspec artifacts.
+
 ## Command examples
 
 | Command | Use it when | Beginner example |
@@ -55,8 +60,8 @@ Before enabling an organization connector, record its approved read and write bo
 | `devspec.coding-standards` | The structure is known and implementation conventions or a numbered example need recording. | `/devspec.coding-standards Add developer-defined CS-018 with EX-007: validate command inputs at the boundary; source: user directive, 2026-09-03; show `ArgumentNullException.ThrowIfNull(input)` before accessing input members.` |
 | `devspec.rules` | The new foundation needs enforceable engineering and security rules. | `/devspec.rules Require pull-request review, secret scanning, and OWASP controls with test evidence.` |
 | `devspec.story` | One feature, bug, migration, security request, or accessible provider work item needs intake. | `/devspec.story https://github.com/acme/warehouse/issues/42` or `/devspec.story Add CSV export for warehouse stock with manager authorization.` |
-| `devspec.grooming` | The active draft needs code-area, compatibility, or risk analysis. | `/devspec.grooming Analyze export limits, authorization behavior, and CSV compatibility.` |
-| `devspec.finalize` | The active story is complete enough for a readiness and validation plan. | `/devspec.finalize` |
+| `devspec.grooming` | The default next step after intake: the draft needs its behavior, acceptance-criteria, code-area, compatibility, and risk questions asked and answered. | `/devspec.grooming Analyze export limits, authorization behavior, and CSV compatibility.` |
+| `devspec.finalize` | The active story is complete enough for a readiness and validation plan, or its brief needs correcting before implementation begins. | `/devspec.finalize` |
 | `devspec.tasks` | Finalization is ready and implementation work needs ordered tasks. | `/devspec.tasks` |
 | `devspec.implement` | Current-revision tasks are ready to change code. | `/devspec.implement` |
 | `devspec.review` | Implementation and its recorded validation are complete. | `/devspec.review` |

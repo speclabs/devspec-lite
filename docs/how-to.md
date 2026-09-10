@@ -20,7 +20,7 @@ For provider-backed story intake, pass one GitHub, Azure DevOps, Jira, GitLab, o
 |---|---|---|
 | `devspec/foundation/repository-state.md` says `existing` | `devspec.extract` | Start a work item after the baseline is ready. |
 | `devspec/foundation/repository-state.md` says `new` | `devspec.projectcontext` | Continue the new-foundation route. |
-| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom when needed, then finalize, plan, implement, and review. |
+| New feature, API contract, migration, security change, or multiple concerns | `devspec.story` | Groom by default, then finalize, plan, implement, and review. |
 | One local, low-risk correction | `devspec.quickfix` | Complete directly, clarify a blocker, or route to a story. |
 | A recorded material decision blocks current work | `devspec.clarify` | Resume the exact saved command. |
 | A related requirement arrives after finalization | `devspec.changerequest` | Re-finalize the new scope revision. |
@@ -38,11 +38,11 @@ Say `continue` or run the next work-item command without an ID. Devspec resolves
 1. Initialize the repository as `existing` if it is not initialized yet.
 
 ```powershell
-uvx devspec-lite init --target . --profile all --repo-state existing
-uvx devspec-lite doctor --target . --profile all
+uvx devspec init --target . --profile all --repo-state existing
+uvx devspec doctor --target . --profile all
 ```
 
-2. Confirm source scope in order: first enter the repository path or name in the free-form prompt, then choose a named access requirement after the path is confirmed. Show all six named access choices. Exactly one is recommended, with a justification, and it is the least privilege that satisfies the command: for ordinary delivery work that is `edit-and-test`, but a repository you only read as evidence should be recommended `reference-only`. If a team needs a narrow exception—such as “edit but run only lint”—use **Custom Answer**. The current workspace is only a proposed target; current canonical evidence may replace these questions only when it records the same path, role, and permissions.
+2. Confirm source scope: enter the repository path, then choose one of the six named access requirements. For ordinary delivery work that is `edit-and-test`; a repository you only read as evidence is `reference-only`. The [beginner command examples](command-examples.md#confirm-repository-scope-before-every-command) walk through both questions.
 3. In your agent host, run a scoped request such as `/devspec.extract Source scope confirmed: orders API at D:\Code\orders-api (primary, `edit-and-test`).`
 4. It inspects only the confirmed source, tests, configuration, and documentation, then creates the evidence-backed foundation and prepares a list of applicable diagrams.
 5. At extraction closure, it shows the list and asks: **“Do you want me to generate all the possible diagrams?”** Choose **Yes** to generate every listed diagram, **No** to leave the list prepared, or enter selected IDs or subjects. For example, enter `DIA-001, DIA-004` to generate only those two.
@@ -88,7 +88,7 @@ uvx devspec-lite doctor --target . --profile all
 **Scenario.** Product asks for a customer-export API with authorization, audit evidence, and automated validation.
 
 1. Start one work item: `/devspec.story Add customer export API with authorization`.
-2. Run `/devspec.grooming` when the code area, compatibility, risk, or acceptance criteria needs scoped analysis. Otherwise move directly to `/devspec.finalize`.
+2. Run `/devspec.grooming`. It is the default step after intake: intake records only what the source supplied and lists the rest as open requirement gaps. Skip it and run `/devspec.finalize` directly only when the intake source itself carried explicit acceptance criteria and `story.md` lists no open gap.
 3. After finalization reports `ready`, run the delivery route:
 
 ```text
@@ -100,7 +100,7 @@ uvx devspec-lite doctor --target . --profile all
 4. Follow the review outcome exactly:
 
    - `accepted`: the work item is complete; no next command is required.
-   - `rework-required`: run `/devspec.implement` for the affected tasks.
+   - `rework-required`: run `/devspec.implement`. Review has already set the tasks its findings name back to `rework`; the rest stay complete.
    - `blocked`: run `/devspec.clarify`, then resume the saved command.
 
 **What to expect.** Finalization, tasks, implementation, and review are stamped with the same scope revision. Review checks the recorded changed-work baseline and the validation evidence, not just the code diff.

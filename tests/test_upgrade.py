@@ -6,8 +6,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from devspec_lite.cli import main
-from devspec_lite.framework import MANIFEST_PATH, diff_framework, read_install_manifest
+from devspec.cli import main
+from devspec.framework import MANIFEST_PATH, diff_framework, read_install_manifest
 
 
 class UpgradeLifecycleTests(unittest.TestCase):

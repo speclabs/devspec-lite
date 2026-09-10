@@ -6,9 +6,9 @@ import unittest
 from pathlib import Path
 from xml.etree import ElementTree
 
-from devspec_lite.cli import main
-from devspec_lite.definitions import COMMANDS
-from devspec_lite.framework import PROFILES, doctor, install_framework, xml_block
+from devspec.cli import main
+from devspec.definitions import COMMANDS
+from devspec.framework import PROFILES, doctor, install_framework, xml_block
 
 
 class FrameworkTests(unittest.TestCase):
@@ -56,10 +56,10 @@ class FrameworkTests(unittest.TestCase):
             self.assertEqual("true", interaction.find("recommendation").attrib["required"])
             self.assertEqual("true", interaction.find("recommendation").attrib["justification-required"])
             self.assertEqual("true", interaction.find("custom-answer").attrib["required"])
-            self.assertIn("every unresolved material question", root.findtext("trigger"))
+            self.assertIn("every applicable unresolved material question", root.findtext("discovery"))
             self.assertIn("exactly one unanswered material question", root.findtext("sequence"))
             self.assertIn("every material question is answered or skipped", root.findtext("completion"))
-            self.assertIn("skip an invalid or inapplicable material question", root.findtext("completion"))
+            self.assertIn("Skip an invalid or inapplicable material question", root.findtext("completion"))
             self.assertEqual("devspec/foundation/decisions.md", root.findtext("decision-records/foundation"))
             work = ElementTree.fromstring((target / "devspec/protocols/work.xml").read_text(encoding="utf-8"))
             self.assertIn("including meta.md and decisions.md", work.findtext("initialize"))
@@ -215,7 +215,7 @@ class FrameworkTests(unittest.TestCase):
             self.assertIn("targeted diagram", diagram.findtext("scope"))
             quickfix = (target / "devspec/contracts/devspec.quickfix.md").read_text(encoding="utf-8")
             self.assertIn("user-defined bounded scope", quickfix)
-            self.assertNotIn("Custom Answer", quickfix)
+            self.assertIn("Never assign the number automatically", quickfix)
             change_request = (target / "devspec/contracts/devspec.changerequest.md").read_text(encoding="utf-8")
             self.assertIn("material classification question", change_request)
             review = (target / "devspec/contracts/devspec.review.md").read_text(encoding="utf-8")

@@ -16,12 +16,15 @@ from xml.etree import ElementTree
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "src"))
 
-from devspec_lite.definitions import COMMANDS, LIFECYCLE_ORDER, PROTOCOLS, lifecycle_commands  # noqa: E402
-from devspec_lite.framework import FRAMEWORK_OWNED, doctor, managed_payload  # noqa: E402
+from devspec.definitions import COMMANDS, LIFECYCLE_ORDER, PROTOCOLS, lifecycle_commands  # noqa: E402
+from devspec.framework import FRAMEWORK_OWNED, doctor, managed_payload  # noqa: E402
 
 CONTRACTS = REPO / "devspec/contracts"
 # Live project state and this project's own work products are deliberately not installed.
 UNINSTALLED = ("foundation/repository-state.md", "architecture/overview.md", "architecture/artifact-queue.md")
+# The stages lifecycle.md tables. A transition into one of these moves a work item; caller,
+# origin, foundation, triage and routed do not.
+WORK_ITEM_STAGES = {"intake", "grooming", "finalization", "tasks", "implementation", "review", "complete"}
 
 
 def contract_text(name: str) -> str:
@@ -70,7 +73,7 @@ class RepositoryIsCurrentTests(unittest.TestCase):
         self.assertEqual([], doctor(REPO, "all"))
 
     def test_install_manifest_covers_every_canonical_file(self) -> None:
-        from devspec_lite.definitions import canonical_root, install_files
+        from devspec.definitions import canonical_root, install_files
 
         root = canonical_root()
         installed = {p.relative_to(root).as_posix() for p in install_files()}
@@ -146,8 +149,7 @@ class RouteGraphTests(unittest.TestCase):
     def test_work_item_stages_match_the_lifecycle_table(self) -> None:
         text = (REPO / "devspec/lifecycle.md").read_text(encoding="utf-8")
         documented = {row[0].strip("`"): row[1] for row in table_rows(text, "Stage")}
-        stages = {"intake", "grooming", "finalization", "tasks", "implementation", "review", "complete"}
-        self.assertEqual(stages, set(documented))
+        self.assertEqual(WORK_ITEM_STAGES, set(documented))
         for command in COMMANDS:
             for attrib in self.transitions(command.name):
                 stage, nxt = attrib["stage"], attrib["next"]
@@ -165,14 +167,30 @@ class RouteGraphTests(unittest.TestCase):
             with self.subTest(command.name):
                 if "blocked" in runs:
                     self.assertTrue(
-                        any("decisions.md" in p for p in outputs) or any("QF-###" in p for p in outputs),
+                        any("decisions.md" in p for p in outputs) or any("QF-" in p for p in outputs),
                         f"{command.name} can block but declares no decision record",
                     )
-                if work_item and stages - {"caller", "origin"}:
+                if work_item and stages & WORK_ITEM_STAGES:
                     self.assertTrue(
                         any(p.endswith("meta.md") for p in outputs),
                         f"{command.name} moves a work item but declares no meta.md",
                     )
+
+    def test_a_contract_declares_every_artifact_its_rules_name(self) -> None:
+        # devspec.finalize promoted decisions into two foundation artifacts it never declared.
+        # Templates and protocols are read, never written, so they are not outputs.
+        for command in COMMANDS:
+            element = workflow(command.name)
+            outputs = {a.attrib["path"] for a in element.find("outputs")}
+            body = " ".join(
+                ElementTree.tostring(element.find(tag), encoding="unicode")
+                for tag in ("rules", "closure")
+                if element.find(tag) is not None
+            )
+            named = set(re.findall(r"devspec/[A-Za-z0-9_./<>-]+\.(?:md|xml)", body))
+            named = {p for p in named if "_template" not in p and "/protocols/" not in p}
+            with self.subTest(command.name):
+                self.assertEqual(set(), named - outputs, f"{command.name} writes an artifact it does not declare")
 
     def test_registry_restates_the_contracts_exactly(self) -> None:
         text = (REPO / "devspec/command-registry.md").read_text(encoding="utf-8")
@@ -191,6 +209,19 @@ class RouteGraphTests(unittest.TestCase):
 class DocumentationTests(unittest.TestCase):
     # A command a guide never names is a command a reader never finds.
     COVERING_DOCS = ("how-to.md", "command-examples.md", "quickstart.md", "workflows.md")
+
+    def test_guides_do_not_contradict_the_grooming_route(self) -> None:
+        # Two guides kept calling grooming optional after the contracts made it the default.
+        contract = contract_text("grooming")
+        self.assertIn("this is the default route out of intake", contract)
+        pages = [REPO / "docs" / doc for doc in self.COVERING_DOCS]
+        pages += [REPO / "README.md", REPO / "devspec/README.md"]
+        for page in pages:
+            text = page.read_text(encoding="utf-8").lower()
+            with self.subTest(page=page.name):
+                for claim in ("grooming is optional", "groom when needed", "grooming` when needed",
+                              "grooming when needed", "optional grooming", "grooming, if needed"):
+                    self.assertNotIn(claim, text, "grooming is the default route out of intake")
 
     def test_every_command_appears_in_the_command_guides(self) -> None:
         for doc in self.COVERING_DOCS:
@@ -253,8 +284,10 @@ class ArtifactShapeTests(unittest.TestCase):
                         self.assertIn(name, work_item_templates)
                     elif path.startswith("devspec/foundation/"):
                         self.assertIn(f"`{name}`", template_map)
+                    elif path.startswith("devspec/quickfixes/"):
+                        self.assertTrue((REPO / "devspec/quickfixes/_template.md").is_file())
                     else:
-                        self.assertTrue((REPO / path).is_file() or "###" in name, f"no home for {path}")
+                        self.assertTrue((REPO / path).is_file(), f"no home for {path}")
 
 
 if __name__ == "__main__":

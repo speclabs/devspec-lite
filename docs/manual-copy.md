@@ -1,6 +1,8 @@
-# Manual installation
+# Manual copy from `main`
 
 Use this route when a developer does not want to install Python, UV, WinGet, Homebrew, or the Devspec Lite CLI. It copies the latest canonical files from the `main` branch.
+
+![Manual copy flow](assets/manual-copy-flow.svg)
 
 ## 1. Check out `main`
 
@@ -53,10 +55,6 @@ Use this exact Markdown structure:
 - State: <existing|new>
 - Start with: `devspec.<extract|projectcontext>`
 ```
-
-## Manual-copy lifecycle
-
-![Manual copy flow](assets/manual-copy-flow.svg)
 
 ## 4. Verify and commit
 
