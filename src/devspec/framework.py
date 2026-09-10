@@ -62,6 +62,33 @@ def expected_paths(profile: str) -> list[Path]:
     return [item.path for item in managed_payload(profile, "existing")]
 
 
+# meta.md values a command rename left in existing work items. sync rewrites them; doctor reports them.
+RENAMED_META_VALUES = {
+    "stage": {"grooming": "refinement"},
+    "next": {"devspec.grooming": "devspec.refine"},
+    "resume": {"devspec.grooming": "devspec.refine"},
+}
+
+
+def migrate_renamed_meta(root: Path, *, dry_run: bool = False) -> list[str]:
+    changes: list[str] = []
+    for meta in sorted((root / "devspec/work-items").glob("*/meta.md")):
+        if meta.parent.name == "_template":
+            continue
+        lines = meta.read_text(encoding="utf-8").splitlines(keepends=True)
+        updated = []
+        for line in lines:
+            key, _, value = line.partition(":")
+            new = RENAMED_META_VALUES.get(key.strip(), {}).get(value.strip())
+            if new:
+                changes.append(f"{meta.relative_to(root).as_posix()}: {key.strip()}: {value.strip()} -> {new}")
+                line = f"{key.strip()}: {new}" + ("\n" if line.endswith("\n") else "")
+            updated.append(line)
+        if not dry_run and updated != lines:
+            meta.write_text("".join(updated), encoding="utf-8", newline="\n")
+    return changes
+
+
 def doctor(root: Path, profile: str) -> list[str]:
     try:
         expected = expected_paths(profile)
@@ -71,12 +98,13 @@ def doctor(root: Path, profile: str) -> list[str]:
     for forbidden in ("devspec/work-items/current.md", "devspec/current-work-item.json"):
         if (root / forbidden).exists():
             issues.append(f"tracked current-work-item artifact is not allowed: {forbidden}")
+    issues.extend(f"renamed work-item value: {change}; run devspec sync" for change in migrate_renamed_meta(root, dry_run=True))
     valid_stages = {"foundation", "intake", "refinement", "finalization", "tasks", "implementation", "review", "complete", "triage", "validation", "routed", "caller", "origin"}
     valid_runs = {"active", "blocked", "complete"}
     valid_next = {f"devspec.{command.name}" for command in COMMANDS} | {"none", "return-to-caller", "resume-origin"}
     lifecycle_templates = {
         "devspec/work-items/_template/meta.md": ("scope_revision:", "finalized_revision:", "planned_revision:", "implemented_revision:", "reviewed_revision:"),
-        "devspec/work-items/_template/story.md": ("Source Record", "Immutable provider ID", "MCP resolution method", "User confirmation"), "devspec/work-items/_template/tasks.md": ("Scope revision:", "Source justification", "Done condition"), "devspec/work-items/_template/implement.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/review.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/clarify.md": ("Origin command", "Resolution", "Resume command"),
+        "devspec/work-items/_template/story.md": ("Source Record", "Immutable provider ID", "MCP resolution method", "User confirmation", "Raised by", "Affected Areas"), "devspec/work-items/_template/tasks.md": ("Scope revision:", "Source justification", "Done condition"), "devspec/work-items/_template/implement.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/review.md": ("Scope revision:", "Changed-work baseline:"), "devspec/work-items/_template/clarify.md": ("Origin command", "Resolution", "Resume command"),
     }
     current_context_commands = {"story", "refine", "finalize", "tasks", "implement", "review", "clarify", "changerequest"}
     protocol_text_requirements = {

@@ -13,7 +13,7 @@ Purpose and next route are the contract's own `<purpose>` and `<transition next>
 | `devspec.story` | Create one concise work-item intake from a request or provider reference. | `devspec.refine`, `devspec.clarify` |
 | `devspec.refine` | Make one draft story buildable through scoped review and material questions. | `devspec.finalize`, `devspec.clarify` |
 | `devspec.clarify` | Resolve one active blocker and resume its originating stage. | `resume-origin` |
-| `devspec.changerequest` | Append one related post-finalization requirement without rewriting history. | `devspec.refine`, `devspec.clarify` |
+| `devspec.changerequest` | Append one related post-finalization requirement without rewriting history. | `devspec.refine` |
 | `devspec.finalize` | Produce a concise readiness brief and validation plan. | `devspec.tasks`, `devspec.refine`, `devspec.clarify` |
 | `devspec.tasks` | Create ordered, independently verifiable implementation tasks. | `devspec.implement`, `devspec.clarify` |
 | `devspec.implement` | Implement pending ready tasks with focused checkpoints and validation. | `devspec.review`, `devspec.clarify` |

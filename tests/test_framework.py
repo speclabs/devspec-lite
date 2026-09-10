@@ -378,6 +378,22 @@ class FrameworkTests(unittest.TestCase):
             self.assertTrue(any("duplicates workflow logic" in issue for issue in issues))
 
 
+    def test_sync_renames_work_item_values_a_command_rename_left_behind(self) -> None:
+        # Work items created before devspec.grooming became devspec.refine still name the old command.
+        with tempfile.TemporaryDirectory() as raw:
+            target = Path(raw)
+            main(["init", "--target", str(target), "--profile", "codex", "--repo-state", "new"])
+            meta = target / "devspec/work-items/260101-01-export/meta.md"
+            meta.parent.mkdir(parents=True)
+            legacy = "---\nstage: grooming\nrun: active\nresume: none\nnext: devspec.grooming\n---\n"
+            meta.write_text(legacy, encoding="utf-8")
+            self.assertTrue(any("stage: grooming -> refinement" in issue for issue in doctor(target, "codex")))
+            self.assertEqual(0, main(["sync", "--target", str(target), "--profile", "codex", "--dry-run"]))
+            self.assertEqual(legacy, meta.read_text(encoding="utf-8"))
+            self.assertEqual(0, main(["sync", "--target", str(target), "--profile", "codex"]))
+            self.assertEqual(legacy.replace("stage: grooming", "stage: refinement").replace("devspec.grooming", "devspec.refine"), meta.read_text(encoding="utf-8"))
+            self.assertEqual([], doctor(target, "codex"))
+
     def test_lifecycle_contracts_are_complete_and_routable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
             target = Path(raw)

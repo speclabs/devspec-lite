@@ -161,6 +161,8 @@ class RouteGraphTests(unittest.TestCase):
             with self.subTest(name):
                 active = {t["next"] for t in self.transitions(name) if t["run"] == "active"}
                 self.assertEqual({"devspec.refine"}, active)
+        # An unclassified request is not yet part of the work item, so it must not move the item's stage.
+        self.assertEqual({"active"}, {t["run"] for t in self.transitions("changerequest")})
 
     def test_finalize_asks_its_own_topics_and_hands_requirement_gaps_to_refine(self) -> None:
         # finalize owns security, compliance, and delivery questions, so it needs a full question

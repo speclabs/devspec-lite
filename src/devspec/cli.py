@@ -13,6 +13,7 @@ from .framework import (
     doctor_warnings,
     install_framework,
     manifest_profile,
+    migrate_renamed_meta,
     sync_framework,
 )
 
@@ -88,12 +89,15 @@ def main(argv: list[str] | None = None) -> int:
         _report("Retained obsolete files", obsolete)
         print("No files were written. Run with --dry-run first, then use --force only for reviewed framework-owned files.")
         return 1
+    renamed = migrate_renamed_meta(target, dry_run=args.dry_run)
     if args.dry_run:
         print(f"Dry run for Devspec Lite ({profile}) in {target}")
         _report("Files that would be written", writable)
+        _report("Work-item values that would be renamed", renamed)
     else:
         print(f"Synchronized Devspec Lite ({profile}) in {target}")
         _report("Files written", writable)
+        _report("Work-item values renamed", renamed)
     _report("Skipped files", skipped)
     _report("Retained obsolete files", obsolete)
     return 0

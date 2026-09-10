@@ -20,7 +20,7 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
     <rule>Append the next CR-### entry and CR-scoped criteria; never rewrite baseline evidence.</rule>
     <rule>List every requirement gap the change leaves open in story.md's Open Requirement Gaps table, raised by its CR-### ID, and ask none of them; devspec.refine owns those questions.</rule>
     <rule>Mark the earlier finalization, task, implementation, and review sections superseded when the revision increments, preserving their recorded evidence unchanged.</rule>
-    <rule>Ask one material classification question when it is unclear whether the request is related or a new linked work item.</rule>
+    <rule>Ask one material classification question when it is unclear whether the request is related or a new linked work item. Until the request is classified related, leave the work item's stage and next action unchanged: route an independent request to devspec.story as a linked work item, and when the developer cannot answer yet, stop with the question unanswered in decisions.md.</rule>
   </rules>
   <entry>Related requirement for a finalized-or-later work item with an active current scope revision; reject independent, blocked, or pre-finalization requests.</entry>
   <outputs>
@@ -33,8 +33,6 @@ Invocation: `/devspec.changerequest [work-item-id] Add JSON export`
     <artifact path="devspec/work-items/&lt;id&gt;/review.md" />
   </outputs>
   <transitions>
-    <transition outcome="related-change-accepted" stage="refinement" run="active" next="devspec.refine" />
-    <transition outcome="classification-blocked" stage="finalization" run="blocked" next="devspec.clarify" />
-  </transitions>
+    <transition outcome="related-change-accepted" stage="refinement" run="active" next="devspec.refine" />  </transitions>
   <closure>Append the CR and record the classification that justified it.</closure>
 </workflow>

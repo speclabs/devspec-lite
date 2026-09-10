@@ -31,7 +31,7 @@ Record a concise, redacted summary of the provider title, description, acceptanc
 
 ## Open Requirement Gaps
 
-Intake records what the source supplies and lists every remaining requirement gap here. devspec.changerequest adds the gaps a change request leaves open, and devspec.finalize adds a requirement gap its readiness check exposes. Raised by is devspec.story, a CR-### ID, or devspec.finalize. devspec.refine queues each open entry as a material question and clears it.
+Intake records what the source supplies and lists every remaining requirement gap here. devspec.changerequest adds the gaps a change request leaves open, and devspec.finalize adds a requirement gap its readiness check exposes. Raised by is devspec.story, a CR-### ID, or devspec.finalize; an entry older than this column was raised by devspec.story. devspec.refine queues each open entry as a material question and clears it.
 
 | ID | Gap | Dimension | Raised by | Status |
 |---|---|---|---|---|
